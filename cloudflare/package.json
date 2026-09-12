@@ -1,0 +1,15 @@
+{
+  "name": "agi-pm-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AGI-PM 项目管理系统 · Cloudflare 云端后端",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
