@@ -2,6 +2,7 @@
 .env
 api_keys.json
 *.token
+.git_commit_msg.txt
 
 # ===== 本地数据库 / 备份（数据不入库，仅云端 D1 为源） =====
 *.db
