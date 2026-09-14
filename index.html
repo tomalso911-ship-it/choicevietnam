@@ -1531,6 +1531,7 @@ function _ovLoadChartLib(cb){
   }
   @keyframes loginFade { from { opacity:0; transform:translateY(12px);} to { opacity:1; transform:none;} }
   .login-logo { margin: 0 auto 16px; width: 150px; height: 150px; }
+  .login-logo svg { width: 100%; height: auto; max-height: 100%; display: block; }
   .login-title { font-size: 24px; font-weight: 700; color: #D32F2F; margin: 0 0 4px; letter-spacing: .5px; }
   .login-sub { font-size: 13px; color: #7a8a99; margin: 0 0 26px; }
   .login-field { margin-bottom: 16px; text-align: left; }
@@ -2553,107 +2554,169 @@ function _ovLoadChartLib(cb){
       <button id="loginLangVi" onclick="setLangDebug('vi')">VI</button>
     </div>
     <div class="login-logo">
-      <svg viewBox="0 0 790 434" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CHOICE SLATS VIET NAM logo" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
-            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
-          </filter>
-          <filter id="panelShadow" x="-3%" y="-3%" width="106%" height="112%">
-            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.15"/>
-          </filter>
-          <filter id="fineNoise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
-            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .12 0"/>
-            <feComposite in2="SourceGraphic" operator="in"/>
-          </filter>
-          <filter id="concreteNoise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="7"/>
-            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .10 0"/>
-            <feComposite in2="SourceGraphic" operator="in"/>
-          </filter>
-          <filter id="aggregate" x="-2%" y="-2%" width="104%" height="104%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" seed="11"/>
-            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .16 0"/>
-            <feComposite in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <rect x="0" y="0" width="790" height="434" fill="#ffffff"/>
-        <path d="M9 202 L257 7 L529 7 L781 202 Z" fill="#ffffff" stroke="#e2e2e2" stroke-width="2"/>
-        <path d="M40 195 L260 17 L526 17 L749 195 Z" fill="#ffffff"/>
-        <path d="M9 202 L257 7 L529 7 L781 202" fill="none" stroke="#dcdcdc" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#ffffff" opacity=".6" filter="url(#fineNoise)"/>
-        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#d8d8d8" opacity=".16" filter="url(#aggregate)"/>
-        <g fill="#1B2A4A">
-          <path d="M280 27 L295 27 L271.2 62 L249.2 62 Z"/>
-          <path d="M334 27 L349 27 L341.4 62 L319.4 62 Z"/>
-          <path d="M387 27 L402 27 L406 62 L384 62 Z"/>
-          <path d="M442 27 L457 27 L474.6 62 L452.6 62 Z"/>
-          <path d="M495 27 L510 27 L543.4 62 L521.4 62 Z"/>
-        </g>
-        <g fill="#1B2A4A">
-          <path d="M238.1 76 L260.1 76 L190.8 178 L146.8 178 Z"/>
-          <path d="M314.9 76 L336.9 76 L315.6 178 L271.6 178 Z"/>
-          <path d="M384 76 L406 76 L417 178 L373 178 Z"/>
-          <path d="M458.4 76 L480.4 76 L533.2 178 L489.2 178 Z"/>
-          <path d="M533.3 76 L555.3 76 L652.6 178 L608.6 178 Z"/>
-        </g>
-        <g fill="#24334a" opacity=".38">
-          <path d="M232.1 76 L238.1 76 L146.8 178 L140.8 178 Z"/>
-          <path d="M308.9 76 L314.9 76 L271.6 178 L265.6 178 Z"/>
-          <path d="M378 76 L384 76 L373 178 L367 178 Z"/>
-          <path d="M452.4 76 L458.4 76 L489.2 178 L483.2 178 Z"/>
-          <path d="M527.3 76 L533.3 76 L608.6 178 L602.6 178 Z"/>
-        </g>
-        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c4c5c3" filter="url(#shadow)"/>
-        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c9cac8" stroke="#bfc0be" stroke-width="2"/>
-        <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z" fill="#d0d1cf" opacity=".72" filter="url(#concreteNoise)"/>
-        <path d="M9 202 L781 202 L781 219 L9 219 Z" fill="#dedfdd" opacity=".55"/>
-        <path d="M9 203 L42 222 L43 327 L28 343 C16 343 9 337 9 326 Z" fill="#b7b8b6" opacity=".72"/>
-        <path d="M781 203 L747 222 L746 327 L762 343 C774 343 781 337 781 326 Z" fill="#b7b8b6" opacity=".72"/>
-        <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z" fill="#ffffff" opacity=".72" filter="url(#panelShadow)"/>
-        <path d="M65 228 C55 228 48 237 50 250 L57 391 C58 404 66 411 81 412 L709 412 C724 412 732 404 733 391 L740 250 C742 237 734 228 721 228 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
-        <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z" fill="#ffffff" opacity=".8" filter="url(#fineNoise)"/>
-        <text x="395" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="67" fill="#D81E05" textLength="663" lengthAdjust="spacingAndGlyphs" letter-spacing="1">CHOICE SLATS</text>
-        <g fill="#1B2A4A">
-          <rect x="86" y="369" width="122" height="5" rx="1"/>
-          <rect x="618" y="369" width="88" height="5" rx="1"/>
-        </g>
-        <text x="397" y="386" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="43" fill="#1B2A4A" textLength="354" lengthAdjust="spacingAndGlyphs" letter-spacing="2">VIET NAM</text>
-        <g fill="#858783" opacity=".20">
-          <circle cx="18" cy="213" r="2"/>
-          <circle cx="27" cy="238" r="1.5"/>
-          <circle cx="34" cy="281" r="2"/>
-          <circle cx="19" cy="302" r="1"/>
-          <circle cx="40" cy="331" r="1.8"/>
-          <circle cx="757" cy="219" r="1.5"/>
-          <circle cx="771" cy="247" r="2"/>
-          <circle cx="752" cy="280" r="1"/>
-          <circle cx="769" cy="313" r="2"/>
-          <circle cx="750" cy="335" r="1.5"/>
-          <circle cx="100" cy="217" r="1"/>
-          <circle cx="145" cy="224" r="1.5"/>
-          <circle cx="186" cy="213" r="1"/>
-          <circle cx="224" cy="221" r="1.5"/>
-          <circle cx="559" cy="215" r="1"/>
-          <circle cx="603" cy="223" r="1.5"/>
-          <circle cx="671" cy="215" r="1"/>
-          <circle cx="716" cy="223" r="1.5"/>
-        </g>
-        <g stroke="#8f908d" stroke-width="1" opacity=".17" stroke-linecap="round">
-          <path d="M27 219 l22 4"/>
-          <path d="M21 269 l17 -3"/>
-          <path d="M30 310 l25 2"/>
-          <path d="M739 237 l27 -3"/>
-          <path d="M750 291 l18 2"/>
-          <path d="M731 326 l32 -3"/>
-          <path d="M116 217 l18 1"/>
-          <path d="M182 226 l22 -2"/>
-          <path d="M575 218 l20 2"/>
-          <path d="M663 225 l24 -3"/>
-        </g>
-        <path d="M67 230 C58 231 54 239 55 250 L62 390 C63 400 70 406 82 407" fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/>
-        <path d="M82 412 L708 412 C723 412 731 405 733 392" fill="none" stroke="#c2c3c1" stroke-width="4" opacity=".8"/>
-      </svg>
+              <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="790"
+            height="434"
+            viewBox="0 0 790 434"
+            fill="none">
+
+            <defs>
+                <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.18"/>
+                </filter>
+
+                <filter id="concreteNoise">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="7"/>
+                    <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .10 0"/>
+                    <feComposite in2="SourceGraphic" operator="in"/>
+                </filter>
+            </defs>
+
+            <!-- ========== 顶部梯形轮廓（透明填充 + 完整描边） ========== -->
+            <!-- 外轮廓粗线 -->
+            <path d="M9 202 L257 7 L529 7 L781 202"
+                  fill="none"
+                  stroke="#cfcfcf"
+                  stroke-width="3"
+                  stroke-linejoin="round"/>
+            <!-- 内层细线，增加层次 -->
+            <path d="M40 195 L260 17 L526 17 L749 195"
+                  fill="none"
+                  stroke="#e0e0e0"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"/>
+            <!-- 顶面与前面板之间的横线 -->
+            <path d="M9 202 L781 202"
+                  fill="none"
+                  stroke="#cfcfcf"
+                  stroke-width="2"/>
+
+            <!-- ========== 上排短条纹 ========== -->
+            <g fill="#1B2A4A">
+                <path d="M280 27 L295 27 L271.2 62 L249.2 62 Z"/>
+                <path d="M334 27 L349 27 L341.4 62 L319.4 62 Z"/>
+                <path d="M387 27 L402 27 L406 62 L384 62 Z"/>
+                <path d="M442 27 L457 27 L474.6 62 L452.6 62 Z"/>
+                <path d="M495 27 L510 27 L543.4 62 L521.4 62 Z"/>
+            </g>
+
+            <!-- ========== 下排长条纹 ========== -->
+            <g fill="#1B2A4A">
+                <path d="M238.1 76 L260.1 76 L190.8 178 L146.8 178 Z"/>
+                <path d="M314.9 76 L336.9 76 L315.6 178 L271.6 178 Z"/>
+                <path d="M384 76 L406 76 L417 178 L373 178 Z"/>
+                <path d="M458.4 76 L480.4 76 L533.2 178 L489.2 178 Z"/>
+                <path d="M533.3 76 L555.3 76 L652.6 178 L608.6 178 Z"/>
+            </g>
+
+            <!-- 下排条纹阴影 -->
+            <g fill="#24334a" opacity=".38">
+                <path d="M232.1 76 L238.1 76 L146.8 178 L140.8 178 Z"/>
+                <path d="M308.9 76 L314.9 76 L271.6 178 L265.6 178 Z"/>
+                <path d="M378 76 L384 76 L373 178 L367 178 Z"/>
+                <path d="M452.4 76 L458.4 76 L489.2 178 L483.2 178 Z"/>
+                <path d="M527.3 76 L533.3 76 L608.6 178 L602.6 178 Z"/>
+            </g>
+
+            <!-- ========== 前方灰色水泥主体（保留） ========== -->
+            <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z"
+                  fill="#c4c5c3" filter="url(#shadow)"/>
+            <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z"
+                  fill="#c9cac8" stroke="#bfc0be" stroke-width="2"/>
+            <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z"
+                  fill="#d0d1cf" opacity=".72" filter="url(#concreteNoise)"/>
+            <path d="M9 202 L781 202 L781 219 L9 219 Z" fill="#dedfdd" opacity=".55"/>
+            <path d="M9 203 L42 222 L43 327 L28 343 C16 343 9 337 9 326 Z" fill="#b7b8b6" opacity=".72"/>
+            <path d="M781 203 L747 222 L746 327 L762 343 C774 343 781 337 781 326 Z" fill="#b7b8b6" opacity=".72"/>
+
+            <!-- ========== 白色前面板轮廓（透明填充 + 完整描边） ========== -->
+            <!-- 外轮廓 -->
+            <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z"
+                  fill="none"
+                  stroke="#c8c9c7"
+                  stroke-width="2.5"
+                  stroke-linejoin="round"/>
+            <!-- 内层描边，增加厚度感 -->
+            <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z"
+                  fill="none"
+                  stroke="#e2e2e2"
+                  stroke-width="1.8"
+                  stroke-linejoin="round"/>
+
+            <!-- ========== 文字 - CHOICE SLATS ========== -->
+            <text x="395" y="322" text-anchor="middle"
+                  font-family="Arial, Helvetica, sans-serif"
+                  font-weight="900"
+                  font-size="67"
+                  fill="#D81E05"
+                  textLength="663"
+                  lengthAdjust="spacingAndGlyphs"
+                  letter-spacing="1">
+                CHOICE SLATS
+            </text>
+
+            <!-- 两侧装饰线 -->
+            <g fill="#1B2A4A">
+                <rect x="86" y="369" width="122" height="5" rx="1"/>
+                <rect x="618" y="369" width="88" height="5" rx="1"/>
+            </g>
+
+            <!-- ========== 文字 - VIET NAM ========== -->
+            <text x="397" y="386" text-anchor="middle"
+                  font-family="Arial, Helvetica, sans-serif"
+                  font-weight="900"
+                  font-size="43"
+                  fill="#1B2A4A"
+                  textLength="354"
+                  lengthAdjust="spacingAndGlyphs"
+                  letter-spacing="2">
+                VIET NAM
+            </text>
+
+            <!-- ========== 颗粒（只保留在灰色水泥区域边缘） ========== -->
+            <g fill="#858783" opacity=".20">
+                <circle cx="18" cy="213" r="2"/>
+                <circle cx="27" cy="238" r="1.5"/>
+                <circle cx="34" cy="281" r="2"/>
+                <circle cx="19" cy="302" r="1"/>
+                <circle cx="40" cy="331" r="1.8"/>
+                <circle cx="757" cy="219" r="1.5"/>
+                <circle cx="771" cy="247" r="2"/>
+                <circle cx="752" cy="280" r="1"/>
+                <circle cx="769" cy="313" r="2"/>
+                <circle cx="750" cy="335" r="1.5"/>
+                <circle cx="100" cy="217" r="1"/>
+                <circle cx="145" cy="224" r="1.5"/>
+                <circle cx="186" cy="213" r="1"/>
+                <circle cx="224" cy="221" r="1.5"/>
+                <circle cx="559" cy="215" r="1"/>
+                <circle cx="603" cy="223" r="1.5"/>
+                <circle cx="671" cy="215" r="1"/>
+                <circle cx="716" cy="223" r="1.5"/>
+            </g>
+
+            <!-- ========== 划痕 ========== -->
+            <g stroke="#8f908d" stroke-width="1" opacity=".17" stroke-linecap="round">
+                <path d="M27 219 l22 4"/>
+                <path d="M21 269 l17 -3"/>
+                <path d="M30 310 l25 2"/>
+                <path d="M739 237 l27 -3"/>
+                <path d="M750 291 l18 2"/>
+                <path d="M731 326 l32 -3"/>
+                <path d="M116 217 l18 1"/>
+                <path d="M182 226 l22 -2"/>
+                <path d="M575 218 l20 2"/>
+                <path d="M663 225 l24 -3"/>
+            </g>
+
+            <!-- ========== 高光/边缘 ========== -->
+            <path d="M67 230 C58 231 54 239 55 250 L62 390 C63 400 70 406 82 407"
+                  fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/>
+            <path d="M82 412 L708 412 C723 412 731 405 733 392"
+                  fill="none" stroke="#c2c3c1" stroke-width="4" opacity=".8"/>
+
+        </svg>
     </div>
     <h1 class="login-title">CHOICE SLATS VIET NAM</h1>
     <p class="login-sub" data-i18n="login_sub">Sign in to your account</p>
@@ -2688,107 +2751,169 @@ function _ovLoadChartLib(cb){
 <!-- ==================== 顶部导航栏 (Top Bar) ==================== -->
 <nav id="topbar" class="hidden">
   <div class="tb-logo">
-      <svg viewBox="0 0 790 434" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CHOICE SLATS VIET NAM logo" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <filter id="shadow2" x="-5%" y="-5%" width="110%" height="120%">
-            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
-          </filter>
-          <filter id="panelShadow2" x="-3%" y="-3%" width="106%" height="112%">
-            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.15"/>
-          </filter>
-          <filter id="fineNoise2">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
-            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .12 0"/>
-            <feComposite in2="SourceGraphic" operator="in"/>
-          </filter>
-          <filter id="concreteNoise2">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="7"/>
-            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .10 0"/>
-            <feComposite in2="SourceGraphic" operator="in"/>
-          </filter>
-          <filter id="aggregate2" x="-2%" y="-2%" width="104%" height="104%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" seed="11"/>
-            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .16 0"/>
-            <feComposite in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-        <rect x="0" y="0" width="790" height="434" fill="#ffffff"/>
-        <path d="M9 202 L257 7 L529 7 L781 202 Z" fill="#ffffff" stroke="#e2e2e2" stroke-width="2"/>
-        <path d="M40 195 L260 17 L526 17 L749 195 Z" fill="#ffffff"/>
-        <path d="M9 202 L257 7 L529 7 L781 202" fill="none" stroke="#dcdcdc" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#ffffff" opacity=".6" filter="url(#fineNoise2)"/>
-        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#d8d8d8" opacity=".16" filter="url(#aggregate2)"/>
-        <g fill="#1B2A4A">
-          <path d="M280 27 L295 27 L271.2 62 L249.2 62 Z"/>
-          <path d="M334 27 L349 27 L341.4 62 L319.4 62 Z"/>
-          <path d="M387 27 L402 27 L406 62 L384 62 Z"/>
-          <path d="M442 27 L457 27 L474.6 62 L452.6 62 Z"/>
-          <path d="M495 27 L510 27 L543.4 62 L521.4 62 Z"/>
-        </g>
-        <g fill="#1B2A4A">
-          <path d="M238.1 76 L260.1 76 L190.8 178 L146.8 178 Z"/>
-          <path d="M314.9 76 L336.9 76 L315.6 178 L271.6 178 Z"/>
-          <path d="M384 76 L406 76 L417 178 L373 178 Z"/>
-          <path d="M458.4 76 L480.4 76 L533.2 178 L489.2 178 Z"/>
-          <path d="M533.3 76 L555.3 76 L652.6 178 L608.6 178 Z"/>
-        </g>
-        <g fill="#24334a" opacity=".38">
-          <path d="M232.1 76 L238.1 76 L146.8 178 L140.8 178 Z"/>
-          <path d="M308.9 76 L314.9 76 L271.6 178 L265.6 178 Z"/>
-          <path d="M378 76 L384 76 L373 178 L367 178 Z"/>
-          <path d="M452.4 76 L458.4 76 L489.2 178 L483.2 178 Z"/>
-          <path d="M527.3 76 L533.3 76 L608.6 178 L602.6 178 Z"/>
-        </g>
-        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c4c5c3" filter="url(#shadow2)"/>
-        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c9cac8" stroke="#bfc0be" stroke-width="2"/>
-        <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z" fill="#d0d1cf" opacity=".72" filter="url(#concreteNoise2)"/>
-        <path d="M9 202 L781 202 L781 219 L9 219 Z" fill="#dedfdd" opacity=".55"/>
-        <path d="M9 203 L42 222 L43 327 L28 343 C16 343 9 337 9 326 Z" fill="#b7b8b6" opacity=".72"/>
-        <path d="M781 203 L747 222 L746 327 L762 343 C774 343 781 337 781 326 Z" fill="#b7b8b6" opacity=".72"/>
-        <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z" fill="#ffffff" opacity=".72" filter="url(#panelShadow2)"/>
-        <path d="M65 228 C55 228 48 237 50 250 L57 391 C58 404 66 411 81 412 L709 412 C724 412 732 404 733 391 L740 250 C742 237 734 228 721 228 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
-        <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z" fill="#ffffff" opacity=".8" filter="url(#fineNoise2)"/>
-        <text x="395" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="67" fill="#D81E05" textLength="663" lengthAdjust="spacingAndGlyphs" letter-spacing="1">CHOICE SLATS</text>
-        <g fill="#1B2A4A">
-          <rect x="86" y="369" width="122" height="5" rx="1"/>
-          <rect x="618" y="369" width="88" height="5" rx="1"/>
-        </g>
-        <text x="397" y="386" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="43" fill="#1B2A4A" textLength="354" lengthAdjust="spacingAndGlyphs" letter-spacing="2">VIET NAM</text>
-        <g fill="#858783" opacity=".20">
-          <circle cx="18" cy="213" r="2"/>
-          <circle cx="27" cy="238" r="1.5"/>
-          <circle cx="34" cy="281" r="2"/>
-          <circle cx="19" cy="302" r="1"/>
-          <circle cx="40" cy="331" r="1.8"/>
-          <circle cx="757" cy="219" r="1.5"/>
-          <circle cx="771" cy="247" r="2"/>
-          <circle cx="752" cy="280" r="1"/>
-          <circle cx="769" cy="313" r="2"/>
-          <circle cx="750" cy="335" r="1.5"/>
-          <circle cx="100" cy="217" r="1"/>
-          <circle cx="145" cy="224" r="1.5"/>
-          <circle cx="186" cy="213" r="1"/>
-          <circle cx="224" cy="221" r="1.5"/>
-          <circle cx="559" cy="215" r="1"/>
-          <circle cx="603" cy="223" r="1.5"/>
-          <circle cx="671" cy="215" r="1"/>
-          <circle cx="716" cy="223" r="1.5"/>
-        </g>
-        <g stroke="#8f908d" stroke-width="1" opacity=".17" stroke-linecap="round">
-          <path d="M27 219 l22 4"/>
-          <path d="M21 269 l17 -3"/>
-          <path d="M30 310 l25 2"/>
-          <path d="M739 237 l27 -3"/>
-          <path d="M750 291 l18 2"/>
-          <path d="M731 326 l32 -3"/>
-          <path d="M116 217 l18 1"/>
-          <path d="M182 226 l22 -2"/>
-          <path d="M575 218 l20 2"/>
-          <path d="M663 225 l24 -3"/>
-        </g>
-        <path d="M67 230 C58 231 54 239 55 250 L62 390 C63 400 70 406 82 407" fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/>
-        <path d="M82 412 L708 412 C723 412 731 405 733 392" fill="none" stroke="#c2c3c1" stroke-width="4" opacity=".8"/>
-      </svg>
+              <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="790"
+            height="434"
+            viewBox="0 0 790 434"
+            fill="none">
+
+            <defs>
+                <filter id="shadow2" x="-5%" y="-5%" width="110%" height="120%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.18"/>
+                </filter>
+
+                <filter id="concreteNoise2">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="7"/>
+                    <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .10 0"/>
+                    <feComposite in2="SourceGraphic" operator="in"/>
+                </filter>
+            </defs>
+
+            <!-- ========== 顶部梯形轮廓（透明填充 + 完整描边） ========== -->
+            <!-- 外轮廓粗线 -->
+            <path d="M9 202 L257 7 L529 7 L781 202"
+                  fill="none"
+                  stroke="#cfcfcf"
+                  stroke-width="3"
+                  stroke-linejoin="round"/>
+            <!-- 内层细线，增加层次 -->
+            <path d="M40 195 L260 17 L526 17 L749 195"
+                  fill="none"
+                  stroke="#e0e0e0"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"/>
+            <!-- 顶面与前面板之间的横线 -->
+            <path d="M9 202 L781 202"
+                  fill="none"
+                  stroke="#cfcfcf"
+                  stroke-width="2"/>
+
+            <!-- ========== 上排短条纹 ========== -->
+            <g fill="#1B2A4A">
+                <path d="M280 27 L295 27 L271.2 62 L249.2 62 Z"/>
+                <path d="M334 27 L349 27 L341.4 62 L319.4 62 Z"/>
+                <path d="M387 27 L402 27 L406 62 L384 62 Z"/>
+                <path d="M442 27 L457 27 L474.6 62 L452.6 62 Z"/>
+                <path d="M495 27 L510 27 L543.4 62 L521.4 62 Z"/>
+            </g>
+
+            <!-- ========== 下排长条纹 ========== -->
+            <g fill="#1B2A4A">
+                <path d="M238.1 76 L260.1 76 L190.8 178 L146.8 178 Z"/>
+                <path d="M314.9 76 L336.9 76 L315.6 178 L271.6 178 Z"/>
+                <path d="M384 76 L406 76 L417 178 L373 178 Z"/>
+                <path d="M458.4 76 L480.4 76 L533.2 178 L489.2 178 Z"/>
+                <path d="M533.3 76 L555.3 76 L652.6 178 L608.6 178 Z"/>
+            </g>
+
+            <!-- 下排条纹阴影 -->
+            <g fill="#24334a" opacity=".38">
+                <path d="M232.1 76 L238.1 76 L146.8 178 L140.8 178 Z"/>
+                <path d="M308.9 76 L314.9 76 L271.6 178 L265.6 178 Z"/>
+                <path d="M378 76 L384 76 L373 178 L367 178 Z"/>
+                <path d="M452.4 76 L458.4 76 L489.2 178 L483.2 178 Z"/>
+                <path d="M527.3 76 L533.3 76 L608.6 178 L602.6 178 Z"/>
+            </g>
+
+            <!-- ========== 前方灰色水泥主体（保留） ========== -->
+            <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z"
+                  fill="#c4c5c3" filter="url(#shadow2)"/>
+            <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z"
+                  fill="#c9cac8" stroke="#bfc0be" stroke-width="2"/>
+            <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z"
+                  fill="#d0d1cf" opacity=".72" filter="url(#concreteNoise2)"/>
+            <path d="M9 202 L781 202 L781 219 L9 219 Z" fill="#dedfdd" opacity=".55"/>
+            <path d="M9 203 L42 222 L43 327 L28 343 C16 343 9 337 9 326 Z" fill="#b7b8b6" opacity=".72"/>
+            <path d="M781 203 L747 222 L746 327 L762 343 C774 343 781 337 781 326 Z" fill="#b7b8b6" opacity=".72"/>
+
+            <!-- ========== 白色前面板轮廓（透明填充 + 完整描边） ========== -->
+            <!-- 外轮廓 -->
+            <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z"
+                  fill="none"
+                  stroke="#c8c9c7"
+                  stroke-width="2.5"
+                  stroke-linejoin="round"/>
+            <!-- 内层描边，增加厚度感 -->
+            <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z"
+                  fill="none"
+                  stroke="#e2e2e2"
+                  stroke-width="1.8"
+                  stroke-linejoin="round"/>
+
+            <!-- ========== 文字 - CHOICE SLATS ========== -->
+            <text x="395" y="322" text-anchor="middle"
+                  font-family="Arial, Helvetica, sans-serif"
+                  font-weight="900"
+                  font-size="67"
+                  fill="#D81E05"
+                  textLength="663"
+                  lengthAdjust="spacingAndGlyphs"
+                  letter-spacing="1">
+                CHOICE SLATS
+            </text>
+
+            <!-- 两侧装饰线 -->
+            <g fill="#1B2A4A">
+                <rect x="86" y="369" width="122" height="5" rx="1"/>
+                <rect x="618" y="369" width="88" height="5" rx="1"/>
+            </g>
+
+            <!-- ========== 文字 - VIET NAM ========== -->
+            <text x="397" y="386" text-anchor="middle"
+                  font-family="Arial, Helvetica, sans-serif"
+                  font-weight="900"
+                  font-size="43"
+                  fill="#1B2A4A"
+                  textLength="354"
+                  lengthAdjust="spacingAndGlyphs"
+                  letter-spacing="2">
+                VIET NAM
+            </text>
+
+            <!-- ========== 颗粒（只保留在灰色水泥区域边缘） ========== -->
+            <g fill="#858783" opacity=".20">
+                <circle cx="18" cy="213" r="2"/>
+                <circle cx="27" cy="238" r="1.5"/>
+                <circle cx="34" cy="281" r="2"/>
+                <circle cx="19" cy="302" r="1"/>
+                <circle cx="40" cy="331" r="1.8"/>
+                <circle cx="757" cy="219" r="1.5"/>
+                <circle cx="771" cy="247" r="2"/>
+                <circle cx="752" cy="280" r="1"/>
+                <circle cx="769" cy="313" r="2"/>
+                <circle cx="750" cy="335" r="1.5"/>
+                <circle cx="100" cy="217" r="1"/>
+                <circle cx="145" cy="224" r="1.5"/>
+                <circle cx="186" cy="213" r="1"/>
+                <circle cx="224" cy="221" r="1.5"/>
+                <circle cx="559" cy="215" r="1"/>
+                <circle cx="603" cy="223" r="1.5"/>
+                <circle cx="671" cy="215" r="1"/>
+                <circle cx="716" cy="223" r="1.5"/>
+            </g>
+
+            <!-- ========== 划痕 ========== -->
+            <g stroke="#8f908d" stroke-width="1" opacity=".17" stroke-linecap="round">
+                <path d="M27 219 l22 4"/>
+                <path d="M21 269 l17 -3"/>
+                <path d="M30 310 l25 2"/>
+                <path d="M739 237 l27 -3"/>
+                <path d="M750 291 l18 2"/>
+                <path d="M731 326 l32 -3"/>
+                <path d="M116 217 l18 1"/>
+                <path d="M182 226 l22 -2"/>
+                <path d="M575 218 l20 2"/>
+                <path d="M663 225 l24 -3"/>
+            </g>
+
+            <!-- ========== 高光/边缘 ========== -->
+            <path d="M67 230 C58 231 54 239 55 250 L62 390 C63 400 70 406 82 407"
+                  fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/>
+            <path d="M82 412 L708 412 C723 412 731 405 733 392"
+                  fill="none" stroke="#c2c3c1" stroke-width="4" opacity=".8"/>
+
+        </svg>
   </div>
   <div class="tb-menu" id="tbMenu">
     <button class="tb-item active" data-view="dashboard" onclick="switchView('dashboard')">Dashboard</button>
@@ -5269,7 +5394,7 @@ var I18N = {
     login_err_need:"请输入账号和密码", login_err_fail:"登录失败", login_err_net:"无法连接服务器，请先启动后端。",
     login_fp_btn:"🔒 指纹快速登录", login_footer:"CHOICE SLATS VIET NAM",
     wonTitle:"签约项目", won_province:"省份", won_doc_equip:"设备合同", won_doc_install:"安装合同", won_doc_delete:"删除", won_doc_del_title:"确认删除", won_doc_del_confirm:"确定删除该合同文件？", won_doc_req_note:"设备合同 / 安装合同：至少上传一项", slats_spec_label:"水泥漏缝地板规格", slats_edit_btn:"编辑", slats_view_report_btn:"查看智能报告",
-    slats_report_overview:"水泥板使用情况概述表", slats_report_house_distribution:"猪舍分布分析", slats_report_spec_distribution:"水泥板规格分布分析", slats_report_rebar_distribution:"钢筋规格分布分析", slats_report_total:"总计", slats_report_no_data:"暂无水泥漏缝地板规格数据", slats_report_house_desc:"共 {0} 种猪舍类型，累计 {1} 栋", slats_report_spec_desc:"共 {0} 种规格", slats_report_rebar_desc:"共 {0} 种钢筋规格", slats_report_data_label:"类别", slats_report_data_value:"数值", slats_report_data_pct:"占比", slats_report_no_spec:"未指定规格",
+    slats_report_overview:"水泥板使用情况概述表", slats_report_house_distribution:"猪舍分布分析", slats_report_spec_distribution:"水泥板规格分布分析", slats_report_rebar_distribution:"钢筋规格分布分析", slats_report_total:"总计", slats_report_no_data:"暂无水泥漏缝地板规格数据", slats_report_house_desc:"共 {0} 种猪舍类型，累计 {1} 栋", slats_report_spec_desc:"共 {0} 种规格", slats_report_rebar_desc:"共 {0} 种钢筋规格", slats_report_data_label:"类别", slats_report_data_value:"数值", slats_report_data_pct:"占比", slats_report_no_spec:"未指定规格", slats_report_rebar_col_size:"钢筋尺寸", slats_report_rebar_col_len:"需求长度(m)", slats_report_rebar_col_weight:"需求总量(Tons)", slats_report_rebar_col_pct:"总量占比",
     slats_table_no:"序号", slats_table_pig_house:"猪舍", slats_table_house_code:"房舍编号", slats_table_house_info:"房舍信息",
     slats_table_unit_per_building:"单元\n/栋",
     slats_table_len_unit:"长\n/单元", slats_table_wid_unit:"宽\n/单元", slats_table_hgt_unit:"高\n/单元", slats_table_building_count:"栋数\n/整场",
@@ -6022,7 +6147,7 @@ crm_yes:"是", crm_no_yes:"否", lostRestore:"转回至潜在项目", lostRestor
     login_err_need:"Please enter username and password", login_err_fail:"Login failed", login_err_net:"Cannot connect to server. Please start the backend first.",
     login_fp_btn:"🔒 Fingerprint Login", login_footer:"CHOICE SLATS VIET NAM",
     wonTitle:"Won Projects", won_province:"Province", won_doc_equip:"Equipment Contract", won_doc_install:"Installation Contract", won_doc_delete:"Delete", won_doc_del_title:"Confirm Delete", won_doc_del_confirm:"Delete this contract file?", won_doc_req_note:"Equipment / Installation Contract: upload at least one", slats_spec_label:"Concrete Slats Specifications", slats_edit_btn:"Edit", slats_view_report_btn:"View Smart Report",
-    slats_report_overview:"Cement Slats Usage Overview", slats_report_house_distribution:"House Distribution Analysis", slats_report_spec_distribution:"Cement Slats Specification Distribution", slats_report_rebar_distribution:"Rebar Specification Distribution", slats_report_total:"Total", slats_report_no_data:"No concrete slats specification data", slats_report_house_desc:"{0} house types, {1} buildings in total", slats_report_spec_desc:"{0} specifications in total", slats_report_rebar_desc:"{0} rebar specifications in total", slats_report_data_label:"Category", slats_report_data_value:"Value", slats_report_data_pct:"Proportion", slats_report_no_spec:"Unspecified",
+    slats_report_overview:"Cement Slats Usage Overview", slats_report_house_distribution:"House Distribution Analysis", slats_report_spec_distribution:"Cement Slats Specification Distribution", slats_report_rebar_distribution:"Rebar Specification Distribution", slats_report_total:"Total", slats_report_no_data:"No concrete slats specification data", slats_report_house_desc:"{0} house types, {1} buildings in total", slats_report_spec_desc:"{0} specifications in total", slats_report_rebar_desc:"{0} rebar specifications in total", slats_report_data_label:"Category", slats_report_data_value:"Value", slats_report_data_pct:"Proportion", slats_report_no_spec:"Unspecified", slats_report_rebar_col_size:"Rebar Size", slats_report_rebar_col_len:"Required Length(m)", slats_report_rebar_col_weight:"Required Total(Tons)", slats_report_rebar_col_pct:"Weight Proportion",
     slats_table_no:"No.", slats_table_pig_house:"Pig\nHouse", slats_table_house_code:"House\nCode", slats_table_house_info:"House\nInfo",
     slats_table_unit_per_building:"Unit\n/Bldg",
     slats_table_len_unit:"L\n/Unit", slats_table_wid_unit:"W\n/Unit", slats_table_hgt_unit:"H\n/Unit", slats_table_building_count:"Bldgs\n/Whole",
@@ -6778,7 +6903,7 @@ crm_yes:"Yes", crm_no_yes:"No", lostRestore:"Restore to Prospect", lostRestoreTi
     login_err_need:"Vui lòng nhập tài khoản và mật khẩu", login_err_fail:"Đăng nhập thất bại", login_err_net:"Không thể kết nối máy chủ. Vui lòng khởi động backend trước.",
     login_fp_btn:"🔒 Đăng nhập vân tay", login_footer:"Hệ thống CHOICE SLATS VIET NAM",
     wonTitle:"Dự Án Thắng", won_province:"Tỉnh", won_doc_equip:"Hợp đồng thiết bị", won_doc_install:"Hợp đồng lắp đặt", won_doc_delete:"Xóa", won_doc_del_title:"Xác nhận xóa", won_doc_del_confirm:"Xóa hợp đồng này?", won_doc_req_note:"Hợp đồng thiết bị / lắp đặt：tải lên ít nhất một", slats_spec_label:"Thông số kỹ thuật sàn xi măng khe hở", slats_edit_btn:"Sửa", slats_view_report_btn:"Xem báo cáo thông minh",
-    slats_report_overview:"Bảng tổng quan sử dụng sàn xi măng", slats_report_house_distribution:"Phân tích phân bổ chuồng heo", slats_report_spec_distribution:"Phân tích phân bổ kích thước sàn xi măng", slats_report_rebar_distribution:"Phân tích phân bổ cỡ thép", slats_report_total:"Tổng cộng", slats_report_no_data:"Chưa có dữ liệu thông số sàn xi măng", slats_report_house_desc:"Có {0} loại chuồng heo, tổng {1} tòa", slats_report_spec_desc:"Có {0} loại kích thước", slats_report_rebar_desc:"Có {0} loại cỡ thép", slats_report_data_label:"Danh mục", slats_report_data_value:"Giá trị", slats_report_data_pct:"Tỷ lệ", slats_report_no_spec:"Chưa xác định",
+    slats_report_overview:"Bảng tổng quan sử dụng sàn xi măng", slats_report_house_distribution:"Phân tích phân bổ chuồng heo", slats_report_spec_distribution:"Phân tích phân bổ kích thước sàn xi măng", slats_report_rebar_distribution:"Phân tích phân bổ cỡ thép", slats_report_total:"Tổng cộng", slats_report_no_data:"Chưa có dữ liệu thông số sàn xi măng", slats_report_house_desc:"Có {0} loại chuồng heo, tổng {1} tòa", slats_report_spec_desc:"Có {0} loại kích thước", slats_report_rebar_desc:"Có {0} loại cỡ thép", slats_report_data_label:"Danh mục", slats_report_data_value:"Giá trị", slats_report_data_pct:"Tỷ lệ", slats_report_no_spec:"Chưa xác định", slats_report_rebar_col_size:"Cỡ thép", slats_report_rebar_col_len:"Chiều dài cần(m)", slats_report_rebar_col_weight:"Tổng lượng cần(Tons)", slats_report_rebar_col_pct:"Tỷ lệ trọng lượng",
     slats_table_no:"STT", slats_table_pig_house:"Chuồng\nheo", slats_table_house_code:"Mã\nchuồng", slats_table_house_info:"Thông tin\nchuồng",
     slats_table_unit_per_building:"Đơn vị\n/tòa",
     slats_table_len_unit:"Dài\n/Đơn vị", slats_table_wid_unit:"Rộng\n/Đơn vị", slats_table_hgt_unit:"Cao\n/Đơn vị", slats_table_building_count:"Số tòa\n/toàn bộ",
@@ -17369,7 +17494,7 @@ function openSlatsReportModal(){
   // 汇总：猪舍分布按（名称+编号）统计面积；规格/钢筋分布按数量统计
   var houseDist={};
   var specDist={};
-  var rebarDist={};
+  var rebarLen={'6':0,'8':0,'10':0,'12':0}; // 各规格钢筋总长度（米）
   var totalBuildings=0, totalQty=0, totalSqm=0;
   rows.forEach(function(r){
     var phKey=String(r.pig_house||'');
@@ -17384,16 +17509,17 @@ function openSlatsReportModal(){
     if(specKey==='××') specKey=(t.slats_report_no_spec||'未指定规格');
     if(!specDist[specKey]) specDist[specKey]=0;
     specDist[specKey]+=qty;
-    // 钢筋：同一行去重后，按规格累加数量
-    var seenRebar={};
-    [r.rebar_size_len, r.rebar_size_wid].forEach(function(rs){
-      var k=String(rs||'').trim();
-      if(!k || seenRebar[k]) return;
-      seenRebar[k]=true;
-      var rebLabel=_rebarLabel(k);
-      if(!rebarDist[rebLabel]) rebarDist[rebLabel]=0;
-      rebarDist[rebLabel]+=qty;
-    });
+    // 钢筋：L1 = (长-100)/1000 × 条/长度方向 × 钢网层数 × 数量/整场
+    //       L2 = (宽-80)/1000 × 条/宽度方向 × 钢网层数 × 数量/整场（单位：米）
+    var mesh=slatsParseNum(r.mesh_layers);
+    var kLen=String(r.rebar_size_len||'').replace(/[^0-9.]/g,'');
+    if(kLen && SLATS_REBAR_WEIGHT[kLen]!==undefined){
+      rebarLen[kLen]+=((slatsParseNum(r.floor_len)-100)/1000)*slatsParseNum(r.bar_len)*mesh*slatsParseNum(r.qty_whole);
+    }
+    var kWid=String(r.rebar_size_wid||'').replace(/[^0-9.]/g,'');
+    if(kWid && SLATS_REBAR_WEIGHT[kWid]!==undefined){
+      rebarLen[kWid]+=((slatsParseNum(r.floor_wid)-80)/1000)*slatsParseNum(r.bar_wid)*mesh*slatsParseNum(r.qty_whole);
+    }
     totalBuildings+=bc; totalQty+=qty; totalSqm+=sqm;
   });
 
@@ -17475,21 +17601,27 @@ function openSlatsReportModal(){
   var specDesc=t.slats_report_spec_desc||'共 {0} 种规格';
   el('slatsReportSpecDesc').textContent=specDesc.replace('{0}', Object.keys(specDist).length);
   var rebarDesc=t.slats_report_rebar_desc||'共 {0} 种钢筋规格';
-  el('slatsReportRebarDesc').textContent=rebarDesc.replace('{0}', Object.keys(rebarDist).length);
+  var rebarUsedCnt=SLATS_REBAR_SIZES.filter(function(k){ return rebarLen[k]>0; }).length;
+  el('slatsReportRebarDesc').textContent=rebarDesc.replace('{0}', rebarUsedCnt);
 
-  // 钢筋分布的“总计”用各规格累加和，保证和饼图比例一致（同一单元可能同时含两种钢筋）
-  var rebarTotal=Object.keys(rebarDist).reduce(function(s,k){ return s+rebarDist[k]; },0);
+  // 钢筋统计：吨位 = 总长度(米) × 每米重量(kg/m) / 1000
+  var rebarStat=SLATS_REBAR_SIZES.map(function(k){
+    return { size:k, len:rebarLen[k], tons:rebarLen[k]*SLATS_REBAR_WEIGHT[k]/1000 };
+  });
+  var totalTons=rebarStat.reduce(function(s,o){ return s+o.tons; },0);
+  var rebarWeightMap={};
+  rebarStat.forEach(function(o){ if(o.tons>0) rebarWeightMap['φ'+o.size]=o.tons; });
 
   // 渲染数据表格
   _slatsRenderDistTable('slatsHouseDataTable', houseDist, totalSqm, 'm²', t);
   _slatsRenderDistTable('slatsSpecDataTable', specDist, totalQty, '', t);
-  _slatsRenderDistTable('slatsRebarDataTable', rebarDist, rebarTotal, '', t);
+  _slatsRenderRebarTable('slatsRebarDataTable', rebarStat, totalTons, t);
 
   // 渲染图表
   _slatsLoadChartLib(function(){
     _slatsRenderPieChart('slatsHouseChart', houseDist, totalSqm, t, 'm²');
     _slatsRenderPieChart('slatsSpecChart', specDist, totalQty, t, '');
-    _slatsRenderPieChart('slatsRebarChart', rebarDist, rebarTotal, t, '');
+    _slatsRenderPieChart('slatsRebarChart', rebarWeightMap, totalTons, t, 'T');
   });
 
   sweepI18n(modal);
@@ -17577,6 +17709,34 @@ function _slatsRenderDistTable(containerId, dataMap, total, unit, t){
     html+='<tr><td>'+o.k+'</td><td>'+slatsFmtNum(o.v,0)+(unit||'')+'</td><td>'+o.p+'%</td></tr>';
   });
   html+='</tbody></table>';
+  container.innerHTML=html;
+}
+// 钢筋每米重量(kg/m)：φ6=0.222 φ8=0.395 φ10=0.617 φ12=0.888
+var SLATS_REBAR_SIZES=['6','8','10','12'];
+var SLATS_REBAR_WEIGHT={'6':0.222,'8':0.395,'10':0.617,'12':0.888};
+function _slatsRenderRebarTable(containerId, statArr, totalTons, t){
+  var container=document.getElementById(containerId);
+  if(!container) return;
+  var colSize=t.slats_report_rebar_col_size||'钢筋尺寸';
+  var colLen=t.slats_report_rebar_col_len||'需求长度(m)';
+  var colWeight=t.slats_report_rebar_col_weight||'需求总量(Tons)';
+  var colPct=t.slats_report_rebar_col_pct||'总量占比';
+  var totalLbl=t.slats_report_total||'总计';
+  var rows=statArr.slice().sort(function(a,b){ return Number(a.size)-Number(b.size); });
+  var totalLen=rows.reduce(function(s,o){ return s+o.len; },0);
+  var html='<table class="slats-report-table"><thead><tr>'+
+    '<th data-i18n="slats_report_rebar_col_size">'+colSize+'</th>'+
+    '<th data-i18n="slats_report_rebar_col_len">'+colLen+'</th>'+
+    '<th data-i18n="slats_report_rebar_col_weight">'+colWeight+'</th>'+
+    '<th data-i18n="slats_report_rebar_col_pct">'+colPct+'</th>'+
+    '</tr></thead><tbody>';
+  rows.forEach(function(o){
+    var pct=totalTons?((o.tons/totalTons)*100).toFixed(1):'0.0';
+    html+='<tr><td>'+o.size+'</td><td>'+slatsFmtNum(o.len,1)+'</td><td>'+slatsFmtNum(o.tons,3)+'</td><td>'+pct+'%</td></tr>';
+  });
+  html+='</tbody><tfoot><tr class="slats-report-total">'+
+    '<td>'+totalLbl+'</td><td>'+slatsFmtNum(totalLen,1)+'</td>'+
+    '<td>'+slatsFmtNum(totalTons,3)+'</td><td>100%</td></tr></tfoot></table>';
   container.innerHTML=html;
 }
 function _slatsRenderPieChart(canvasId, dataMap, total, t, unit){
