@@ -4356,11 +4356,19 @@ function _ovLoadChartLib(cb){
           <h3 data-i18n="slats_report_house_distribution">猪舍分布分析</h3>
           <p class="slats-report-desc" id="slatsReportHouseDesc"></p>
           <div class="slats-report-chart-wrap"><canvas id="slatsHouseChart"></canvas></div>
+          <div id="slatsHouseDataTable" class="slats-report-data-table-wrap"></div>
         </div>
         <div class="slats-report-section">
           <h3 data-i18n="slats_report_spec_distribution">水泥板规格分布分析</h3>
           <p class="slats-report-desc" id="slatsReportSpecDesc"></p>
           <div class="slats-report-chart-wrap"><canvas id="slatsSpecChart"></canvas></div>
+          <div id="slatsSpecDataTable" class="slats-report-data-table-wrap"></div>
+        </div>
+        <div class="slats-report-section">
+          <h3 data-i18n="slats_report_rebar_distribution">钢筋规格分布分析</h3>
+          <p class="slats-report-desc" id="slatsReportRebarDesc"></p>
+          <div class="slats-report-chart-wrap"><canvas id="slatsRebarChart"></canvas></div>
+          <div id="slatsRebarDataTable" class="slats-report-data-table-wrap"></div>
         </div>
       </div>
     </div>
@@ -4439,6 +4447,8 @@ function _ovLoadChartLib(cb){
 .slats-report-table tbody tr:last-child td:last-child { border-radius: 0 0 10px 0; }
 .slats-report-desc { color: #555; font-size: 13px; margin: 0 0 12px; line-height: 1.5; }
 .slats-report-chart-wrap { height: 300px; position: relative; }
+.slats-report-data-table-wrap { margin-top: 12px; }
+.slats-report-data-table-wrap .slats-report-table { font-size: 12px; max-width: 560px; margin: 0 auto; }
 .slats-report-empty { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
 </style>
 
@@ -5255,7 +5265,7 @@ var I18N = {
     login_err_need:"请输入账号和密码", login_err_fail:"登录失败", login_err_net:"无法连接服务器，请先启动后端。",
     login_fp_btn:"🔒 指纹快速登录", login_footer:"CHOICE SLATS VIET NAM",
     wonTitle:"签约项目", won_province:"省份", won_doc_equip:"设备合同", won_doc_install:"安装合同", won_doc_delete:"删除", won_doc_del_title:"确认删除", won_doc_del_confirm:"确定删除该合同文件？", won_doc_req_note:"设备合同 / 安装合同：至少上传一项", slats_spec_label:"水泥漏缝地板规格", slats_edit_btn:"编辑", slats_view_report_btn:"查看智能报告",
-    slats_report_overview:"水泥板使用情况概述表", slats_report_house_distribution:"猪舍分布分析", slats_report_spec_distribution:"水泥板规格分布分析", slats_report_total:"总计", slats_report_no_data:"暂无水泥漏缝地板规格数据", slats_report_house_desc:"共 {0} 种猪舍类型，累计 {1} 栋", slats_report_spec_desc:"共 {0} 种规格", slats_report_no_spec:"未指定规格",
+    slats_report_overview:"水泥板使用情况概述表", slats_report_house_distribution:"猪舍分布分析", slats_report_spec_distribution:"水泥板规格分布分析", slats_report_rebar_distribution:"钢筋规格分布分析", slats_report_total:"总计", slats_report_no_data:"暂无水泥漏缝地板规格数据", slats_report_house_desc:"共 {0} 种猪舍类型，累计 {1} 栋", slats_report_spec_desc:"共 {0} 种规格", slats_report_rebar_desc:"共 {0} 种钢筋规格", slats_report_data_label:"类别", slats_report_data_value:"数值", slats_report_data_pct:"占比", slats_report_no_spec:"未指定规格",
     slats_table_no:"序号", slats_table_pig_house:"猪舍", slats_table_house_code:"房舍编号", slats_table_house_info:"房舍信息",
     slats_table_unit_per_building:"单元\n/栋",
     slats_table_len_unit:"长\n/单元", slats_table_wid_unit:"宽\n/单元", slats_table_hgt_unit:"高\n/单元", slats_table_building_count:"栋数\n/整场",
@@ -6008,7 +6018,7 @@ crm_yes:"是", crm_no_yes:"否", lostRestore:"转回至潜在项目", lostRestor
     login_err_need:"Please enter username and password", login_err_fail:"Login failed", login_err_net:"Cannot connect to server. Please start the backend first.",
     login_fp_btn:"🔒 Fingerprint Login", login_footer:"CHOICE SLATS VIET NAM",
     wonTitle:"Won Projects", won_province:"Province", won_doc_equip:"Equipment Contract", won_doc_install:"Installation Contract", won_doc_delete:"Delete", won_doc_del_title:"Confirm Delete", won_doc_del_confirm:"Delete this contract file?", won_doc_req_note:"Equipment / Installation Contract: upload at least one", slats_spec_label:"Concrete Slats Specifications", slats_edit_btn:"Edit", slats_view_report_btn:"View Smart Report",
-    slats_report_overview:"Cement Slats Usage Overview", slats_report_house_distribution:"House Distribution Analysis", slats_report_spec_distribution:"Cement Slats Specification Distribution", slats_report_total:"Total", slats_report_no_data:"No concrete slats specification data", slats_report_house_desc:"{0} house types, {1} buildings in total", slats_report_spec_desc:"{0} specifications in total", slats_report_no_spec:"Unspecified",
+    slats_report_overview:"Cement Slats Usage Overview", slats_report_house_distribution:"House Distribution Analysis", slats_report_spec_distribution:"Cement Slats Specification Distribution", slats_report_rebar_distribution:"Rebar Specification Distribution", slats_report_total:"Total", slats_report_no_data:"No concrete slats specification data", slats_report_house_desc:"{0} house types, {1} buildings in total", slats_report_spec_desc:"{0} specifications in total", slats_report_rebar_desc:"{0} rebar specifications in total", slats_report_data_label:"Category", slats_report_data_value:"Value", slats_report_data_pct:"Proportion", slats_report_no_spec:"Unspecified",
     slats_table_no:"No.", slats_table_pig_house:"Pig\nHouse", slats_table_house_code:"House\nCode", slats_table_house_info:"House\nInfo",
     slats_table_unit_per_building:"Unit\n/Bldg",
     slats_table_len_unit:"L\n/Unit", slats_table_wid_unit:"W\n/Unit", slats_table_hgt_unit:"H\n/Unit", slats_table_building_count:"Bldgs\n/Whole",
@@ -6764,7 +6774,7 @@ crm_yes:"Yes", crm_no_yes:"No", lostRestore:"Restore to Prospect", lostRestoreTi
     login_err_need:"Vui lòng nhập tài khoản và mật khẩu", login_err_fail:"Đăng nhập thất bại", login_err_net:"Không thể kết nối máy chủ. Vui lòng khởi động backend trước.",
     login_fp_btn:"🔒 Đăng nhập vân tay", login_footer:"Hệ thống CHOICE SLATS VIET NAM",
     wonTitle:"Dự Án Thắng", won_province:"Tỉnh", won_doc_equip:"Hợp đồng thiết bị", won_doc_install:"Hợp đồng lắp đặt", won_doc_delete:"Xóa", won_doc_del_title:"Xác nhận xóa", won_doc_del_confirm:"Xóa hợp đồng này?", won_doc_req_note:"Hợp đồng thiết bị / lắp đặt：tải lên ít nhất một", slats_spec_label:"Thông số kỹ thuật sàn xi măng khe hở", slats_edit_btn:"Sửa", slats_view_report_btn:"Xem báo cáo thông minh",
-    slats_report_overview:"Bảng tổng quan sử dụng sàn xi măng", slats_report_house_distribution:"Phân tích phân bổ chuồng heo", slats_report_spec_distribution:"Phân tích phân bổ kích thước sàn xi măng", slats_report_total:"Tổng cộng", slats_report_no_data:"Chưa có dữ liệu thông số sàn xi măng", slats_report_house_desc:"Có {0} loại chuồng heo, tổng {1} tòa", slats_report_spec_desc:"Có {0} loại kích thước", slats_report_no_spec:"Chưa xác định",
+    slats_report_overview:"Bảng tổng quan sử dụng sàn xi măng", slats_report_house_distribution:"Phân tích phân bổ chuồng heo", slats_report_spec_distribution:"Phân tích phân bổ kích thước sàn xi măng", slats_report_rebar_distribution:"Phân tích phân bổ cỡ thép", slats_report_total:"Tổng cộng", slats_report_no_data:"Chưa có dữ liệu thông số sàn xi măng", slats_report_house_desc:"Có {0} loại chuồng heo, tổng {1} tòa", slats_report_spec_desc:"Có {0} loại kích thước", slats_report_rebar_desc:"Có {0} loại cỡ thép", slats_report_data_label:"Danh mục", slats_report_data_value:"Giá trị", slats_report_data_pct:"Tỷ lệ", slats_report_no_spec:"Chưa xác định",
     slats_table_no:"STT", slats_table_pig_house:"Chuồng\nheo", slats_table_house_code:"Mã\nchuồng", slats_table_house_info:"Thông tin\nchuồng",
     slats_table_unit_per_building:"Đơn vị\n/tòa",
     slats_table_len_unit:"Dài\n/Đơn vị", slats_table_wid_unit:"Rộng\n/Đơn vị", slats_table_hgt_unit:"Cao\n/Đơn vị", slats_table_building_count:"Số tòa\n/toàn bộ",
@@ -9433,6 +9443,14 @@ function setLangDebug(lang) {
         var lov = document.getElementById('lostOverviewModal');
         if (lov && lov.style.display === 'flex' && typeof openLostOverviewModal === 'function') {
           openLostOverviewModal();
+        }
+      } catch (e) {}
+
+      // 若水泥漏缝地板智能报告弹窗当前打开，切换语言后同步刷新
+      try {
+        var srm = document.getElementById('slatsReportModal');
+        if (srm && srm.classList.contains('show') && typeof openSlatsReportModal === 'function') {
+          openSlatsReportModal();
         }
       } catch (e) {}
 
@@ -16383,7 +16401,7 @@ function renderModalBody() {
           '<label style="margin:0;font-weight:600;">' + t.slats_spec_label + '</label>' +
           '<div class="detail-btn-group" style="margin:0;">' +
             '<button type="button" class="btn btn-primary btn-sm" onclick="openSlatsSpecModal()">' + t.slats_edit_btn + '</button>' +
-            '<button type="button" class="btn btn-outline btn-sm" onclick="openSlatsReportModal()">' + t.slats_view_report_btn + '</button>' +
+            '<button type="button" class="btn btn-primary btn-sm" onclick="openSlatsReportModal()">' + t.slats_view_report_btn + '</button>' +
           '</div>' +
           '<input type="hidden" id="w_concrete_floor_spec" value="">' +
         '</div>' +
@@ -17281,9 +17299,13 @@ function openSlatsReportModal(){
     el('slatsReportOverview').innerHTML='<div class="slats-report-empty">'+(t.slats_report_no_data||'暂无水泥漏缝地板规格数据')+'</div>';
     el('slatsReportHouseDesc').textContent='';
     el('slatsReportSpecDesc').textContent='';
-    ['slatsHouseChart','slatsSpecChart'].forEach(function(id){
+    el('slatsReportRebarDesc').textContent='';
+    ['slatsHouseChart','slatsSpecChart','slatsRebarChart'].forEach(function(id){
       var c=document.getElementById(id);
       if(c && c.chart){ c.chart.destroy(); c.chart=null; }
+    });
+    ['slatsHouseDataTable','slatsSpecDataTable','slatsRebarDataTable'].forEach(function(id){
+      var d=document.getElementById(id); if(d) d.innerHTML='';
     });
     sweepI18n(modal);
     modal.classList.add('show');
@@ -17304,6 +17326,18 @@ function openSlatsReportModal(){
     return String(v||'');
   }
 
+  // 重新计算被动字段，确保和编辑表格 totals 完全一致
+  rows.forEach(function(r){
+    var qtyUnit=slatsParseNum(r.qty_unit);
+    var floorLen=slatsParseNum(r.floor_len);
+    var floorWid=slatsParseNum(r.floor_wid);
+    var unitPerBuilding=slatsParseNum(r.unit_per_building);
+    var buildingCount=slatsParseNum(r.building_count);
+    r.qty_whole=Math.round(qtyUnit * unitPerBuilding * buildingCount);
+    r.sqm_unit=Math.round((qtyUnit * floorLen * floorWid) / 1000000);
+    r.sqm_whole=Math.round(r.sqm_unit * unitPerBuilding * buildingCount);
+  });
+
   // 按猪舍+房舍编号+房舍信息分组（概述表合并显示）
   var groups=[];
   var groupMap={};
@@ -17318,23 +17352,34 @@ function openSlatsReportModal(){
     groupMap[gk].rows.push(r);
   });
 
-  // 汇总：猪舍分布按（名称+编号）统计面积；规格分布按尺寸统计数量
+  // 汇总：猪舍分布按（名称+编号）统计面积；规格/钢筋分布按数量统计
   var houseDist={};
   var specDist={};
+  var rebarDist={};
   var totalBuildings=0, totalQty=0, totalSqm=0;
   rows.forEach(function(r){
     var phKey=String(r.pig_house||'');
     var hc=String(r.house_code||'');
     var houseLabel=_phLabel(phKey)+' #'+hc;
-    var bc=parseFloat(r.building_count)||0;
-    var qty=parseFloat(r.qty_whole)||0;
-    var sqm=parseFloat(r.sqm_whole)||0;
+    var bc=slatsParseNum(r.building_count);
+    var qty=slatsParseNum(r.qty_whole);
+    var sqm=slatsParseNum(r.sqm_whole);
     if(!houseDist[houseLabel]) houseDist[houseLabel]=0;
     houseDist[houseLabel]+=sqm;
     var specKey=(r.floor_len||'')+'×'+(r.floor_wid||'')+'×'+(r.floor_hgt||'');
     if(specKey==='××') specKey=(t.slats_report_no_spec||'未指定规格');
     if(!specDist[specKey]) specDist[specKey]=0;
     specDist[specKey]+=qty;
+    // 钢筋：同一行去重后，按规格累加数量
+    var seenRebar={};
+    [r.rebar_size_len, r.rebar_size_wid].forEach(function(rs){
+      var k=String(rs||'').trim();
+      if(!k || seenRebar[k]) return;
+      seenRebar[k]=true;
+      var rebLabel=_rebarLabel(k);
+      if(!rebarDist[rebLabel]) rebarDist[rebLabel]=0;
+      rebarDist[rebLabel]+=qty;
+    });
     totalBuildings+=bc; totalQty+=qty; totalSqm+=sqm;
   });
 
@@ -17370,51 +17415,64 @@ function openSlatsReportModal(){
     '</tr></thead><tbody>';
   groups.forEach(function(g, gIdx){
     var rs=g.rows.length;
+    var phKey='slats_pig_house_'+String(g.pig_house).trim();
+    var phTranslated=_phLabel(g.pig_house);
     g.rows.forEach(function(r, rIdx){
       ovHtml+='<tr>';
       if(rIdx===0){
         ovHtml+='<td rowspan="'+rs+'">'+(gIdx+1)+'</td>'+
-          '<td rowspan="'+rs+'">'+_e(_phLabel(g.pig_house))+'</td>'+
+          '<td rowspan="'+rs+'" data-i18n="'+phKey+'">'+_e(phTranslated)+'</td>'+
           '<td rowspan="'+rs+'">'+_e(g.house_code)+'</td>'+
-          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.unit_per_building)+'</td>'+
-          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.len_per_unit)+'</td>'+
-          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.wid_per_unit)+'</td>'+
-          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.hgt_per_unit)+'</td>'+
-          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.building_count)+'</td>';
+          '<td rowspan="'+rs+'">'+slatsFmtNum(slatsParseNum(g.unit_per_building),0)+'</td>'+
+          '<td rowspan="'+rs+'">'+slatsFmtNum(slatsParseNum(g.len_per_unit),2)+'</td>'+
+          '<td rowspan="'+rs+'">'+slatsFmtNum(slatsParseNum(g.wid_per_unit),2)+'</td>'+
+          '<td rowspan="'+rs+'">'+slatsFmtNum(slatsParseNum(g.hgt_per_unit),2)+'</td>'+
+          '<td rowspan="'+rs+'">'+slatsFmtNum(slatsParseNum(g.building_count),0)+'</td>';
       }
-      ovHtml+='<td>'+_slatsFmtNum(r.floor_len)+'</td>'+
-        '<td>'+_slatsFmtNum(r.floor_wid)+'</td>'+
-        '<td>'+_slatsFmtNum(r.floor_hgt)+'</td>'+
-        '<td>'+_slatsFmtNum(r.qty_unit)+'</td>'+
-        '<td>'+_slatsFmtNum(r.qty_whole)+'</td>'+
-        '<td>'+_slatsFmtNum(r.sqm_unit)+'</td>'+
-        '<td>'+_slatsFmtNum(r.sqm_whole)+'</td>'+
-        '<td>'+_e(_rebarLabel(r.mesh_layers))+'</td>'+
-        '<td>'+_slatsFmtNum(r.bar_len)+'</td>'+
-        '<td>'+_e(_rebarLabel(r.rebar_size_len))+'</td>'+
-        '<td>'+_slatsFmtNum(r.bar_wid)+'</td>'+
-        '<td>'+_e(_rebarLabel(r.rebar_size_wid))+'</td>'+
+      var rebKeyLen='slats_rebar_'+String(r.rebar_size_len||'').trim();
+      var rebKeyWid='slats_rebar_'+String(r.rebar_size_wid||'').trim();
+      var meshKey='slats_mesh_'+String(r.mesh_layers||'').trim();
+      ovHtml+='<td>'+slatsFmtNum(slatsParseNum(r.floor_len),0)+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.floor_wid),0)+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.floor_hgt),0)+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.qty_unit),0)+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.qty_whole),0)+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.sqm_unit),0)+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.sqm_whole),0)+'</td>'+
+        '<td data-i18n="'+meshKey+'">'+_e(_rebarLabel(r.mesh_layers))+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.bar_len),0)+'</td>'+
+        '<td data-i18n="'+rebKeyLen+'">'+_e(_rebarLabel(r.rebar_size_len))+'</td>'+
+        '<td>'+slatsFmtNum(slatsParseNum(r.bar_wid),0)+'</td>'+
+        '<td data-i18n="'+rebKeyWid+'">'+_e(_rebarLabel(r.rebar_size_wid))+'</td>'+
         '<td>'+_e(r.remark||'')+'</td></tr>';
     });
   });
   ovHtml+='<tr class="slats-report-total"><td colspan="11">'+_e(t.slats_report_total||'总计')+'</td>'+
     '<td></td>'+
-    '<td>'+_slatsFmtNum(totalQty)+'</td>'+
+    '<td>'+slatsFmtNum(totalQty,0)+'</td>'+
     '<td></td>'+
-    '<td>'+_slatsFmtNum(totalSqm)+'</td>'+
+    '<td>'+slatsFmtNum(totalSqm,0)+'</td>'+
     '<td colspan="6"></td></tr></tbody></table>';
   el('slatsReportOverview').innerHTML=ovHtml;
 
   // 文字说明
   var houseDesc=t.slats_report_house_desc||'共 {0} 种猪舍类型，累计 {1} 栋';
-  el('slatsReportHouseDesc').textContent=houseDesc.replace('{0}', Object.keys(houseDist).length).replace('{1}', _slatsFmtNum(totalBuildings));
+  el('slatsReportHouseDesc').textContent=houseDesc.replace('{0}', Object.keys(houseDist).length).replace('{1}', slatsFmtNum(totalBuildings,0));
   var specDesc=t.slats_report_spec_desc||'共 {0} 种规格';
   el('slatsReportSpecDesc').textContent=specDesc.replace('{0}', Object.keys(specDist).length);
+  var rebarDesc=t.slats_report_rebar_desc||'共 {0} 种钢筋规格';
+  el('slatsReportRebarDesc').textContent=rebarDesc.replace('{0}', Object.keys(rebarDist).length);
+
+  // 渲染数据表格
+  _slatsRenderDistTable('slatsHouseDataTable', houseDist, totalSqm, 'm²', t);
+  _slatsRenderDistTable('slatsSpecDataTable', specDist, totalQty, '', t);
+  _slatsRenderDistTable('slatsRebarDataTable', rebarDist, totalQty, '', t);
 
   // 渲染图表
   _slatsLoadChartLib(function(){
     _slatsRenderPieChart('slatsHouseChart', houseDist, totalSqm, t, 'm²');
     _slatsRenderPieChart('slatsSpecChart', specDist, totalQty, t, '');
+    _slatsRenderPieChart('slatsRebarChart', rebarDist, totalQty, t, '');
   });
 
   sweepI18n(modal);
@@ -17478,6 +17536,25 @@ var _slatsPieLabelsPlugin = {
     ctx.restore();
   }
 };
+function _slatsRenderDistTable(containerId, dataMap, total, unit, t){
+  var container=document.getElementById(containerId);
+  if(!container) return;
+  var label=t.slats_report_data_label||'类别';
+  var value=t.slats_report_data_value||'数值';
+  var pct=t.slats_report_data_pct||'占比';
+  var arr=Object.keys(dataMap).map(function(k){ return {k:k, v:dataMap[k], p:total?((dataMap[k]/total)*100).toFixed(1):0}; });
+  arr.sort(function(a,b){ return b.v - a.v; });
+  var html='<table class="slats-report-table"><thead><tr>'+
+    '<th data-i18n="slats_report_data_label">'+label+'</th>'+
+    '<th data-i18n="slats_report_data_value">'+value+'</th>'+
+    '<th data-i18n="slats_report_data_pct">'+pct+'</th>'+
+    '</tr></thead><tbody>';
+  arr.forEach(function(o){
+    html+='<tr><td>'+o.k+'</td><td>'+slatsFmtNum(o.v,0)+(unit||'')+'</td><td>'+o.p+'%</td></tr>';
+  });
+  html+='</tbody></table>';
+  container.innerHTML=html;
+}
 function _slatsRenderPieChart(canvasId, dataMap, total, t, unit){
   var canvas=document.getElementById(canvasId);
   if(!canvas) return;
@@ -17508,7 +17585,8 @@ function _slatsRenderPieChart(canvasId, dataMap, total, t, unit){
               }
             }
           },
-          slatsPieLabels: { unit: unit||'' }
+          slatsPieLabels: { unit: unit||'' },
+          ovPieLabels: { display: false }
         }
       },
       plugins: [_slatsPieLabelsPlugin]
@@ -28055,6 +28133,8 @@ var _ovPieLabelPlugin = {
   id: 'ovPieLabels',
   afterDatasetsDraw: function(chart){
     if(chart.config.type!=='pie') return;
+    var ovOpts = (chart.config.options && chart.config.options.plugins && chart.config.options.plugins.ovPieLabels) || {};
+    if(ovOpts.display === false) return;
     var ctx = chart.ctx;
     var dataset = chart.data.datasets[0];
     var data = dataset.data;
