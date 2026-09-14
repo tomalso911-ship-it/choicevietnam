@@ -4424,13 +4424,19 @@ function _ovLoadChartLib(cb){
 .slats-report-wrap { padding: 6px 0 12px; }
 .slats-report-section { margin-bottom: 26px; }
 .slats-report-section h3 { margin: 0 0 12px; font-size: 15px; color: #333; border-left: 4px solid #E53935; padding-left: 10px; }
-.slats-report-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
-.slats-report-table th, .slats-report-table td { border: 1px solid #ddd; padding: 8px 10px; text-align: center; vertical-align: middle; }
-.slats-report-table th { background: #f5f5f5; font-weight: 600; white-space: pre-line; }
-.slats-report-table tbody tr:nth-child(even) { background: #fafafa; }
+.slats-report-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; margin-bottom: 8px; border: 1px solid #e8e8e8; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); background: #fff; }
+.slats-report-table th, .slats-report-table td { border-right: 1px solid #e8e8e8; border-bottom: 1px solid #e8e8e8; padding: 6px 4px; text-align: center; vertical-align: middle; }
+.slats-report-table th:last-child, .slats-report-table td:last-child { border-right: none; }
+.slats-report-table thead th { background: linear-gradient(135deg,#E53935,#C62828); color: #fff; font-weight: 600; white-space: pre-line; position: sticky; top: 0; z-index: 2; }
+.slats-report-table thead tr:first-child th:first-child { border-radius: 10px 0 0 0; }
+.slats-report-table thead tr:first-child th:last-child { border-radius: 0 10px 0 0; }
+.slats-report-table tbody tr { background: #fffdf5; }
+.slats-report-table tbody tr:nth-child(even) { background: #fff9c4; }
 .slats-report-table tbody tr:hover { background: #ffebee; }
 .slats-report-table tr.slats-report-total { font-weight: 700; background: #ffebee !important; }
-.slats-report-table tr.slats-report-total td { border-top: 2px solid #E53935; }
+.slats-report-table tr.slats-report-total td { border-top: 2px solid #E53935; color: #C62828; }
+.slats-report-table tbody tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+.slats-report-table tbody tr:last-child td:last-child { border-radius: 0 0 10px 0; }
 .slats-report-desc { color: #555; font-size: 13px; margin: 0 0 12px; line-height: 1.5; }
 .slats-report-chart-wrap { height: 300px; position: relative; }
 .slats-report-empty { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
@@ -17284,50 +17290,119 @@ function openSlatsReportModal(){
     return;
   }
 
-  // 聚合：按猪舍+房舍编号
-  var overview={};
+  // 辅助：翻译猪舍名称（三语）
+  function _phLabel(v){
+    var key='slats_pig_house_'+String(v).trim();
+    return t[key]!==undefined?t[key]:String(v||'');
+  }
+  // 辅助：翻译钢筋/钢网选项（三语）
+  function _rebarLabel(v){
+    var key='slats_rebar_'+String(v).trim();
+    if(t[key]!==undefined) return t[key];
+    var mkey='slats_mesh_'+String(v).trim();
+    if(t[mkey]!==undefined) return t[mkey];
+    return String(v||'');
+  }
+
+  // 按猪舍+房舍编号+房舍信息分组（概述表合并显示）
+  var groups=[];
+  var groupMap={};
+  rows.forEach(function(r){
+    var phKey=String(r.pig_house||'');
+    var hc=String(r.house_code||'');
+    var gk=[phKey, hc, String(r.unit_per_building||''), String(r.len_per_unit||''), String(r.wid_per_unit||''), String(r.hgt_per_unit||''), String(r.building_count||'')].join('|');
+    if(!groupMap[gk]){
+      groupMap[gk]={pig_house:phKey, house_code:hc, unit_per_building:r.unit_per_building||'', len_per_unit:r.len_per_unit||'', wid_per_unit:r.wid_per_unit||'', hgt_per_unit:r.hgt_per_unit||'', building_count:r.building_count||'', rows:[]};
+      groups.push(groupMap[gk]);
+    }
+    groupMap[gk].rows.push(r);
+  });
+
+  // 汇总：猪舍分布按（名称+编号）统计面积；规格分布按尺寸统计数量
   var houseDist={};
   var specDist={};
   var totalBuildings=0, totalQty=0, totalSqm=0;
   rows.forEach(function(r){
-    var ph=String(r.pig_house||'');
+    var phKey=String(r.pig_house||'');
     var hc=String(r.house_code||'');
-    var key=ph+'|'+hc;
+    var houseLabel=_phLabel(phKey)+' #'+hc;
     var bc=parseFloat(r.building_count)||0;
     var qty=parseFloat(r.qty_whole)||0;
     var sqm=parseFloat(r.sqm_whole)||0;
-    if(!overview[key]) overview[key]={pig_house:ph, house_code:hc, building_count:0, qty_whole:0, sqm_whole:0};
-    overview[key].building_count+=bc;
-    overview[key].qty_whole+=qty;
-    overview[key].sqm_whole+=sqm;
-    if(!houseDist[ph]) houseDist[ph]=0;
-    houseDist[ph]+=sqm;
+    if(!houseDist[houseLabel]) houseDist[houseLabel]=0;
+    houseDist[houseLabel]+=sqm;
     var specKey=(r.floor_len||'')+'×'+(r.floor_wid||'')+'×'+(r.floor_hgt||'');
     if(specKey==='××') specKey=(t.slats_report_no_spec||'未指定规格');
     if(!specDist[specKey]) specDist[specKey]=0;
-    specDist[specKey]+=sqm;
+    specDist[specKey]+=qty;
     totalBuildings+=bc; totalQty+=qty; totalSqm+=sqm;
   });
 
-  // 渲染概述表
-  var ovHtml='<table class="slats-report-table"><thead><tr>'+
-    '<th data-i18n="slats_table_pig_house">'+_e(t.slats_table_pig_house)+'</th>'+
-    '<th data-i18n="slats_table_house_code">'+_e(t.slats_table_house_code)+'</th>'+
+  // 渲染概述表（带合并单元格）
+  var ovHtml='<table class="slats-report-table"><thead>'+
+    '<tr>'+
+    '<th rowspan="2" data-i18n="slats_table_no">'+_e(t.slats_table_no)+'</th>'+
+    '<th rowspan="2" data-i18n="slats_table_pig_house">'+_e(t.slats_table_pig_house)+'</th>'+
+    '<th rowspan="2" data-i18n="slats_table_house_code">'+_e(t.slats_table_house_code)+'</th>'+
+    '<th colspan="5" data-i18n="slats_table_house_info">'+_e(t.slats_table_house_info)+'</th>'+
+    '<th colspan="3" data-i18n="slats_table_size_title">'+_e(t.slats_table_size_title)+'</th>'+
+    '<th colspan="4" data-i18n="slats_table_usage_title">'+_e(t.slats_table_usage_title)+'</th>'+
+    '<th colspan="5" data-i18n="slats_table_rebar_title">'+_e(t.slats_table_rebar_title)+'</th>'+
+    '<th rowspan="2" data-i18n="slats_table_remark">'+_e(t.slats_table_remark)+'</th>'+
+    '</tr><tr>'+
+    '<th data-i18n="slats_table_unit_per_building">'+_e(t.slats_table_unit_per_building)+'</th>'+
+    '<th data-i18n="slats_table_len_unit">'+_e(t.slats_table_len_unit)+'</th>'+
+    '<th data-i18n="slats_table_wid_unit">'+_e(t.slats_table_wid_unit)+'</th>'+
+    '<th data-i18n="slats_table_hgt_unit">'+_e(t.slats_table_hgt_unit)+'</th>'+
     '<th data-i18n="slats_table_building_count">'+_e(t.slats_table_building_count)+'</th>'+
+    '<th data-i18n="slats_table_len">'+_e(t.slats_table_len)+'</th>'+
+    '<th data-i18n="slats_table_wid">'+_e(t.slats_table_wid)+'</th>'+
+    '<th data-i18n="slats_table_hgt">'+_e(t.slats_table_hgt)+'</th>'+
+    '<th data-i18n="slats_table_qty_unit">'+_e(t.slats_table_qty_unit)+'</th>'+
     '<th data-i18n="slats_table_qty_whole">'+_e(t.slats_table_qty_whole)+'</th>'+
+    '<th data-i18n="slats_table_sqm_unit">'+_e(t.slats_table_sqm_unit)+'</th>'+
     '<th data-i18n="slats_table_sqm_whole">'+_e(t.slats_table_sqm_whole)+'</th>'+
+    '<th data-i18n="slats_table_mesh_layers">'+_e(t.slats_table_mesh_layers)+'</th>'+
+    '<th data-i18n="slats_table_bar_len">'+_e(t.slats_table_bar_len)+'</th>'+
+    '<th data-i18n="slats_table_rebar_size_len">'+_e(t.slats_table_rebar_size_len)+'</th>'+
+    '<th data-i18n="slats_table_bar_wid">'+_e(t.slats_table_bar_wid)+'</th>'+
+    '<th data-i18n="slats_table_rebar_size_wid">'+_e(t.slats_table_rebar_size_wid)+'</th>'+
     '</tr></thead><tbody>';
-  Object.keys(overview).sort().forEach(function(k){
-    var o=overview[k];
-    ovHtml+='<tr><td>'+_e(o.pig_house)+'</td><td>'+_e(o.house_code)+'</td>'+
-      '<td>'+_slatsFmtNum(o.building_count)+'</td>'+
-      '<td>'+_slatsFmtNum(o.qty_whole)+'</td>'+
-      '<td>'+_slatsFmtNum(o.sqm_whole)+'</td></tr>';
+  groups.forEach(function(g, gIdx){
+    var rs=g.rows.length;
+    g.rows.forEach(function(r, rIdx){
+      ovHtml+='<tr>';
+      if(rIdx===0){
+        ovHtml+='<td rowspan="'+rs+'">'+(gIdx+1)+'</td>'+
+          '<td rowspan="'+rs+'">'+_e(_phLabel(g.pig_house))+'</td>'+
+          '<td rowspan="'+rs+'">'+_e(g.house_code)+'</td>'+
+          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.unit_per_building)+'</td>'+
+          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.len_per_unit)+'</td>'+
+          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.wid_per_unit)+'</td>'+
+          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.hgt_per_unit)+'</td>'+
+          '<td rowspan="'+rs+'">'+_slatsFmtNum(g.building_count)+'</td>';
+      }
+      ovHtml+='<td>'+_slatsFmtNum(r.floor_len)+'</td>'+
+        '<td>'+_slatsFmtNum(r.floor_wid)+'</td>'+
+        '<td>'+_slatsFmtNum(r.floor_hgt)+'</td>'+
+        '<td>'+_slatsFmtNum(r.qty_unit)+'</td>'+
+        '<td>'+_slatsFmtNum(r.qty_whole)+'</td>'+
+        '<td>'+_slatsFmtNum(r.sqm_unit)+'</td>'+
+        '<td>'+_slatsFmtNum(r.sqm_whole)+'</td>'+
+        '<td>'+_e(_rebarLabel(r.mesh_layers))+'</td>'+
+        '<td>'+_slatsFmtNum(r.bar_len)+'</td>'+
+        '<td>'+_e(_rebarLabel(r.rebar_size_len))+'</td>'+
+        '<td>'+_slatsFmtNum(r.bar_wid)+'</td>'+
+        '<td>'+_e(_rebarLabel(r.rebar_size_wid))+'</td>'+
+        '<td>'+_e(r.remark||'')+'</td></tr>';
+    });
   });
-  ovHtml+='<tr class="slats-report-total"><td>'+_e(t.slats_report_total||'总计')+'</td><td>—</td>'+
-    '<td>'+_slatsFmtNum(totalBuildings)+'</td>'+
+  ovHtml+='<tr class="slats-report-total"><td colspan="11">'+_e(t.slats_report_total||'总计')+'</td>'+
+    '<td></td>'+
     '<td>'+_slatsFmtNum(totalQty)+'</td>'+
-    '<td>'+_slatsFmtNum(totalSqm)+'</td></tr></tbody></table>';
+    '<td></td>'+
+    '<td>'+_slatsFmtNum(totalSqm)+'</td>'+
+    '<td colspan="6"></td></tr></tbody></table>';
   el('slatsReportOverview').innerHTML=ovHtml;
 
   // 文字说明
@@ -17338,8 +17413,8 @@ function openSlatsReportModal(){
 
   // 渲染图表
   _slatsLoadChartLib(function(){
-    _slatsRenderPieChart('slatsHouseChart', houseDist, totalSqm, t);
-    _slatsRenderPieChart('slatsSpecChart', specDist, totalSqm, t);
+    _slatsRenderPieChart('slatsHouseChart', houseDist, totalSqm, t, 'm²');
+    _slatsRenderPieChart('slatsSpecChart', specDist, totalQty, t, '');
   });
 
   sweepI18n(modal);
@@ -17359,7 +17434,51 @@ function _slatsLoadChartLib(cb){
   s.onerror=function(){ s.onerror=null; s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'; s.onload=cb; s.onerror=cb; };
   document.head.appendChild(s);
 }
-function _slatsRenderPieChart(canvasId, dataMap, total, t){
+// 饼图自定义插件：饼内显示百分比，饼外用箭头牵引线显示绝对值
+var _slatsPieLabelsPlugin = {
+  id: 'slatsPieLabels',
+  afterDraw: function(chart, args, options){
+    var ctx = chart.ctx;
+    var dataset = chart.data.datasets[0];
+    var meta = chart.getDatasetMeta(0);
+    var total = dataset.data.reduce(function(a,b){return a+b;},0);
+    if(!total) return;
+    ctx.save();
+    ctx.font = 'bold 11px sans-serif';
+    ctx.lineWidth = 1;
+    meta.data.forEach(function(arc, i){
+      var value = dataset.data[i];
+      var pct = ((value/total)*100).toFixed(1);
+      var midAngle = (arc.startAngle + arc.endAngle)/2;
+      var cx = arc.x, cy = arc.y;
+      // 饼内百分比
+      var innerR = arc.outerRadius * 0.55;
+      var ix = cx + Math.cos(midAngle) * innerR;
+      var iy = cy + Math.sin(midAngle) * innerR;
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(pct + '%', ix, iy);
+      // 饼外绝对值 + 箭头牵引线
+      var outerR = arc.outerRadius * 1.28;
+      var ox = cx + Math.cos(midAngle) * outerR;
+      var oy = cy + Math.sin(midAngle) * outerR;
+      var edgeX = cx + Math.cos(midAngle) * (arc.outerRadius + 2);
+      var edgeY = cy + Math.sin(midAngle) * (arc.outerRadius + 2);
+      ctx.strokeStyle = '#666';
+      ctx.beginPath();
+      ctx.moveTo(edgeX, edgeY);
+      ctx.lineTo(ox, oy);
+      ctx.stroke();
+      ctx.fillStyle = '#333';
+      ctx.textAlign = ox > cx ? 'left' : 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(_slatsFmtNum(value) + (options.unit||''), ox + (ox > cx ? 4 : -4), oy);
+    });
+    ctx.restore();
+  }
+};
+function _slatsRenderPieChart(canvasId, dataMap, total, t, unit){
   var canvas=document.getElementById(canvasId);
   if(!canvas) return;
   var ctx=canvas.getContext('2d');
@@ -17369,24 +17488,30 @@ function _slatsRenderPieChart(canvasId, dataMap, total, t){
   var bg=labels.map(function(_,i){ return colors[i%colors.length]; });
   try{
     if(canvas.chart){ canvas.chart.destroy(); canvas.chart=null; }
+    if(typeof Chart!=='undefined' && !Chart.registry.plugins.get('slatsPieLabels')){
+      Chart.register(_slatsPieLabelsPlugin);
+    }
     var chart=new Chart(ctx, {
       type: 'pie',
       data: { labels: labels, datasets: [{ data: values, backgroundColor: bg, borderWidth: 1, borderColor: '#fff' }] },
       options: {
         responsive: true, maintainAspectRatio: false,
+        layout: { padding: 24 },
         plugins: {
-          legend: { position: 'right', labels: { boxWidth: 14, font: { size: 12 } } },
+          legend: { position: 'bottom', labels: { boxWidth: 14, font: { size: 12 } } },
           tooltip: {
             callbacks: {
               label: function(context){
                 var val=context.raw||0;
                 var pct=total?((val/total)*100).toFixed(1):0;
-                return context.label + ': ' + _slatsFmtNum(val) + 'm² (' + pct + '%)';
+                return context.label + ': ' + _slatsFmtNum(val) + (unit||'') + ' (' + pct + '%)';
               }
             }
-          }
+          },
+          slatsPieLabels: { unit: unit||'' }
         }
-      }
+      },
+      plugins: [_slatsPieLabelsPlugin]
     });
     canvas.chart=chart;
   }catch(e){ console.error('slats chart error', e); }

@@ -1,1 +1,1 @@
-chore: untrack choice-android/app/build and remaining build/db artifacts (real bloat source)
+feat(slats): smart report overview table with merged cells + house/spec pie charts with outside labels
