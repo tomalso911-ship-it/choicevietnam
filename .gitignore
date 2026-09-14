@@ -7,6 +7,8 @@ api_keys.json
 *.db
 *.db.bak*
 *.sqlite
+*.db-wal
+*.db-shm
 agi_pm_backup*/
 backup*/
 *demo_snapshot*.bak*
@@ -16,6 +18,11 @@ cloudflare/pages/
 node_modules/
 __pycache__/
 *.pyc
+choice-android/build/
+choice-android/app/build/
+node-backend/dist/
+dist/
+build/
 
 # ===== 本地 R2 文件缓存 / 大二进制 =====
 agi-pm-files/

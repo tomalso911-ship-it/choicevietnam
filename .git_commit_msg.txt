@@ -1,1 +1,1 @@
-feat(slats): 智能报告弹窗 + 规格表底部总计行(三语) + 十字高亮输入框填充 + 修复esc报错
+chore: add .gitignore for build artifacts (android/build, node-backend/dist, *.db-wal/*.db-shm) and untrack them
