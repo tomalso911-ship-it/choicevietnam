@@ -1,0 +1,73 @@
+============================================================
+  方案名称：水泥漏缝地板规格表十字高亮
+  创建时间：2026-09-14
+  作用：鼠标悬停或键盘聚焦单元格时，高亮当前行+当前列，
+        并给当前单元格加醒目边框（如第一张图效果）。
+  恢复方式：
+    1. 把下方 "【CSS】" 整块贴到 index.html 的 slats 样式区
+       （搜索 .slats-spec-remark，贴在它后面、</style> 之前）。
+    2. 把下方 "【JS】" 整块贴到 index.html 的 slatsSetInputValue
+       函数之后（搜索 "function slatsSetInputValue"，贴在它后面、
+       下一个 /* 注释之前）。
+============================================================
+
+【CSS】
+
+/* ===== 十字高亮方案：当前单元格所在行+列高亮，当前单元格加醒目边框 ===== */
+.slats-spec-table tbody tr.slats-cross-row > td { background-color: #fff9c4 !important; }
+.slats-spec-table tbody td.slats-cross-col { background-color: #fff9c4 !important; }
+.slats-spec-table tbody td.slats-cross-cell { outline: 2px solid #cddc39; outline-offset: -2px; position: relative; z-index: 2; }
+
+
+【JS】
+
+/* ===== 十字高亮方案：当前单元格所在行+列高亮，当前单元格加醒目边框 ===== */
+function slatsSetCrossHighlight(td){
+  if(!td) return;
+  var table=el('slatsSpecTable'); if(!table) return;
+  var tbody=table.querySelector('tbody'); if(!tbody) return;
+  var tr=td.parentNode; if(!tr || tr.tagName!=='TR') return;
+  var oci=parseInt(td.getAttribute('data-oci')||'-1',10);
+  slatsClearCrossHighlight();
+  tr.classList.add('slats-cross-row');
+  td.classList.add('slats-cross-cell');
+  if(oci<0) return;
+  for(var i=0;i<tbody.children.length;i++){
+    var cell=slatsGetCellByCol(tbody.children[i], oci);
+    if(cell) cell.classList.add('slats-cross-col');
+  }
+}
+function slatsClearCrossHighlight(){
+  var table=el('slatsSpecTable'); if(!table) return;
+  var prev=table.querySelectorAll('.slats-cross-row, .slats-cross-col, .slats-cross-cell');
+  for(var i=0;i<prev.length;i++){
+    prev[i].classList.remove('slats-cross-row','slats-cross-col','slats-cross-cell');
+  }
+}
+function slatsCrossLeaveCheck(e){
+  var table=el('slatsSpecTable');
+  var related=e.relatedTarget;
+  if(table && related && table.contains(related)) return;
+  slatsClearCrossHighlight();
+}
+function initSlatsCrossHighlight(){
+  var table=el('slatsSpecTable'); if(!table) return;
+  var tbody=table.querySelector('tbody'); if(!tbody) return;
+  if(tbody._slatsCrossInited) return;
+  tbody._slatsCrossInited=true;
+  tbody.addEventListener('mouseenter', function(e){
+    var td=e.target.closest && e.target.closest('td');
+    if(td) slatsSetCrossHighlight(td);
+  }, true);
+  tbody.addEventListener('mouseleave', slatsCrossLeaveCheck, true);
+  tbody.addEventListener('focusin', function(e){
+    var td=e.target.closest && e.target.closest('td');
+    if(td) slatsSetCrossHighlight(td);
+  }, true);
+  tbody.addEventListener('focusout', slatsCrossLeaveCheck, true);
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', initSlatsCrossHighlight);
+} else {
+  initSlatsCrossHighlight();
+}

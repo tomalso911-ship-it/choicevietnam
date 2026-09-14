@@ -668,7 +668,14 @@ function _ovLoadChartLib(cb){
     .form-section-title { font-size:12px; font-weight:700; color:#E53935; margin-bottom:6px; padding-bottom:4px; border-bottom:2px solid #f0f0f0; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
     .form-row { display:flex; gap:8px; margin-bottom:5px; flex-wrap:wrap; align-items:center; }
     .form-row > div { flex:1; min-width:130px; }
+    .form-row.won-sec1-row > div { min-width:110px; }
+    .form-row.won-sec1-row input,
+    .form-row.won-sec1-row select { height:24px; padding:4px 6px; font-size:11px; box-sizing:border-box; }
+    .form-row.won-sec1-row button { height:24px; padding:0 8px; font-size:11px; }
     .form-row label { font-size:10.5px; color:#666; display:block; margin-bottom:2px; font-weight:500; }
+    /* 必填项：细小的红色小星号标识 */
+    .req > label::after { content:' *'; color:#E53935; font-size:10px; font-weight:700; }
+    .won-doc-req-note { font-size:9px; color:#E53935; margin:2px 0 0; line-height:1.3; }
     .req-star { color:#e74c3c; font-weight:700; margin-left:2px; vertical-align:middle; font-size:12px; }
     .incoterm-star { color:#E53935; cursor:pointer; font-size:13px; font-weight:700; margin-left:2px; vertical-align:middle; text-decoration:none; }
     .incoterm-star:hover { color:#c4620b; }
@@ -1036,9 +1043,6 @@ function _ovLoadChartLib(cb){
     .cp-btn-save:hover { filter:brightness(1.05); }
 
     /* 拉升提示 */
-    .cp-resize-hint { font-size:10px;color:rgba(255,255,255,.7);margin-left:auto;padding-right:8px;white-space:nowrap; }
-    .cp-head .cp-resize-hint::after { content:" ⋮⋮ 可拖拽拉升"; }
-
 /* ===== 日期输入框样式 - 图标移到右侧 ===== */
 .cp-date-input-wrapper {
   display:inline-flex;
@@ -1601,8 +1605,8 @@ function _ovLoadChartLib(cb){
   #topbar {
     position: fixed; top:0; left:0; right:0; height:56px; z-index: 1000;
     display: flex; align-items: center; padding: 0 18px; gap: 20px;
-    background: linear-gradient(90deg, #1C2B39, #2C3E50);
-    box-shadow: 0 2px 10px rgba(0,0,0,.35);
+    background: linear-gradient(90deg, #ccffcc, #b3ffb3);
+    box-shadow: 0 2px 10px rgba(0,100,0,.25);
     font-family: "Segoe UI", Arial, sans-serif;
   }
   #topbar.hidden { display: none; }
@@ -1610,7 +1614,7 @@ function _ovLoadChartLib(cb){
   .tb-logo * { user-select:none; -webkit-user-select:none; }
   .tb-logo svg { width:30px; height:30px; border-radius:4px; display:block; flex:none; pointer-events:none; }
   .tb-logo-mark { font-size:20px; font-weight:800; color:#D32F2F; letter-spacing:.5px; pointer-events:none; }
-  .tb-logo-name { font-size:16px; font-weight:700; color:#fff; pointer-events:none; }
+  .tb-logo-name { font-size:16px; font-weight:700; color:#2e7d32; pointer-events:none; }
   .tb-logo::-moz-selection { background:transparent; }
   .tb-logo::selection { background:transparent; }
   /* ===== 个人佣金暗门标签：默认隐藏，解锁后显示 ===== */
@@ -2074,7 +2078,7 @@ function _ovLoadChartLib(cb){
     display:flex; align-items:center; gap:14px; flex:1;
     overflow-x:auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,.4) transparent;
+    scrollbar-color: rgba(46,125,50,.4) transparent;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     padding-bottom: 2px;
@@ -2082,9 +2086,9 @@ function _ovLoadChartLib(cb){
   .tb-menu::-webkit-scrollbar { display:block; height:4px; }
   .tb-menu::-webkit-scrollbar-track { background: transparent; }
   .tb-menu::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,.38); border-radius: 2px;
+    background: rgba(46,125,50,.38); border-radius: 2px;
   }
-  .tb-menu::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.6); }
+  .tb-menu::-webkit-scrollbar-thumb:hover { background: rgba(46,125,50,.6); }
   /* 模态框打开时锁定顶部导航标签（语言切换按钮不受影响） */
   .tb-menu.nav-locked .tb-item { pointer-events:none; opacity:.45; cursor:not-allowed; filter:grayscale(.3); }
   /* 模态框打开时锁定背景表头交互：排序箭头 + 审批表表头排序/筛选，禁点击（不改变外观） */
@@ -2092,12 +2096,12 @@ function _ovLoadChartLib(cb){
   body.ui-locked .th-label,
   body.ui-locked .th-filter-input { pointer-events:none; }
   .tb-item {
-    border:none; background:transparent; color:#dbe6f1; cursor:pointer;
+    border:none; background:transparent; color:#2e7d32; cursor:pointer;
     font-size:15px; font-weight:600; padding:10px 18px; border-radius:8px;
     white-space:nowrap; transition: background .15s, color .15s;
     position:relative;   /* 供 .pend-badge 绝对定位 */
   }
-  .tb-item:hover { background:rgba(255,255,255,.08); color:#fff; }
+  .tb-item:hover { background:rgba(46,125,50,.12); color:#1b5e20; }
   .tb-item.active { background:#D32F2F; color:#fff; }
   /* ===== 待审批角标（Approvals 导航右上角红底白字数字） ===== */
   .pend-badge {
@@ -2119,39 +2123,39 @@ function _ovLoadChartLib(cb){
   /* 语言切换按钮（重设计） */
   .lang-switch {
     display:flex; align-items:center; gap:4px;
-    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16);
+    background:rgba(46,125,50,.08); border:1px solid rgba(46,125,50,.2);
     border-radius:18px; padding:3px 8px;
   }
-  .lang-switch-label { font-size:11px; color:#9fb0bd; font-weight:600; margin-right:2px; }
+  .lang-switch-label { font-size:11px; color:#4caf50; font-weight:600; margin-right:2px; }
   .lang-switch button {
     font-size:11px; font-weight:700; padding:3px 9px; border:none; border-radius:12px;
-    background:transparent; color:#c3d0da; cursor:pointer; transition: all .15s; line-height:1.5;
+    background:transparent; color:#558b2f; cursor:pointer; transition: all .15s; line-height:1.5;
   }
-  .lang-switch button:hover { color:#fff; }
+  .lang-switch button:hover { color:#2e7d32; }
   .lang-switch button.active { background:#D32F2F; color:#fff; }
-  .tb-user { display:flex; align-items:center; gap:6px; color:#fff; font-size:13px; white-space:nowrap; }
+  .tb-user { display:flex; align-items:center; gap:6px; color:#2e7d32; font-size:13px; white-space:nowrap; }
   .tb-user-avatar {
     width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center;
     background:#D32F2F; color:#fff; font-size:13px; font-weight:700;
   }
-  .tb-user-role { color:#9fb0bd; font-size:12px; }
+  .tb-user-role { color:#4caf50; font-size:12px; }
   .tb-logout {
-    border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff;
+    border:1px solid rgba(46,125,50,.35); background:transparent; color:#2e7d32;
     font-size:12px; font-weight:600; padding:6px 14px; border-radius:6px; cursor:pointer;
     transition: background .15s, border-color .15s;
   }
-  .tb-logout:hover { background:rgba(231,76,60,.85); border-color:transparent; }
+  .tb-logout:hover { background:rgba(46,125,50,.85); border-color:transparent; color:#fff; }
   /* ===== 「适应屏幕」按钮 =====
      默认隐藏（电脑上不需要）；只在手机横屏/矮屏显示。
      默认不缩放，与浏览器 100% 一致，宽表格横向滚动查看；
      点一下把整张表整体缩放到容器宽度，一屏看完（字会变小）；再点还原。 */
   .tb-fit {
     display:none;
-    border:1px solid rgba(255,255,255,.35); background:transparent; color:#c3d0da;
+    border:1px solid rgba(46,125,50,.35); background:transparent; color:#558b2f;
     font-size:11px; font-weight:700; padding:5px 9px; border-radius:6px; cursor:pointer;
     white-space:nowrap; transition: background .15s, color .15s, border-color .15s;
   }
-  .tb-fit:hover { color:#fff; background:rgba(255,255,255,.12); }
+  .tb-fit:hover { color:#2e7d32; background:rgba(46,125,50,.12); }
   .tb-fit.on { background:#D32F2F; color:#fff; border-color:transparent; }
   /* ===== 手机横屏 / 矮屏：压缩顶部导航，保证 6 个标签一屏可见 =====
      背景：手机横屏时视口宽度其实等于"竖屏的高度"，常见只有 850~930px，
@@ -2495,7 +2499,7 @@ function _ovLoadChartLib(cb){
   .pt-editor-box > .pt-title  { margin: -24px -26px 16px !important; padding: 13px 26px !important; border-radius: 13px 13px 0 0 !important; text-align:left !important; }
   .auth-modal > h3            { margin: -28px -30px 18px !important; padding: 13px 30px !important; border-radius: 13px 13px 0 0 !important; display:flex; justify-content:space-between; align-items:center; }
   /* 关闭按钮在橙色横条上：白色、悬停微亮 */
-  .modal .close { position:absolute; top:12px; right:16px; float:none; color:#fff !important; z-index:5; margin:0; }
+  .modal .close { position:absolute; top:11px; right:16px; float:none; color:#fff !important; z-index:5; margin:0; width:26px; height:26px; display:inline-flex !important; align-items:center; justify-content:center; padding:0; background:none; border:none; font-size:20px; line-height:1; cursor:pointer; box-sizing:border-box; }
   .modal .close:hover { color:#ffe3c8 !important; }
   /* 标题栏 □ 最大化按钮：与关闭按钮并排，位于其左侧 */
   .mmax-btn {
@@ -2529,6 +2533,22 @@ function _ovLoadChartLib(cb){
   .pt-editor-box .pt-close, .cm-head .cm-close, .cpr-head .cpr-close, .gsr-head .gsr-close { color:#fff !important; }
 .pt-editor-box .pt-close { position:absolute; top:7px; right:14px; font-size:22px; cursor:pointer; line-height:1; z-index:5; }
 .pt-editor-box .pt-close:hover { color:#ffe3c8 !important; }
+  /* 兜底：所有模态框都必须具备最大化/关闭按钮 */
+  .mmax-btn { position:absolute; top:8px; right:44px; z-index:10; width:26px; height:26px; line-height:23px; text-align:center; background:none; border:1px solid rgba(0,0,0,.25); border-radius:5px; font-size:13px; cursor:pointer; color:#555; padding:0; box-sizing:border-box; }
+  .mmax-btn:hover { color:#E53935; border-color:#E53935; }
+  .mmax-close { position:absolute; top:8px; right:12px; z-index:10; width:26px; height:26px; line-height:23px; text-align:center; background:none; border:1px solid rgba(0,0,0,.25); border-radius:5px; font-size:18px; cursor:pointer; color:#555; padding:0; box-sizing:border-box; }
+  .mmax-close:hover { background:rgba(0,0,0,.08); color:#E53935; border-color:#E53935; }
+  /* 深色头部上的按钮用浅色 */
+  .vault-head .mmax-btn, .vault-head .mmax-close,
+  .addm-sum-head .mmax-btn, .addm-sum-head .mmax-close,
+  .comm-lock-box > h3 .mmax-btn, .comm-lock-box > h3 .mmax-close { color:#fff; border-color:rgba(255,255,255,.7); }
+  .vault-head .mmax-close:hover, .addm-sum-head .mmax-close:hover,
+  .comm-lock-box > h3 .mmax-close:hover,
+  .vault-head .mmax-btn:hover, .addm-sum-head .mmax-btn:hover,
+  .comm-lock-box > h3 .mmax-btn:hover { color:#ffe3c8; border-color:#ffe3c8; background:rgba(255,255,255,.15); }
+  /* 把兜底按钮放进标题栏时标题栏需要相对定位 */
+  .vault-pin-title, .crm-mtl-title, .aa-title, .dc-title, .crm-orange-confirm-title,
+  .comm-lock-box > h3 { position:relative; }
   .auth-modal .login-field { margin-bottom: 13px; }
   .auth-modal .login-field label { font-size: 12px; }
   .auth-modal-btns { margin-top: 20px; display:flex; justify-content:flex-end; gap:12px; }
@@ -2853,82 +2873,70 @@ function _ovLoadChartLib(cb){
     <div class="login-logo">
       <svg viewBox="0 0 790 434" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CHOICE SLATS VIET NAM logo" preserveAspectRatio="xMidYMid meet">
         <defs>
-          <filter id="cs_concreteNoise" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="4" seed="18" result="noise"/>
-            <feColorMatrix in="noise" type="saturate" values="0" result="grayNoise"/>
-            <feComponentTransfer in="grayNoise">
-              <feFuncR type="table" tableValues="0.30 0.78"/>
-              <feFuncG type="table" tableValues="0.30 0.78"/>
-              <feFuncB type="table" tableValues="0.30 0.78"/>
-              <feFuncA type="table" tableValues="0 0.25"/>
-            </feComponentTransfer>
-            <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply"/>
+          <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
           </filter>
-          <filter id="cs_fineNoise" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="1.25" numOctaves="3" seed="7" result="noise"/>
-            <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
-            <feComponentTransfer in="gray">
-              <feFuncR type="table" tableValues="0.55 0.96"/>
-              <feFuncG type="table" tableValues="0.55 0.96"/>
-              <feFuncB type="table" tableValues="0.55 0.96"/>
-              <feFuncA type="table" tableValues="0 0.16"/>
-            </feComponentTransfer>
-            <feBlend in="SourceGraphic" in2="gray" mode="multiply"/>
+          <filter id="panelShadow" x="-3%" y="-3%" width="106%" height="112%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.15"/>
           </filter>
-          <filter id="cs_shadow" x="-20%" y="-30%" width="140%" height="160%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
-            <feOffset dy="3" result="offset"/>
-            <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .23 0"/>
-            <feBlend in="SourceGraphic" mode="normal"/>
+          <filter id="fineNoise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .12 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
           </filter>
-          <filter id="cs_panelShadow" x="-15%" y="-20%" width="130%" height="150%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="2.3" result="blur"/>
-            <feOffset dy="2" result="offset"/>
-            <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .27 0"/>
-            <feBlend in="SourceGraphic" mode="normal"/>
+          <filter id="concreteNoise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="7"/>
+            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .10 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
+          </filter>
+          <filter id="aggregate" x="-2%" y="-2%" width="104%" height="104%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" seed="11"/>
+            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .16 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
           </filter>
         </defs>
         <rect x="0" y="0" width="790" height="434" fill="#ffffff"/>
-        <path d="M9 202 L257 7 L529 7 L781 202 Z" fill="#dedfdd" stroke="#c9cac8" stroke-width="2"/>
-        <path d="M40 195 L260 17 L526 17 L749 195 Z" fill="#f7f7f5"/>
-        <path d="M9 202 L257 7 L529 7 L781 202" fill="none" stroke="#c6c8c6" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#e8e8e5" opacity=".65" filter="url(#cs_fineNoise)"/>
-        <g fill="#17253c">
-          <path d="M286 19 L302 19 L274 62 L249 62 Z"/>
-          <path d="M337 19 L351 19 L338 62 L317 62 Z"/>
-          <path d="M388 19 L401 19 L402 62 L388 62 Z"/>
-          <path d="M439 19 L453 19 L472 62 L453 62 Z"/>
-          <path d="M489 19 L503 19 L540 62 L518 62 Z"/>
+        <path d="M9 202 L257 7 L529 7 L781 202 Z" fill="#ffffff" stroke="#e2e2e2" stroke-width="2"/>
+        <path d="M40 195 L260 17 L526 17 L749 195 Z" fill="#ffffff"/>
+        <path d="M9 202 L257 7 L529 7 L781 202" fill="none" stroke="#dcdcdc" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#ffffff" opacity=".6" filter="url(#fineNoise)"/>
+        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#d8d8d8" opacity=".16" filter="url(#aggregate)"/>
+        <g fill="#1B2A4A">
+          <path d="M280 27 L295 27 L271.2 62 L249.2 62 Z"/>
+          <path d="M334 27 L349 27 L341.4 62 L319.4 62 Z"/>
+          <path d="M387 27 L402 27 L406 62 L384 62 Z"/>
+          <path d="M442 27 L457 27 L474.6 62 L452.6 62 Z"/>
+          <path d="M495 27 L510 27 L543.4 62 L521.4 62 Z"/>
         </g>
-        <g fill="#17253c">
-          <path d="M249 76 L272 76 L207 173 L147 173 Z"/>
-          <path d="M322 76 L342 76 L324 173 L264 173 Z"/>
-          <path d="M385 76 L405 76 L408 173 L381 173 Z"/>
-          <path d="M448 76 L469 76 L525 173 L490 173 Z"/>
-          <path d="M524 76 L547 76 L643 173 L601 173 Z"/>
+        <g fill="#1B2A4A">
+          <path d="M238.1 76 L260.1 76 L190.8 178 L146.8 178 Z"/>
+          <path d="M314.9 76 L336.9 76 L315.6 178 L271.6 178 Z"/>
+          <path d="M384 76 L406 76 L417 178 L373 178 Z"/>
+          <path d="M458.4 76 L480.4 76 L533.2 178 L489.2 178 Z"/>
+          <path d="M533.3 76 L555.3 76 L652.6 178 L608.6 178 Z"/>
         </g>
         <g fill="#24334a" opacity=".38">
-          <path d="M249 76 L257 76 L197 169 L183 169 Z"/>
-          <path d="M322 76 L330 76 L313 169 L301 169 Z"/>
-          <path d="M385 76 L393 76 L395 169 L386 169 Z"/>
-          <path d="M448 76 L456 76 L511 169 L501 169 Z"/>
-          <path d="M524 76 L534 76 L626 169 L612 169 Z"/>
+          <path d="M232.1 76 L238.1 76 L146.8 178 L140.8 178 Z"/>
+          <path d="M308.9 76 L314.9 76 L271.6 178 L265.6 178 Z"/>
+          <path d="M378 76 L384 76 L373 178 L367 178 Z"/>
+          <path d="M452.4 76 L458.4 76 L489.2 178 L483.2 178 Z"/>
+          <path d="M527.3 76 L533.3 76 L608.6 178 L602.6 178 Z"/>
         </g>
-        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c4c5c3" filter="url(#cs_shadow)"/>
+        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c4c5c3" filter="url(#shadow)"/>
         <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c9cac8" stroke="#bfc0be" stroke-width="2"/>
-        <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z" fill="#d0d1cf" opacity=".72" filter="url(#cs_concreteNoise)"/>
+        <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z" fill="#d0d1cf" opacity=".72" filter="url(#concreteNoise)"/>
         <path d="M9 202 L781 202 L781 219 L9 219 Z" fill="#dedfdd" opacity=".55"/>
         <path d="M9 203 L42 222 L43 327 L28 343 C16 343 9 337 9 326 Z" fill="#b7b8b6" opacity=".72"/>
         <path d="M781 203 L747 222 L746 327 L762 343 C774 343 781 337 781 326 Z" fill="#b7b8b6" opacity=".72"/>
-        <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z" fill="#d9dad8" opacity=".72" filter="url(#cs_panelShadow)"/>
-        <path d="M65 228 C55 228 48 237 50 250 L57 391 C58 404 66 411 81 412 L709 412 C724 412 732 404 733 391 L740 250 C742 237 734 228 721 228 Z" fill="#fdfdfb" stroke="#d3d4d2" stroke-width="2"/>
-        <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z" fill="#ffffff" opacity=".8" filter="url(#cs_fineNoise)"/>
-        <text x="395" y="322" text-anchor="middle" style="font-family:'Arial Narrow','Roboto Condensed','Helvetica Neue',Arial,sans-serif;font-weight:600;letter-spacing:-1.2px;" font-size="67" fill="#c91718" textLength="663" lengthAdjust="spacingAndGlyphs">CHOICE SLATS</text>
-        <g fill="#17263d">
+        <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z" fill="#ffffff" opacity=".72" filter="url(#panelShadow)"/>
+        <path d="M65 228 C55 228 48 237 50 250 L57 391 C58 404 66 411 81 412 L709 412 C724 412 732 404 733 391 L740 250 C742 237 734 228 721 228 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
+        <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z" fill="#ffffff" opacity=".8" filter="url(#fineNoise)"/>
+        <text x="395" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="67" fill="#D81E05" textLength="663" lengthAdjust="spacingAndGlyphs" letter-spacing="1">CHOICE SLATS</text>
+        <g fill="#1B2A4A">
           <rect x="86" y="369" width="122" height="5" rx="1"/>
           <rect x="618" y="369" width="88" height="5" rx="1"/>
         </g>
-        <text x="397" y="386" text-anchor="middle" style="font-family:Arial,'Helvetica Neue',sans-serif;font-weight:700;letter-spacing:8px;" font-size="43" fill="#17263d" textLength="354" lengthAdjust="spacingAndGlyphs">VIET NAM</text>
+        <text x="397" y="386" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="43" fill="#1B2A4A" textLength="354" lengthAdjust="spacingAndGlyphs" letter-spacing="2">VIET NAM</text>
         <g fill="#858783" opacity=".20">
           <circle cx="18" cy="213" r="2"/>
           <circle cx="27" cy="238" r="1.5"/>
@@ -2998,119 +3006,107 @@ function _ovLoadChartLib(cb){
 <!-- ==================== 顶部导航栏 (Top Bar) ==================== -->
 <nav id="topbar" class="hidden">
   <div class="tb-logo">
-    <svg viewBox="0 0 790 434" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CHOICE SLATS VIET NAM logo" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <filter id="cs_concreteNoise2" x="-20%" y="-20%" width="140%" height="140%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="4" seed="18" result="noise"/>
-          <feColorMatrix in="noise" type="saturate" values="0" result="grayNoise"/>
-          <feComponentTransfer in="grayNoise">
-            <feFuncR type="table" tableValues="0.30 0.78"/>
-            <feFuncG type="table" tableValues="0.30 0.78"/>
-            <feFuncB type="table" tableValues="0.30 0.78"/>
-            <feFuncA type="table" tableValues="0 0.25"/>
-          </feComponentTransfer>
-          <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply"/>
-        </filter>
-        <filter id="cs_fineNoise2" x="-20%" y="-20%" width="140%" height="140%">
-          <feTurbulence type="fractalNoise" baseFrequency="1.25" numOctaves="3" seed="7" result="noise"/>
-          <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
-          <feComponentTransfer in="gray">
-            <feFuncR type="table" tableValues="0.55 0.96"/>
-            <feFuncG type="table" tableValues="0.55 0.96"/>
-            <feFuncB type="table" tableValues="0.55 0.96"/>
-            <feFuncA type="table" tableValues="0 0.16"/>
-          </feComponentTransfer>
-          <feBlend in="SourceGraphic" in2="gray" mode="multiply"/>
-        </filter>
-        <filter id="cs_shadow2" x="-20%" y="-30%" width="140%" height="160%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
-          <feOffset dy="3" result="offset"/>
-          <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .23 0"/>
-          <feBlend in="SourceGraphic" mode="normal"/>
-        </filter>
-        <filter id="cs_panelShadow2" x="-15%" y="-20%" width="130%" height="150%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="2.3" result="blur"/>
-          <feOffset dy="2" result="offset"/>
-          <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .27 0"/>
-          <feBlend in="SourceGraphic" mode="normal"/>
-        </filter>
-      </defs>
-      <rect x="0" y="0" width="790" height="434" fill="#ffffff"/>
-      <path d="M9 202 L257 7 L529 7 L781 202 Z" fill="#dedfdd" stroke="#c9cac8" stroke-width="2"/>
-      <path d="M40 195 L260 17 L526 17 L749 195 Z" fill="#f7f7f5"/>
-      <path d="M9 202 L257 7 L529 7 L781 202" fill="none" stroke="#c6c8c6" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#e8e8e5" opacity=".65" filter="url(#cs_fineNoise2)"/>
-      <g fill="#17253c">
-        <path d="M286 19 L302 19 L274 62 L249 62 Z"/>
-        <path d="M337 19 L351 19 L338 62 L317 62 Z"/>
-        <path d="M388 19 L401 19 L402 62 L388 62 Z"/>
-        <path d="M439 19 L453 19 L472 62 L453 62 Z"/>
-        <path d="M489 19 L503 19 L540 62 L518 62 Z"/>
-      </g>
-      <g fill="#17253c">
-        <path d="M249 76 L272 76 L207 173 L147 173 Z"/>
-        <path d="M322 76 L342 76 L324 173 L264 173 Z"/>
-        <path d="M385 76 L405 76 L408 173 L381 173 Z"/>
-        <path d="M448 76 L469 76 L525 173 L490 173 Z"/>
-        <path d="M524 76 L547 76 L643 173 L601 173 Z"/>
-      </g>
-      <g fill="#24334a" opacity=".38">
-        <path d="M249 76 L257 76 L197 169 L183 169 Z"/>
-        <path d="M322 76 L330 76 L313 169 L301 169 Z"/>
-        <path d="M385 76 L393 76 L395 169 L386 169 Z"/>
-        <path d="M448 76 L456 76 L511 169 L501 169 Z"/>
-        <path d="M524 76 L534 76 L626 169 L612 169 Z"/>
-      </g>
-      <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c4c5c3" filter="url(#cs_shadow2)"/>
-      <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c9cac8" stroke="#bfc0be" stroke-width="2"/>
-      <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z" fill="#d0d1cf" opacity=".72" filter="url(#cs_concreteNoise2)"/>
-      <path d="M9 202 L781 202 L781 219 L9 219 Z" fill="#dedfdd" opacity=".55"/>
-      <path d="M9 203 L42 222 L43 327 L28 343 C16 343 9 337 9 326 Z" fill="#b7b8b6" opacity=".72"/>
-      <path d="M781 203 L747 222 L746 327 L762 343 C774 343 781 337 781 326 Z" fill="#b7b8b6" opacity=".72"/>
-      <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z" fill="#d9dad8" opacity=".72" filter="url(#cs_panelShadow2)"/>
-      <path d="M65 228 C55 228 48 237 50 250 L57 391 C58 404 66 411 81 412 L709 412 C724 412 732 404 733 391 L740 250 C742 237 734 228 721 228 Z" fill="#fdfdfb" stroke="#d3d4d2" stroke-width="2"/>
-      <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z" fill="#ffffff" opacity=".8" filter="url(#cs_fineNoise2)"/>
-      <text x="395" y="322" text-anchor="middle" style="font-family:'Arial Narrow','Roboto Condensed','Helvetica Neue',Arial,sans-serif;font-weight:600;letter-spacing:-1.2px;" font-size="67" fill="#c91718" textLength="663" lengthAdjust="spacingAndGlyphs">CHOICE SLATS</text>
-      <g fill="#17263d">
-        <rect x="86" y="369" width="122" height="5" rx="1"/>
-        <rect x="618" y="369" width="88" height="5" rx="1"/>
-      </g>
-      <text x="397" y="386" text-anchor="middle" style="font-family:Arial,'Helvetica Neue',sans-serif;font-weight:700;letter-spacing:8px;" font-size="43" fill="#17263d" textLength="354" lengthAdjust="spacingAndGlyphs">VIET NAM</text>
-      <g fill="#858783" opacity=".20">
-        <circle cx="18" cy="213" r="2"/>
-        <circle cx="27" cy="238" r="1.5"/>
-        <circle cx="34" cy="281" r="2"/>
-        <circle cx="19" cy="302" r="1"/>
-        <circle cx="40" cy="331" r="1.8"/>
-        <circle cx="757" cy="219" r="1.5"/>
-        <circle cx="771" cy="247" r="2"/>
-        <circle cx="752" cy="280" r="1"/>
-        <circle cx="769" cy="313" r="2"/>
-        <circle cx="750" cy="335" r="1.5"/>
-        <circle cx="100" cy="217" r="1"/>
-        <circle cx="145" cy="224" r="1.5"/>
-        <circle cx="186" cy="213" r="1"/>
-        <circle cx="224" cy="221" r="1.5"/>
-        <circle cx="559" cy="215" r="1"/>
-        <circle cx="603" cy="223" r="1.5"/>
-        <circle cx="671" cy="215" r="1"/>
-        <circle cx="716" cy="223" r="1.5"/>
-      </g>
-      <g stroke="#8f908d" stroke-width="1" opacity=".17" stroke-linecap="round">
-        <path d="M27 219 l22 4"/>
-        <path d="M21 269 l17 -3"/>
-        <path d="M30 310 l25 2"/>
-        <path d="M739 237 l27 -3"/>
-        <path d="M750 291 l18 2"/>
-        <path d="M731 326 l32 -3"/>
-        <path d="M116 217 l18 1"/>
-        <path d="M182 226 l22 -2"/>
-        <path d="M575 218 l20 2"/>
-        <path d="M663 225 l24 -3"/>
-      </g>
-      <path d="M67 230 C58 231 54 239 55 250 L62 390 C63 400 70 406 82 407" fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/>
-      <path d="M82 412 L708 412 C723 412 731 405 733 392" fill="none" stroke="#c2c3c1" stroke-width="4" opacity=".8"/>
-    </svg>
+      <svg viewBox="0 0 790 434" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CHOICE SLATS VIET NAM logo" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="shadow2" x="-5%" y="-5%" width="110%" height="120%">
+            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
+          </filter>
+          <filter id="panelShadow2" x="-3%" y="-3%" width="106%" height="112%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.15"/>
+          </filter>
+          <filter id="fineNoise2">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .12 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
+          </filter>
+          <filter id="concreteNoise2">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="7"/>
+            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .10 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
+          </filter>
+          <filter id="aggregate2" x="-2%" y="-2%" width="104%" height="104%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" seed="11"/>
+            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .16 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
+          </filter>
+        </defs>
+        <rect x="0" y="0" width="790" height="434" fill="#ffffff"/>
+        <path d="M9 202 L257 7 L529 7 L781 202 Z" fill="#ffffff" stroke="#e2e2e2" stroke-width="2"/>
+        <path d="M40 195 L260 17 L526 17 L749 195 Z" fill="#ffffff"/>
+        <path d="M9 202 L257 7 L529 7 L781 202" fill="none" stroke="#dcdcdc" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#ffffff" opacity=".6" filter="url(#fineNoise2)"/>
+        <path d="M20 199 L260 10 L526 10 L770 199 Z" fill="#d8d8d8" opacity=".16" filter="url(#aggregate2)"/>
+        <g fill="#1B2A4A">
+          <path d="M280 27 L295 27 L271.2 62 L249.2 62 Z"/>
+          <path d="M334 27 L349 27 L341.4 62 L319.4 62 Z"/>
+          <path d="M387 27 L402 27 L406 62 L384 62 Z"/>
+          <path d="M442 27 L457 27 L474.6 62 L452.6 62 Z"/>
+          <path d="M495 27 L510 27 L543.4 62 L521.4 62 Z"/>
+        </g>
+        <g fill="#1B2A4A">
+          <path d="M238.1 76 L260.1 76 L190.8 178 L146.8 178 Z"/>
+          <path d="M314.9 76 L336.9 76 L315.6 178 L271.6 178 Z"/>
+          <path d="M384 76 L406 76 L417 178 L373 178 Z"/>
+          <path d="M458.4 76 L480.4 76 L533.2 178 L489.2 178 Z"/>
+          <path d="M533.3 76 L555.3 76 L652.6 178 L608.6 178 Z"/>
+        </g>
+        <g fill="#24334a" opacity=".38">
+          <path d="M232.1 76 L238.1 76 L146.8 178 L140.8 178 Z"/>
+          <path d="M308.9 76 L314.9 76 L271.6 178 L265.6 178 Z"/>
+          <path d="M378 76 L384 76 L373 178 L367 178 Z"/>
+          <path d="M452.4 76 L458.4 76 L489.2 178 L483.2 178 Z"/>
+          <path d="M527.3 76 L533.3 76 L608.6 178 L602.6 178 Z"/>
+        </g>
+        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c4c5c3" filter="url(#shadow2)"/>
+        <path d="M9 202 L781 202 L781 326 C781 337 774 344 762 344 L28 344 C16 344 9 337 9 326 Z" fill="#c9cac8" stroke="#bfc0be" stroke-width="2"/>
+        <path d="M10 203 L780 203 L780 326 C780 336 773 343 761 343 L29 343 C17 343 10 336 10 326 Z" fill="#d0d1cf" opacity=".72" filter="url(#concreteNoise2)"/>
+        <path d="M9 202 L781 202 L781 219 L9 219 Z" fill="#dedfdd" opacity=".55"/>
+        <path d="M9 203 L42 222 L43 327 L28 343 C16 343 9 337 9 326 Z" fill="#b7b8b6" opacity=".72"/>
+        <path d="M781 203 L747 222 L746 327 L762 343 C774 343 781 337 781 326 Z" fill="#b7b8b6" opacity=".72"/>
+        <path d="M65 227 C55 227 48 236 50 249 L57 392 C58 406 67 414 82 415 L708 415 C723 415 732 406 733 392 L740 249 C742 236 734 227 721 227 Z" fill="#ffffff" opacity=".72" filter="url(#panelShadow2)"/>
+        <path d="M65 228 C55 228 48 237 50 250 L57 391 C58 404 66 411 81 412 L709 412 C724 412 732 404 733 391 L740 250 C742 237 734 228 721 228 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
+        <path d="M65 231 C57 231 53 238 54 250 L61 389 C62 400 69 406 82 407 L708 407 C721 407 728 400 729 389 L736 250 C737 238 730 231 720 231 Z" fill="#ffffff" opacity=".8" filter="url(#fineNoise2)"/>
+        <text x="395" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="67" fill="#D81E05" textLength="663" lengthAdjust="spacingAndGlyphs" letter-spacing="1">CHOICE SLATS</text>
+        <g fill="#1B2A4A">
+          <rect x="86" y="369" width="122" height="5" rx="1"/>
+          <rect x="618" y="369" width="88" height="5" rx="1"/>
+        </g>
+        <text x="397" y="386" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="43" fill="#1B2A4A" textLength="354" lengthAdjust="spacingAndGlyphs" letter-spacing="2">VIET NAM</text>
+        <g fill="#858783" opacity=".20">
+          <circle cx="18" cy="213" r="2"/>
+          <circle cx="27" cy="238" r="1.5"/>
+          <circle cx="34" cy="281" r="2"/>
+          <circle cx="19" cy="302" r="1"/>
+          <circle cx="40" cy="331" r="1.8"/>
+          <circle cx="757" cy="219" r="1.5"/>
+          <circle cx="771" cy="247" r="2"/>
+          <circle cx="752" cy="280" r="1"/>
+          <circle cx="769" cy="313" r="2"/>
+          <circle cx="750" cy="335" r="1.5"/>
+          <circle cx="100" cy="217" r="1"/>
+          <circle cx="145" cy="224" r="1.5"/>
+          <circle cx="186" cy="213" r="1"/>
+          <circle cx="224" cy="221" r="1.5"/>
+          <circle cx="559" cy="215" r="1"/>
+          <circle cx="603" cy="223" r="1.5"/>
+          <circle cx="671" cy="215" r="1"/>
+          <circle cx="716" cy="223" r="1.5"/>
+        </g>
+        <g stroke="#8f908d" stroke-width="1" opacity=".17" stroke-linecap="round">
+          <path d="M27 219 l22 4"/>
+          <path d="M21 269 l17 -3"/>
+          <path d="M30 310 l25 2"/>
+          <path d="M739 237 l27 -3"/>
+          <path d="M750 291 l18 2"/>
+          <path d="M731 326 l32 -3"/>
+          <path d="M116 217 l18 1"/>
+          <path d="M182 226 l22 -2"/>
+          <path d="M575 218 l20 2"/>
+          <path d="M663 225 l24 -3"/>
+        </g>
+        <path d="M67 230 C58 231 54 239 55 250 L62 390 C63 400 70 406 82 407" fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/>
+        <path d="M82 412 L708 412 C723 412 731 405 733 392" fill="none" stroke="#c2c3c1" stroke-width="4" opacity=".8"/>
+      </svg>
     <span class="tb-logo-mark">CHOICE</span>
     <span class="tb-logo-name"> SLATS VIET NAM</span>
   </div>
@@ -4362,10 +4358,20 @@ function _ovLoadChartLib(cb){
   .modal-header span { font-size:16px; font-weight:600; }
   .modal-header .close { cursor:pointer; font-size:22px; line-height:1; }
   /* 编辑用户权限弹窗：最大化/关闭按钮放进同一 flex 容器，确保真正一行、垂直居中 */
-  #mask .modal-header .modal-actions { display:inline-flex; align-items:center; gap:6px; }
+  #mask .modal-header .modal-actions { position:static; display:inline-flex; align-items:center; gap:6px; }
   #mask .modal-header .modal-actions .mmax-btn,
   #mask .modal-header .modal-actions .close { position:static; top:auto; right:auto; margin:0; }
   #mask .modal-header .modal-actions .close { width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-size:20px; }
+  /* 全站弹窗通用：最大化/关闭按钮统一放进 .modal-actions flex 容器，保证同一水平线 */
+  .modal-actions { position:absolute; top:11px; right:16px; z-index:10; display:inline-flex; align-items:center; gap:6px; color:#fff; }
+  .modal-actions > .mmax-btn,
+  .modal-actions > .close,
+  .modal-actions > [class*="-close"] { position:static !important; top:auto !important; right:auto !important; left:auto !important; margin:0 !important; }
+  .modal-actions > .close,
+  .modal-actions > [class*="-close"] { width:26px; height:26px; display:inline-flex !important; align-items:center; justify-content:center; padding:0; background:none; border:none; font-size:20px; line-height:1; cursor:pointer; box-sizing:border-box; }
+  /* 浅色头部弹窗：关闭/最大化按钮用深灰色，避免看不见 */
+  .addm-modal > .modal-actions,
+  .addm-modal > .modal-actions > .mmax-btn { color:#888; }
   .modal-tabs { display:flex; background:#fafafa; border-bottom:1px solid #eee; }
   .modal-tabs .tab { padding:10px 16px; cursor:pointer; font-size:14px; color:#666; border-bottom:2px solid transparent; }
   .modal-tabs .tab.active { color:#E53935; border-bottom-color:#E53935; background:#fff; font-weight:600; }
@@ -4803,6 +4809,117 @@ function _ovLoadChartLib(cb){
     </div>
   </div>
 </div>
+
+<!-- ==================== 水泥漏缝地板规格编辑弹窗 ==================== -->
+<div id="slatsSpecModal" class="modal-overlay">
+  <div class="modal" style="width:95vw;max-width:1200px;">
+    <button class="close" onclick="closeSlatsSpecModal()">&times;</button>
+    <h2 id="slatsSpecTitle" data-i18n="slats_spec_label">水泥漏缝地板规格</h2>
+    <div style="max-height:65vh;overflow-y:auto;padding-right:6px;" id="slatsSpecBody">
+      <div class="slats-spec-wrap">
+        <div class="slats-spec-toolbar">
+          <button type="button" class="btn btn-primary btn-sm" onclick="addSlatsSpecRow()">
+            <span data-i18n="slats_table_add">+ 新增行</span>
+          </button>
+        </div>
+        <div class="slats-spec-table-scroll">
+          <table class="slats-spec-table" id="slatsSpecTable">
+            <colgroup>
+              <col style="width:46px"><col style="width:110px"><col style="width:100px"><col style="width:48px"><col style="width:55px"><col style="width:55px"><col style="width:55px"><col style="width:60px"><col style="width:48px"><col style="width:48px"><col style="width:48px"><col style="width:78px"><col style="width:60px"><col style="width:78px"><col style="width:78px"><col style="width:60px"><col style="width:64px"><col style="width:70px"><col style="width:64px"><col style="width:70px"><col style="width:130px"><col style="width:90px">
+            </colgroup>
+            <thead>
+              <tr class="slats-spec-header-main">
+                <th rowspan="2" data-i18n="slats_table_no">序号</th>
+                <th rowspan="2" data-i18n="slats_table_pig_house">猪舍</th>
+                <th rowspan="2" data-i18n="slats_table_house_code">房舍编号</th>
+                <th colspan="5" data-i18n="slats_table_house_info">房舍信息</th>
+                <th colspan="3" data-i18n="slats_table_size_title">水泥漏缝地板尺寸(单位：毫米)</th>
+                <th colspan="4" data-i18n="slats_table_usage_title">漏缝地板用量</th>
+                <th colspan="5" data-i18n="slats_table_rebar_title">钢筋网片配置信息</th>
+                <th rowspan="2" data-i18n="slats_table_remark">备注</th>
+                <th rowspan="2" data-i18n="slats_table_op">操作</th>
+              </tr>
+              <tr class="slats-spec-header-sub">
+                <th data-i18n="slats_table_unit_per_building">单元/栋</th>
+                <th data-i18n="slats_table_len_unit">长/单元</th>
+                <th data-i18n="slats_table_wid_unit">宽/单元</th>
+                <th data-i18n="slats_table_hgt_unit">高/单元</th>
+                <th data-i18n="slats_table_building_count">栋数/整场</th>
+                <th data-i18n="slats_table_len">长</th>
+                <th data-i18n="slats_table_wid">宽</th>
+                <th data-i18n="slats_table_hgt">高</th>
+                <th data-i18n="slats_table_qty_unit">数量/单元</th>
+                <th data-i18n="slats_table_qty_whole">数量/整场</th>
+                <th data-i18n="slats_table_sqm_unit">平米/单元</th>
+                <th data-i18n="slats_table_sqm_whole">平米/整场</th>
+                <th data-i18n="slats_table_mesh_layers">钢网层数</th>
+                <th data-i18n="slats_table_bar_len">条/长度方向</th>
+                <th data-i18n="slats_table_rebar_size_len">钢筋尺寸/长度方向</th>
+                <th data-i18n="slats_table_bar_wid">条/宽度方向</th>
+                <th data-i18n="slats_table_rebar_size_wid">钢筋尺寸/宽度方向</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;">
+      <button class="btn btn-primary" onclick="closeSlatsSpecModal()" id="slatsSpecBtnClose" data-i18n="btnCancel">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 水泥漏缝地板智能报告弹窗 ==================== -->
+<div id="slatsReportModal" class="modal-overlay">
+  <div class="modal" style="width:900px;">
+    <button class="close" onclick="closeSlatsReportModal()">&times;</button>
+    <h2 id="slatsReportTitle" data-i18n="slats_view_report_btn">查看智能报告</h2>
+    <div style="max-height:65vh;overflow-y:auto;padding-right:6px;" id="slatsReportBody">
+      <!-- 内容由用户后续补充 -->
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;">
+      <button class="btn btn-primary" onclick="closeSlatsReportModal()" id="slatsReportBtnClose" data-i18n="btnCancel">关闭</button>
+    </div>
+  </div>
+</div>
+
+
+<style>
+/* ===== 水泥漏缝地板规格表格 ===== */
+.slats-spec-wrap { margin-top: 8px; }
+.slats-spec-toolbar { margin-bottom: 10px; text-align: right; }
+.slats-spec-table-scroll { overflow-x: auto; border: 1px solid #e8e8e8; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.slats-spec-table { width: 100%; min-width: 1520px; border-collapse: separate; border-spacing: 0; font-size: 11px; background: #fff; }
+.slats-spec-table th,
+.slats-spec-table td { border-right: 1px solid #e8e8e8; border-bottom: 1px solid #e8e8e8; padding: 2px 1px; text-align: center; vertical-align: middle; }
+.slats-spec-table th:last-child,
+.slats-spec-table td:last-child { border-right: none; }
+.slats-spec-table thead th { background: linear-gradient(135deg,#E53935,#C62828); color: #fff; font-weight: 600; white-space: pre-line; position: sticky; top: 0; z-index: 2; padding: 6px 4px; }
+.slats-spec-table thead tr:first-child th:first-child { border-radius: 10px 0 0 0; }
+.slats-spec-table thead tr:first-child th:last-child { border-radius: 0 10px 0 0; }
+.slats-spec-header-sub th { background: #ff8a80; color: #fff; font-weight: 500; }
+.slats-spec-table tbody tr:nth-child(even) { background: #fafafa; }
+.slats-spec-table tbody tr:hover { background: #ffebee; }
+.slats-spec-table tbody tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+.slats-spec-table tbody tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+.slats-spec-input { width: 100%; min-width: 42px; height: 28px; padding: 4px 2px; border: 1px solid #d0d0d0; border-radius: 0; font-size: 12px; text-align: center; box-sizing: border-box; background: #fff; transition: border-color .15s, box-shadow .15s; }
+.slats-spec-input:focus { border-color: #E53935; outline: none; box-shadow: inset 0 0 0 1px rgba(229,57,53,.35); }
+.slats-spec-idx { font-weight: 700; color: #E53935; padding: 6px 4px; }
+.slats-spec-actions { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.slats-spec-iconbtn { width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; transition: all .15s; padding: 0; }
+.slats-spec-iconbtn:hover { transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,.12); }
+.slats-spec-iconbtn:disabled { cursor: not-allowed; opacity: .35; transform: none; box-shadow: none; }
+.slats-spec-btn-delete { color: #E53935; }
+.slats-spec-btn-delete:hover { background: #ffebee; border-color: #E53935; }
+.slats-spec-btn-copy { color: #2196F3; }
+.slats-spec-btn-copy:hover { background: #e3f2fd; border-color: #2196F3; }
+.slats-spec-btn-merge { color: #FF9800; }
+.slats-spec-btn-merge:hover { background: #fff3e0; border-color: #FF9800; }
+.slats-spec-select { appearance:none; -webkit-appearance:none; -moz-appearance:none; padding:2px 0; cursor:pointer; text-align:center; text-align-last:center; }
+.slats-spec-remark { text-align:left; }
+</style>
 
 <!-- ==================== CRM 项目模态框 ==================== -->
 <div id="crmModal" class="modal-overlay">
@@ -5327,7 +5444,6 @@ function _ovLoadChartLib(cb){
     <div class="cp-head">
       <h2>📄 <span id="cpTitleText">客户付款明细</span> <span style="font-size:12px;opacity:.85;font-weight:400;" id="cpSubTitle">Customer Payment Details</span></h2>
       <button class="cp-close" onclick="window.closeCustPayModal()">×</button>
-      <span class="cp-resize-hint" id="cpResizeHint"></span>
     </div>
 
     <div class="cp-body">
@@ -5458,7 +5574,6 @@ function _ovLoadChartLib(cb){
     <div class="cp-head">
       <h2>📄 <span id="agiTitleText">AGI→GS 付款明细</span> <span style="font-size:12px;opacity:.85;font-weight:400;" id="agiSubTitle">AGI to GS Payment Details</span></h2>
       <button class="cp-close" onclick="window.closeAgiPayModal()">×</button>
-      <span class="cp-resize-hint" id="agiResizeHint"></span>
     </div>
 
     <div class="cp-body">
@@ -5618,7 +5733,19 @@ var I18N = {
     login_link_reset:"重置密码", login_link_forget:"忘记密码",
     login_err_need:"请输入账号和密码", login_err_fail:"登录失败", login_err_net:"无法连接服务器，请先启动后端。",
     login_fp_btn:"🔒 指纹快速登录", login_footer:"CHOICE SLATS VIET NAM",
-    wonTitle:"签约项目", won_province:"省份", won_doc_equip:"设备合同", won_doc_install:"安装合同", btnAddWon:"+ 新建签约", btnExportExcel:"📊 导出 Excel", btnSave:"保存", btnCancel:"取消", btnEdit:"编辑", btnDelete:"删除", btnMove:"上移或下移该行", btnMoveUp:"上移", btnMoveDown:"下移", confirmDelTitle:"确认删除", confirmDel:"确定删除该项目？", btnConfirm:"确定", btnCancel:"取消", saveOk:"保存成功", pending:"已提交审批", fillAll:"请填写所有必填项", noData:"暂无数据", hiddenColumns:"已隐藏列:", cur_col_toggle:"点击显示/隐藏该货币列（至少保留一项）",
+    wonTitle:"签约项目", won_province:"省份", won_doc_equip:"设备合同", won_doc_install:"安装合同", won_doc_delete:"删除", won_doc_del_title:"确认删除", won_doc_del_confirm:"确定删除该合同文件？", won_doc_req_note:"设备合同 / 安装合同：至少上传一项", slats_spec_label:"水泥漏缝地板规格", slats_edit_btn:"编辑", slats_view_report_btn:"查看智能报告",
+    slats_table_no:"序号", slats_table_pig_house:"猪舍", slats_table_house_code:"房舍编号", slats_table_house_info:"房舍信息",
+    slats_table_unit_per_building:"单元\n/栋",
+    slats_table_len_unit:"长\n/单元", slats_table_wid_unit:"宽\n/单元", slats_table_hgt_unit:"高\n/单元", slats_table_building_count:"栋数\n/整场",
+    slats_table_size_title:"水泥漏缝地板尺寸\n(单位：毫米)", slats_table_len:"长", slats_table_wid:"宽", slats_table_hgt:"高",
+    slats_table_usage_title:"漏缝地板用量", slats_table_qty_unit:"数量\n/单元", slats_table_qty_whole:"数量\n/整场", slats_table_sqm_unit:"平米\n/单元", slats_table_sqm_whole:"平米\n/整场",
+    slats_table_rebar_title:"钢筋网片\n配置信息", slats_table_mesh_layers:"钢网\n层数",
+    slats_table_bar_len:"条/\n长度方向", slats_table_rebar_size_len:"钢筋尺寸/\n长度方向", slats_table_bar_wid:"条/\n宽度方向", slats_table_rebar_size_wid:"钢筋尺寸/\n宽度方向",
+    slats_table_remark:"备注", slats_table_op:"操作", slats_table_add:"+ 新增行",
+    slats_pig_house_1:"公猪站", slats_pig_house_2:"配种舍", slats_pig_house_3:"怀孕舍", slats_pig_house_4:"分娩舍", slats_pig_house_5:"保育舍", slats_pig_house_6:"育肥舍", slats_pig_house_7:"隔离舍", slats_pig_house_8:"后备舍", slats_pig_house_9:"转猪舍", slats_pig_house_10:"断奶培育舍", slats_pig_house_11:"代售舍", slats_pig_house_12:"过道", slats_pig_house_13:"自留备用", slats_pig_house_14:"其他房舍", slats_pig_house_15:"其他用途",
+    slats_mesh_1:"1", slats_mesh_2:"2",
+    slats_rebar_φ6:"φ6", slats_rebar_φ8:"φ8", slats_rebar_φ10:"φ10", slats_rebar_φ12:"φ12",
+    slats_table_btn_delete:"删除", slats_table_btn_copy:"复制", slats_table_btn_merge:"合并", btnAddWon:"+ 新建签约", btnExportExcel:"📊 导出 Excel", btnSave:"保存", btnCancel:"取消", btnEdit:"编辑", btnDelete:"删除", btnMove:"上移或下移该行", btnMoveUp:"上移", btnMoveDown:"下移", confirmDelTitle:"确认删除", confirmDel:"确定删除该项目？", btnConfirm:"确定", btnCancel:"取消", saveOk:"保存成功", pending:"已提交审批", fillAll:"请填写所有必填项", noData:"暂无数据", hiddenColumns:"已隐藏列:", cur_col_toggle:"点击显示/隐藏该货币列（至少保留一项）",
     contract_no:"合同编号", customer_name:"客户名称", signing_date:"签约日期", parties:"签约双方", currency:"签约货币", contract_rate:"合同使用汇率", incoterms:"贸易术语", include_install:"含安装吗？",
     p1_payment_method:"P1:合同付款方式", p1_equipment_amount:"P1:合同设备金额", p1_guide_install:"P1:合同指导安装费", p1_budget_freight_ins:"P1:合同预算运费&保险费", p1_actual_freight_ins:"P1:合同实际运费&保险费",
     p1_budget_customs_inland:"P1:合同预算清关&内陆运输", p1_actual_customs_inland:"P1:合同实际清关&内陆运输费用", p1_equipment_combined:"P1:合同设备综合价格", p1_budget_install:"P1:合同预算安装费", p1_actual_install:"P1:合同实际安装费",
@@ -5633,7 +5760,7 @@ var I18N = {
     section3:"③ 客户付款情况",
     section4:"④ GS → AGI 佣金 & 付款",
     section5:"⑤ AGI → GS 付款",
-    section6:"⑥ 文档 & 备注",
+    section6:"④ 文档 & 备注",
     lbl_contract_no:"合同编号",
     lbl_customer:"客户名称",
     lbl_contract_date:"签约日期",
@@ -5843,11 +5970,6 @@ var I18N = {
     pmv_title:"付款方式",
     btn_report:"查看报告",
     btn_copy:"复制项目",
-    copy_pwd_title:"复制项目",
-    copy_pwd_hint:"请输入复制密码",
-    copy_pwd_placeholder:"密码",
-    copy_pwd_error:"密码错误",
-    copy_pwd_confirm:"确认",
     copy_success:"复制成功",
     copy_failed:"复制失败",
     rpt_title:"项目综合报告",
@@ -5970,7 +6092,6 @@ var I18N = {
     cp_bg_no:"否",
     cp_clear:"清除",
     cp_cal_fmt:"格式：DD-MM-YYYY",
-    cp_resize_hint:"⋮⋮ 可拖拽拉升",
     cp_foot_hint:"语言跟随主界面，切换语言后重新打开即可刷新",
     rpt_title:"📋 客户付款智能报告", rpt_contract:"合同编号", rpt_lang:"语言", rpt_generated:"生成时间",
     rpt_warranty_sec:"🔐 质保金信息", rpt_has_warranty:"有无质保金", rpt_warranty_amt:"质保金金额", rpt_warranty_period:"质保金起止",
@@ -6370,7 +6491,19 @@ crm_yes:"是", crm_no_yes:"否", lostRestore:"转回至潜在项目", lostRestor
     login_link_reset:"Reset Password", login_link_forget:"Forget Password",
     login_err_need:"Please enter username and password", login_err_fail:"Login failed", login_err_net:"Cannot connect to server. Please start the backend first.",
     login_fp_btn:"🔒 Fingerprint Login", login_footer:"CHOICE SLATS VIET NAM",
-    wonTitle:"Won Projects", won_province:"Province", won_doc_equip:"Equipment Contract", won_doc_install:"Installation Contract", btnAddWon:"+ New Won", btnExportExcel:"📊 Export Excel", btnSave:"Save", btnCancel:"Cancel", btnEdit:"Edit", btnDelete:"Delete", btnMoveUp:"Move up", btnMoveDown:"Move down", confirmDelTitle:"Confirm Delete", confirmDel:"Delete this project?", btnConfirm:"Confirm", btnCancel:"Cancel", saveOk:"Saved", pending:"Pending approval", fillAll:"Please fill all required fields", noData:"No data", hiddenColumns:"Hidden Columns:", cur_col_toggle:"Click to show/hide this currency column (keep at least one)",
+    wonTitle:"Won Projects", won_province:"Province", won_doc_equip:"Equipment Contract", won_doc_install:"Installation Contract", won_doc_delete:"Delete", won_doc_del_title:"Confirm Delete", won_doc_del_confirm:"Delete this contract file?", won_doc_req_note:"Equipment / Installation Contract: upload at least one", slats_spec_label:"Concrete Slats Specifications", slats_edit_btn:"Edit", slats_view_report_btn:"View Smart Report",
+    slats_table_no:"No.", slats_table_pig_house:"Pig\nHouse", slats_table_house_code:"House\nCode", slats_table_house_info:"House\nInfo",
+    slats_table_unit_per_building:"Unit\n/Bldg",
+    slats_table_len_unit:"L\n/Unit", slats_table_wid_unit:"W\n/Unit", slats_table_hgt_unit:"H\n/Unit", slats_table_building_count:"Bldgs\n/Whole",
+    slats_table_size_title:"Slat Dimensions\n(Unit: mm)", slats_table_len:"L", slats_table_wid:"W", slats_table_hgt:"H",
+    slats_table_usage_title:"Slat\nUsage", slats_table_qty_unit:"Qty\n/Unit", slats_table_qty_whole:"Qty\n/Whole", slats_table_sqm_unit:"Sqm\n/Unit", slats_table_sqm_whole:"Sqm\n/Whole",
+    slats_table_rebar_title:"Rebar Mesh\nConfig", slats_table_mesh_layers:"Mesh\nLayers",
+    slats_table_bar_len:"Bars/\nL", slats_table_rebar_size_len:"Rebar\nSize/L", slats_table_bar_wid:"Bars/\nW", slats_table_rebar_size_wid:"Rebar\nSize/W",
+    slats_table_remark:"Remarks", slats_table_op:"Operation", slats_table_add:"+ Add Row",
+    slats_pig_house_1:"Boar stud", slats_pig_house_2:"Mating barn", slats_pig_house_3:"Gestation barn", slats_pig_house_4:"Farrowing barn", slats_pig_house_5:"Nursery barn", slats_pig_house_6:"Finishing barn", slats_pig_house_7:"Isolation barn", slats_pig_house_8:"Gilt barn", slats_pig_house_9:"Transfer barn", slats_pig_house_10:"Weaner barn", slats_pig_house_11:"Sales barn", slats_pig_house_12:"Passage", slats_pig_house_13:"Reserved", slats_pig_house_14:"Other house", slats_pig_house_15:"Other purposes",
+    slats_mesh_1:"1", slats_mesh_2:"2",
+    slats_rebar_φ6:"φ6", slats_rebar_φ8:"φ8", slats_rebar_φ10:"φ10", slats_rebar_φ12:"φ12",
+    slats_table_btn_delete:"Delete", slats_table_btn_copy:"Copy", slats_table_btn_merge:"Merge", btnAddWon:"+ New Won", btnExportExcel:"📊 Export Excel", btnSave:"Save", btnCancel:"Cancel", btnEdit:"Edit", btnDelete:"Delete", btnMoveUp:"Move up", btnMoveDown:"Move down", confirmDelTitle:"Confirm Delete", confirmDel:"Delete this project?", btnConfirm:"Confirm", btnCancel:"Cancel", saveOk:"Saved", pending:"Pending approval", fillAll:"Please fill all required fields", noData:"No data", hiddenColumns:"Hidden Columns:", cur_col_toggle:"Click to show/hide this currency column (keep at least one)",
     contract_no:"Contract No.", customer_name:"Customer Name", signing_date:"Contract Date", parties:"Signing Parties", currency:"Contract Currency", contract_rate:"Contract Exchange Rate", incoterms:"Incoterms", include_install:"Including Installation?",
     p1_payment_method:"P1:Payment Method", p1_equipment_amount:"P1:Equipment Amount", p1_guide_install:"P1:Guide Installation Fee", p1_budget_freight_ins:"P1:Budget Freight & Ins.", p1_actual_freight_ins:"P1:Actual Freight & Ins.",
     p1_budget_customs_inland:"P1:Budget Customs & Inland", p1_actual_customs_inland:"P1:Actual Customs & Inland", p1_equipment_combined:"P1:Equip. Combined Price", p1_budget_install:"P1:Budget Installation Fee", p1_actual_install:"P1:Actual Installation Fee",
@@ -6385,7 +6518,7 @@ crm_yes:"是", crm_no_yes:"否", lostRestore:"转回至潜在项目", lostRestor
     section3:"③ Customer Payment",
     section4:"④ GS → AGI Commission & Payment",
     section5:"⑤ AGI → GS Payment",
-    section6:"⑥ Documents & Remarks",
+    section6:"④ Documents & Remarks",
     lbl_contract_no:"Contract No.",
     lbl_customer:"Customer",
     lbl_contract_date:"Contract Date",
@@ -6596,11 +6729,6 @@ crm_yes:"是", crm_no_yes:"否", lostRestore:"转回至潜在项目", lostRestor
     pmv_ok:"Got it",
     btn_report:"View Report",
     btn_copy:"Copy Project",
-    copy_pwd_title:"Copy Project",
-    copy_pwd_hint:"Enter copy password",
-    copy_pwd_placeholder:"Password",
-    copy_pwd_error:"Wrong password",
-    copy_pwd_confirm:"Confirm",
     copy_success:"Copy succeeded",
     copy_failed:"Copy failed",
     rpt_title:"Project Comprehensive Report",
@@ -6722,7 +6850,6 @@ crm_yes:"是", crm_no_yes:"否", lostRestore:"转回至潜在项目", lostRestor
     cp_bg_no:"No",
     cp_clear:"Clear",
     cp_cal_fmt:"Format: DD-MM-YYYY",
-    cp_resize_hint:"⋮⋮ Resizable",
     cp_foot_hint:"Language follows main UI; reopen after switching",
     rpt_title:"📋 Customer Payment Smart Report", rpt_contract:"Contract No.", rpt_lang:"Language", rpt_generated:"Generated",
     rpt_warranty_sec:"🔐 Warranty Info", rpt_has_warranty:"Has Warranty", rpt_warranty_amt:"Warranty Amount", rpt_warranty_period:"Warranty Period",
@@ -7125,7 +7252,19 @@ crm_yes:"Yes", crm_no_yes:"No", lostRestore:"Restore to Prospect", lostRestoreTi
     login_link_reset:"Đặt lại mật khẩu", login_link_forget:"Quên mật khẩu",
     login_err_need:"Vui lòng nhập tài khoản và mật khẩu", login_err_fail:"Đăng nhập thất bại", login_err_net:"Không thể kết nối máy chủ. Vui lòng khởi động backend trước.",
     login_fp_btn:"🔒 Đăng nhập vân tay", login_footer:"Hệ thống CHOICE SLATS VIET NAM",
-    wonTitle:"Dự Án Thắng", won_province:"Tỉnh", won_doc_equip:"Hợp đồng thiết bị", won_doc_install:"Hợp đồng lắp đặt", btnAddWon:"+ Thắng Mới", btnExportExcel:"📊 Xuất Excel", btnSave:"Lưu", btnCancel:"Hủy", btnEdit:"Sửa", btnDelete:"Xóa", btnMove:"Di chuyển dòng này lên hoặc xuống", btnMoveUp:"Lên", btnMoveDown:"Xuống", confirmDelTitle:"Xác nhận xóa", confirmDel:"Xóa dự án này?", btnConfirm:"Xác nhận", btnCancel:"Hủy", saveOk:"Đã lưu", pending:"Chờ phê duyệt", fillAll:"Vui lòng điền đủ thông tin", noData:"Không có dữ liệu", hiddenColumns:"Cột đã ẩn:", cur_col_toggle:"Bấm để hiện/ẩn cột tiền tệ này (giữ ít nhất một)",
+    wonTitle:"Dự Án Thắng", won_province:"Tỉnh", won_doc_equip:"Hợp đồng thiết bị", won_doc_install:"Hợp đồng lắp đặt", won_doc_delete:"Xóa", won_doc_del_title:"Xác nhận xóa", won_doc_del_confirm:"Xóa hợp đồng này?", won_doc_req_note:"Hợp đồng thiết bị / lắp đặt：tải lên ít nhất một", slats_spec_label:"Thông số kỹ thuật sàn xi măng khe hở", slats_edit_btn:"Sửa", slats_view_report_btn:"Xem báo cáo thông minh",
+    slats_table_no:"STT", slats_table_pig_house:"Chuồng\nheo", slats_table_house_code:"Mã\nchuồng", slats_table_house_info:"Thông tin\nchuồng",
+    slats_table_unit_per_building:"Đơn vị\n/tòa",
+    slats_table_len_unit:"Dài\n/Đơn vị", slats_table_wid_unit:"Rộng\n/Đơn vị", slats_table_hgt_unit:"Cao\n/Đơn vị", slats_table_building_count:"Số tòa\n/toàn bộ",
+    slats_table_size_title:"Kích thước\nsàn xi măng\n(Đơn vị: mm)", slats_table_len:"Dài", slats_table_wid:"Rộng", slats_table_hgt:"Cao",
+    slats_table_usage_title:"Lượng sàn\nsử dụng", slats_table_qty_unit:"SL\n/Đơn vị", slats_table_qty_whole:"SL\n/Toàn bộ", slats_table_sqm_unit:"m²\n/Đơn vị", slats_table_sqm_whole:"m²\n/Toàn bộ",
+    slats_table_rebar_title:"Cấu hình\nlưới thép", slats_table_mesh_layers:"Số lớp\nlưới",
+    slats_table_bar_len:"Thanh/\nChiều dài", slats_table_rebar_size_len:"Cỡ thép/\nChiều dài", slats_table_bar_wid:"Thanh/\nChiều rộng", slats_table_rebar_size_wid:"Cỡ thép/\nChiều rộng",
+    slats_table_remark:"Ghi chú", slats_table_op:"Thao tác", slats_table_add:"+ Thêm dòng",
+    slats_pig_house_1:"Trạm đực giống", slats_pig_house_2:"Chuồng phối giống", slats_pig_house_3:"Chuồng mang thai", slats_pig_house_4:"Chuồng đẻ", slats_pig_house_5:"Chuồng úm", slats_pig_house_6:"Chuồng vỗ béo", slats_pig_house_7:"Chuồng cách ly", slats_pig_house_8:"Chuồng heo dự bị", slats_pig_house_9:"Chuồng chuyển heo", slats_pig_house_10:"Chuồng cai sữa", slats_pig_house_11:"Chuồng chờ bán", slats_pig_house_12:"Hành lang", slats_pig_house_13:"Dành riêng", slats_pig_house_14:"Chuồng khác", slats_pig_house_15:"Mục đích khác",
+    slats_mesh_1:"1", slats_mesh_2:"2",
+    slats_rebar_φ6:"φ6", slats_rebar_φ8:"φ8", slats_rebar_φ10:"φ10", slats_rebar_φ12:"φ12",
+    slats_table_btn_delete:"Xóa", slats_table_btn_copy:"Sao chép", slats_table_btn_merge:"Gộp", btnAddWon:"+ Thắng Mới", btnExportExcel:"📊 Xuất Excel", btnSave:"Lưu", btnCancel:"Hủy", btnEdit:"Sửa", btnDelete:"Xóa", btnMove:"Di chuyển dòng này lên hoặc xuống", btnMoveUp:"Lên", btnMoveDown:"Xuống", confirmDelTitle:"Xác nhận xóa", confirmDel:"Xóa dự án này?", btnConfirm:"Xác nhận", btnCancel:"Hủy", saveOk:"Đã lưu", pending:"Chờ phê duyệt", fillAll:"Vui lòng điền đủ thông tin", noData:"Không có dữ liệu", hiddenColumns:"Cột đã ẩn:", cur_col_toggle:"Bấm để hiện/ẩn cột tiền tệ này (giữ ít nhất một)",
     contract_no:"Số hợp đồng", customer_name:"Tên khách hàng", signing_date:"Ngày ký", parties:"Các bên ký kết", currency:"Loại tiền tệ", contract_rate:"Tỷ giá HĐ", incoterms:"Incoterms", include_install:"Có bao gồm lắp đặt?",
     p1_payment_method:"P1:Phương thức thanh toán", p1_equipment_amount:"P1:Giá trị thiết bị (HĐ)", p1_guide_install:"P1:Phí hướng dẫn lắp đặt", p1_budget_freight_ins:"P1:Cước VC & BH dự toán", p1_actual_freight_ins:"P1:Cước VC & BH thực tế",
     p1_budget_customs_inland:"P1:HQ & VC nội địa dự toán", p1_actual_customs_inland:"P1:HQ & VC nội địa thực tế", p1_equipment_combined:"P1:Giá tổng hợp thiết bị", p1_budget_install:"P1:Phí lắp đặt dự toán", p1_actual_install:"P1:Phí lắp đặt thực tế",
@@ -7140,7 +7279,7 @@ crm_yes:"Yes", crm_no_yes:"No", lostRestore:"Restore to Prospect", lostRestoreTi
     section3:"③ Thanh toán của KH",
     section4:"④ GS → AGI Hoa hồng & TT",
     section5:"⑤ AGI → GS Thanh toán",
-    section6:"⑥ Tài liệu & Ghi chú",
+    section6:"④ Tài liệu & Ghi chú",
     lbl_contract_no:"Số hợp đồng",
     lbl_customer:"Tên khách hàng",
     lbl_contract_date:"Ngày ký hợp đồng",
@@ -7351,11 +7490,6 @@ crm_yes:"Yes", crm_no_yes:"No", lostRestore:"Restore to Prospect", lostRestoreTi
     pmv_ok:"Đã hiểu",
     btn_report:"Xem báo cáo",
     btn_copy:"Sao chép dự án",
-    copy_pwd_title:"Sao chép dự án",
-    copy_pwd_hint:"Nhập mật khẩu sao chép",
-    copy_pwd_placeholder:"Mật khẩu",
-    copy_pwd_error:"Sai mật khẩu",
-    copy_pwd_confirm:"Xác nhận",
     copy_success:"Sao chép thành công",
     copy_failed:"Sao chép thất bại",
     rpt_title:"Báo cáo tổng hợp dự án",
@@ -7477,7 +7611,6 @@ crm_yes:"Yes", crm_no_yes:"No", lostRestore:"Restore to Prospect", lostRestoreTi
     cp_bg_no:"Không",
     cp_clear:"Xóa",
     cp_cal_fmt:"Định dạng: DD-MM-YYYY",
-    cp_resize_hint:"⋮⋮ Có thể kéo dài",
     cp_foot_hint:"Ngôn ngữ theo giao diện chính, mở lại sau khi chuyển",
     rpt_title:"📋 Báo cáo TT KH thông minh", rpt_contract:"Số HĐ", rpt_lang:"Ngôn ngữ", rpt_generated:"Thời gian tạo",
     rpt_warranty_sec:"🔐 Thông tin bảo hành", rpt_has_warranty:"Có BH", rpt_warranty_amt:"Số tiền BH", rpt_warranty_period:"Thời gian BH",
@@ -7868,10 +8001,9 @@ crm_yes:"Có", crm_no_yes:"Không", lostRestore:"Chuyển về Dự án Tiềm n
     bp_opt_yes:"Có", bp_opt_no:"Không", bp_finished_yes:"Kết thúc", bp_finished_no:"Chưa", bp_nature_advance:"Ứng trước hoa hồng", bp_nature_normal:"TT hoa hồng bình thường",
     comm_opt_agi:"AGI-Khách hàng", comm_opt_gs:"GS-Khách hàng",
     comm_col_currency:"Loại tiền tệ HĐ", comm_f_currency:"Loại tiền tệ HĐ", comm_cur_rmb:"Nhân dân tệ RMB", comm_cur_usd:"Đô USD", comm_cur_vnd:"Việt Nam đồng VND",
-    comm_f_equip_rmb:"Giá trị TB RMB", comm_f_equip_usd:"Giá trị TB USD", comm_f_equip_vnd:"Giá trị TB VND", comm_f_deposit:"Ngày trả đặt cọc"
+    comm_f_equip_rmb:"Giá trị TB RMB", comm_f_equip_usd:"Giá trị TB USD",     comm_f_equip_vnd:"Giá trị TB VND", comm_f_deposit:"Ngày trả đặt cọc"
   }
 };
-
 var CUR_LANG = 'en';
 /* 默认英文：用户手动切换后记忆优先（localStorage won_lang）；
    从未手动选择过 → 固定英文，不再按浏览器/系统语言自动嗅探。 */
@@ -7931,6 +8063,7 @@ function sweepI18n(root) {
       if (parts.length === 2 && t[parts[1]] !== undefined) alist[j].setAttribute(parts[0], t[parts[1]]);
     });
   }
+  if (document.getElementById('slatsSpecTable')) refreshSlatsSelectOptions();
 }
 window.sweepI18n = sweepI18n;
 function fmtMoney(n, c) { var v=Math.round(Number(n)||0); if(c==='RMB'||c==='rmb') return '¥'+v.toLocaleString('en-US'); if(c==='USD'||c==='usd') return '$'+v.toLocaleString('en-US'); if(c==='VND'||c==='vnd') return '₫'+v.toLocaleString('en-US'); return v.toLocaleString('en-US'); }
@@ -8251,15 +8384,15 @@ window.wonDocDownload = function(btn){
     .catch(function(){ fallback(); });
 };
 // 模态框：设备合同/安装合同 上传字段组（readonly 框 + 上传按钮 + 查看/下载按钮，同 CRM pdfField）
-function wonDocField(lbl, id) {
+function wonDocField(lbl, id, req) {
   var t = T();
-  return '<div>' +
+  return '<div class="' + (req ? 'req' : '') + '">' +
     '<label>' + (lbl || id) + '</label>' +
-    '<div style="display:flex;align-items:center;gap:6px;">' +
-      '<input id="' + id + '" readonly style="width:100%;flex:1;min-width:0;height:26px;font-size:12px;" placeholder=".pdf">' +
-      '<button type="button" data-uploadfor="' + id + '" onclick="wonDocUpload(this)" style="white-space:nowrap;height:26px;padding:0 12px;font-size:12px;">' + (t.crm_upload || '上传') + '</button>' +
-      '<button type="button" data-viewfor="' + id + '" onclick="crmPdfView(this)" style="white-space:nowrap;height:26px;padding:0 10px;font-size:12px;display:none;">' + (t.crm_view || '查看') + '</button>' +
-      '<button type="button" data-dlfor="' + id + '" onclick="crmPdfDownload(this)" style="white-space:nowrap;height:26px;padding:0 10px;font-size:12px;display:none;">' + (t.crm_download || '下载') + '</button>' +
+    '<div style="display:flex;align-items:center;gap:4px;">' +
+      '<input id="' + id + '" readonly style="width:100%;flex:1;min-width:0;font-size:11px;" placeholder=".pdf">' +
+      '<button type="button" data-uploadfor="' + id + '" onclick="wonDocUpload(this)" style="white-space:nowrap;height:24px;padding:0 8px;font-size:11px;">' + (t.crm_upload || '上传') + '</button>' +
+      '<button type="button" data-viewfor="' + id + '" onclick="crmPdfView(this)" style="white-space:nowrap;height:24px;padding:0 8px;font-size:11px;display:none;">' + (t.crm_view || '查看') + '</button>' +
+      '<button type="button" data-delfor="' + id + '" onclick="wonDocDelete(this)" style="white-space:nowrap;height:24px;padding:0 8px;font-size:11px;display:none;">' + (t.won_doc_delete || '删除') + '</button>' +
       '<input type="file" accept="application/pdf,.pdf" style="display:none;" data-filefor="' + id + '" onchange="wonDocOnFile(this)">' +
     '</div>' +
   '</div>';
@@ -8313,10 +8446,13 @@ function uploadWonDoc(fid, file, target, input) {
   var modal = el('wonModal');
   var pid = (modal && modal.dataset.id) ? modal.dataset.id : '';
   var done = function(){ if (input) input.value = ''; };
-  // 新项目尚未保存：提示先保存（避免无主文件）
+  // 编辑阶段即可上传：新项目先自动保存一次取得 id，再继续上传
   if (!pid) {
-    done();
-    showAlert(t.won_doc_need_save || '请先保存项目后再上传合同文件');
+    ensureWonSaved(function(newId, err){
+      if (!newId) { done(); showAlert(err || (t.won_doc_need_save || '请先保存项目后再上传合同文件')); return; }
+      if (modal) modal.dataset.id = newId;
+      uploadWonDoc(fid, file, target, input);
+    });
     return;
   }
   // 防重复点击：上传期间禁用该上传按钮
@@ -8385,15 +8521,41 @@ function uploadWonDoc(fid, file, target, input) {
       setTimeout(function(){ row.remove(); if (window.vaultPanelSweep) window.vaultPanelSweep(); }, 2500);
     });
 }
-// 模态框查看/下载按钮显隐（有值才出现）——编辑回填 & 上传成功后都要调
+// 模态框查看/删除按钮显隐（有值才出现）——编辑回填 & 上传成功后都要调
 function refreshWonDocBtns(){
   ['w_doc_equip','w_doc_install'].forEach(function(fid){
     var inp = el(fid);
     var has = !!(inp && inp.value);
     var vb = document.querySelector('[data-viewfor="' + fid + '"]');
-    var db = document.querySelector('[data-dlfor="' + fid + '"]');
+    var db = document.querySelector('[data-delfor="' + fid + '"]');
     if (vb) vb.style.display = has ? '' : 'none';
     if (db) db.style.display = has ? '' : 'none';
+  });
+}
+// 删除已上传的合同文件（清输入 + 清服务端文件 + 隐藏查看/删除按钮）
+window.wonDocDelete = function(btn){
+  var t = T();
+  var fid = btn && btn.getAttribute('data-delfor');
+  var inp = fid ? el(fid) : null;
+  var v = inp ? inp.value : '';
+  if (!v) return;
+  var title = t.won_doc_del_title || t.confirmDelTitle || '确认删除';
+  var msg = t.won_doc_del_confirm || '确定删除该合同文件？';
+  showDelConfirm(title, msg, function(){
+    var modal = el('wonModal');
+    var pid = (modal && modal.dataset.id) ? modal.dataset.id : '';
+    var slotMatch = /(doc_equip|doc_install)/.exec(fid || '');
+    var slot = slotMatch ? slotMatch[1] : '';
+    var clear = function(){ if (inp) inp.value = ''; refreshWonDocBtns(); };
+    if (!pid || !slot) { clear(); return; }
+    fetch('/api/won-projects/' + pid + '/documents', {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: (typeof authHeaders==='function'?authHeaders({'Content-Type':'application/json'}):{'Content-Type':'application/json'}),
+      body: JSON.stringify({slot: slot})
+    }).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(res){
+      clear();
+    }).catch(function(){ clear(); });
   });
 }
 
@@ -9248,12 +9410,13 @@ function bindRateChangeHandlers() {
 
 // ==================== 自动计算：设备综合 & 设备&安装总价 ====================
 function calcEquipTotal() {
-  var rmb = stripToNumber(el('w_equip_rmb').value) + stripToNumber(el('w_superv_rmb').value) + stripToNumber(el('w_fb_budget_rmb').value) + stripToNumber(el('w_cc_budget_rmb').value);
-  var usd = stripToNumber(el('w_equip_usd').value) + stripToNumber(el('w_superv_usd').value) + stripToNumber(el('w_fb_budget_usd').value) + stripToNumber(el('w_cc_budget_usd').value);
-  var vnd = stripToNumber(el('w_equip_vnd').value) + stripToNumber(el('w_superv_vnd').value) + stripToNumber(el('w_fb_budget_vnd').value) + stripToNumber(el('w_cc_budget_vnd').value);
-  el('w_total_equip_rmb').value = rmb > 0 ? formatCurrencyWithSymbol(rmb, 'RMB') : '';
-  el('w_total_equip_usd').value = usd > 0 ? formatCurrencyWithSymbol(usd, 'USD') : '';
-  el('w_total_equip_vnd').value = vnd > 0 ? formatCurrencyWithSymbol(vnd, 'VND') : '';
+  var rmb = stripToNumber(el('w_equip_rmb').value) + stripToNumber(el('w_superv_rmb').value) + stripToNumber((el('w_fb_budget_rmb')||{}).value) + stripToNumber((el('w_cc_budget_rmb')||{}).value);
+  var usd = stripToNumber(el('w_equip_usd').value) + stripToNumber(el('w_superv_usd').value) + stripToNumber((el('w_fb_budget_usd')||{}).value) + stripToNumber((el('w_cc_budget_usd')||{}).value);
+  var vnd = stripToNumber(el('w_equip_vnd').value) + stripToNumber(el('w_superv_vnd').value) + stripToNumber((el('w_fb_budget_vnd')||{}).value) + stripToNumber((el('w_cc_budget_vnd')||{}).value);
+  var tr = el('w_total_equip_rmb'), tu = el('w_total_equip_usd'), tv = el('w_total_equip_vnd');
+  if (tr) tr.value = rmb > 0 ? formatCurrencyWithSymbol(rmb, 'RMB') : '';
+  if (tu) tu.value = usd > 0 ? formatCurrencyWithSymbol(usd, 'USD') : '';
+  if (tv) tv.value = vnd > 0 ? formatCurrencyWithSymbol(vnd, 'VND') : '';
   calcEITotal();
   calcGsComm();
 }
@@ -9270,7 +9433,8 @@ function calcEITotal() {
 // ===== 佣金金额自动计算：gs_comm = equip * gs_comm_pct（只读，跟随设备金额与佣金比率联动）=====
 function calcGsComm() {
   var lock = (typeof signingLockInfo === 'function') ? signingLockInfo() : { lockGs: false };
-  var pct = parseCommPct(el('w_gs_comm_pct').value); // 0~100 的百分比数值（如 1.5 表示 1.5%）
+  var pctEl = el('w_gs_comm_pct');
+  var pct = pctEl ? parseCommPct(pctEl.value) : 0; // 0~100 的百分比数值（如 1.5 表示 1.5%）
   var rmb = stripToNumber(el('w_equip_rmb').value);
   var usd = stripToNumber(el('w_equip_usd').value);
   var vnd = stripToNumber(el('w_equip_vnd').value);
@@ -9281,9 +9445,10 @@ function calcGsComm() {
   var outVnd = vnd > 0 && pct > 0 ? Math.round(vnd * factor) : 0;
   // ④ GS → AGI 佣金 & 付款 被锁定时：假数值 0（公式保留但显示 0）
   if (lock.lockGs) { outRmb = 0; outUsd = 0; outVnd = 0; }
-  el('w_gs_comm_rmb').value = outRmb > 0 ? formatCurrencyWithSymbol(outRmb, 'RMB') : '0';
-  el('w_gs_comm_usd').value = outUsd > 0 ? formatCurrencyWithSymbol(outUsd, 'USD') : '0';
-  el('w_gs_comm_vnd').value = outVnd > 0 ? formatCurrencyWithSymbol(outVnd, 'VND') : '0';
+  var rEl = el('w_gs_comm_rmb'), uEl = el('w_gs_comm_usd'), vEl = el('w_gs_comm_vnd');
+  if (rEl) rEl.value = outRmb > 0 ? formatCurrencyWithSymbol(outRmb, 'RMB') : '0';
+  if (uEl) uEl.value = outUsd > 0 ? formatCurrencyWithSymbol(outUsd, 'USD') : '0';
+  if (vEl) vEl.value = outVnd > 0 ? formatCurrencyWithSymbol(outVnd, 'VND') : '0';
   // 镜像：将 GS 佣金金额（equip×pct）同步到子模态框「应支付总佣金金额」cmSumTotalComm
   mirrorGsCommToCmSummary(outRmb, outUsd, outVnd);
 }
@@ -9687,6 +9852,11 @@ function setLangDebug(lang) {
       });
     });
   } catch(e) { console.warn('[lang] global i18n sweep:', e); }
+
+  // ---- 漏缝地板规格下拉菜单：切语言时同步刷新选项文案（保留已选值）----
+  try {
+    if (typeof refreshSlatsSelectOptions === 'function') refreshSlatsSelectOptions();
+  } catch(e) { console.warn('[lang] slats select refresh failed:', e); }
 
   // ---- 第二步：更新文本（各模块独立 try，互不牵连）----
   // 性能优化：表头/按钮/导航/弹窗等"轻量"步骤同步执行（UI 立即反馈）；CRM/LOST/WON
@@ -15748,6 +15918,11 @@ function applyWonLang() {
     var _ptSnap = { zh: el('w_payment_terms_zh').value, en: el('w_payment_terms_en').value, vi: el('w_payment_terms_vi').value };
     // ★ 切语言前快照补充协议明细（未保存的新增行在 doc_view_addendum 里，renderModalBody 会重建 DOM 把它覆盖）
     var _addmSnap = el('doc_view_addendum') ? el('doc_view_addendum').value : '';
+    // ★ 切语言前快照已上传的合同文件路径，避免 renderModalBody 重建 DOM 后丢失
+    var _docSnap = {
+      equip: el('w_doc_equip') ? el('w_doc_equip').value : '',
+      install: el('w_doc_install') ? el('w_doc_install').value : ''
+    };
     renderModalBody();
     el('w_payment_terms_zh').value = _ptSnap.zh;
     el('w_payment_terms_en').value = _ptSnap.en;
@@ -15762,6 +15937,10 @@ function applyWonLang() {
         if (_addmCnt) _addmCnt.value = _addmRows.length;
       } catch(e) {}
     }
+    // 恢复已上传的合同文件路径并刷新上传/查看/下载三个按钮的显隐
+    if (el('w_doc_equip')) el('w_doc_equip').value = _docSnap.equip;
+    if (el('w_doc_install')) el('w_doc_install').value = _docSnap.install;
+    refreshWonDocBtns();
     var zh=el('w_payment_terms_zh').value, en=el('w_payment_terms_en').value, vi=el('w_payment_terms_vi').value;
     if(zh||en||vi){ el('w_payment_terms').value = CUR_LANG==='zh' ? zh : (CUR_LANG==='vi' ? vi : en); }
     // ★ 恢复备注三语快照（renderModalBody 重建 DOM 后 hidden 丢失），并按新语言显示 + 补翻
@@ -17136,32 +17315,33 @@ function renderModalBody() {
   var html = '' +
     '<div class="form-section">' +
       '<div class="form-section-title">' + t.section1 + '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_contract_no + '</label><input id="w_contract_no"></div>' +
-        '<div><label>' + t.lbl_customer + '</label><input id="w_customer"></div>' +
-        '<div><label>' + t.won_province + '</label><select id="w_province">' + provinceOptionsHtml(t, CUR_LANG) + '</select></div>' +
+      '<div class="form-row won-sec1-row">' +
+        '<div class="req"><label>' + t.lbl_contract_no + '</label><input id="w_contract_no"></div>' +
+        '<div class="req"><label>' + t.lbl_customer + '</label><input id="w_customer"></div>' +
+        '<div class="req"><label>' + t.won_province + '</label><select id="w_province">' + provinceOptionsHtml(t, CUR_LANG) + '</select></div>' +
+        '<div class="req"><label>' + t.lbl_contract_date + '</label><div class="cp-date-input-wrapper" style="position:relative;"><input id="w_contract_date" type="text" placeholder="DD-MM-YYYY" readonly onfocus="window.cpOpenCalendar(this)" style="width:100%;cursor:pointer;"></div></div>' +
       '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_contract_date + '</label><div class="cp-date-input-wrapper" style="position:relative;"><input id="w_contract_date" type="text" placeholder="DD-MM-YYYY" readonly onfocus="window.cpOpenCalendar(this)" style="width:100%;cursor:pointer;"></div></div>' +
-        '<div><label>' + t.lbl_signing_parties + '</label><select id="w_signing_parties" onchange="applySigningLock()"><option value="AGI-Customer">' + t.party_agi_customer + '</option><option value="GS-Customer">' + t.party_gs_customer + '</option><option value="AGI-GS">' + t.party_agi_gs + '</option></select></div>' +
+      '<div class="form-row won-sec1-row">' +
+        wonDocField(t.won_doc_equip, 'w_doc_equip', true) +
+        wonDocField(t.won_doc_install, 'w_doc_install', true) +
       '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_currency + '</label><select id="w_contract_currency"><option value="USD">USD</option><option value="VND">VND</option><option value="RMB">RMB</option></select></div>' +
-        '<div><label>' + t.lbl_incoterm + '</label><select id="w_incoterm"><option value="EXW">EXW</option><option value="FCA">FCA</option><option value="FAS">FAS</option><option value="FOB">FOB</option><option value="CFR">CFR</option><option value="CIF">CIF</option><option value="CPT">CPT</option><option value="CIP">CIP</option><option value="DAP">DAP</option><option value="DPU">DPU</option><option value="DDP">DDP</option><option value="OTHERS">OTHERS</option></select></div>' +
+      '<div class="won-doc-req-note">' + (t.won_doc_req_note || '设备合同 / 安装合同：至少上传一项') + '</div>' +
+      '<div class="form-row won-sec1-row">' +
+        '<div class="req"><label>' + t.lbl_rate_rmb_vnd + '</label><input id="w_rate_rmb_vnd" type="text" inputmode="numeric" placeholder="' + t.ph_rate_rmb + '" oninput="formatRateInput(this)" onblur="formatRateDisplay(this);syncCpRatesFromParent();syncAgiRatesFromParent();"></div>' +
+        '<div class="req"><label>' + t.lbl_rate_usd_vnd + '</label><input id="w_rate_usd_vnd" type="text" inputmode="numeric" placeholder="' + t.ph_rate_usd + '" oninput="formatRateInput(this)" onblur="formatRateDisplay(this);syncCpRatesFromParent();syncAgiRatesFromParent();"></div>' +
+        '<div class="req"><label>' + t.lbl_include_install + '</label><select id="w_include_install" onchange="onIncludeInstallChange()"><option value="YES">' + t.inc_yes + '</option><option value="NO">' + t.inc_no + '</option></select></div>' +
+        '<div class="req" style="flex:1;position:relative;"><label>' + t.lbl_payment_terms + '</label><input id="w_payment_terms" placeholder="' + t.ph_payment_terms + '" readonly style="cursor:pointer;background:#fafafa;" onclick="openPtEditor()"><input type="hidden" id="w_payment_terms_zh"><input type="hidden" id="w_payment_terms_en"><input type="hidden" id="w_payment_terms_vi"></div>' +
+        '<div class="req"><label>' + t.lbl_salesperson + '</label><select id="w_salesperson">' + salespersonOptionsHtml(t, '', false) + '</select></div>' +
       '</div>' +
-      '<div class="form-row">' +
-        wonDocField(t.won_doc_equip, 'w_doc_equip') +
-        wonDocField(t.won_doc_install, 'w_doc_install') +
+      '<div class="form-row won-sec1-row" style="align-items:center;">' +
+        '<div style="flex:1;min-width:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">' +
+          '<label style="margin:0;font-weight:600;">' + t.slats_spec_label + '</label>' +
+          '<div class="detail-btn-group" style="margin:0;">' +
+            '<button type="button" class="btn btn-primary btn-sm" onclick="openSlatsSpecModal()">' + t.slats_edit_btn + '</button>' +
+            '<button type="button" class="btn btn-outline btn-sm" onclick="openSlatsReportModal()">' + t.slats_view_report_btn + '</button>' +
+          '</div>' +
+        '</div>' +
       '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_rate_rmb_vnd + '</label><input id="w_rate_rmb_vnd" type="text" inputmode="numeric" placeholder="' + t.ph_rate_rmb + '" oninput="formatRateInput(this)" onblur="formatRateDisplay(this);syncCpRatesFromParent();syncAgiRatesFromParent();"></div>' +
-        '<div><label>' + t.lbl_rate_usd_vnd + '</label><input id="w_rate_usd_vnd" type="text" inputmode="numeric" placeholder="' + t.ph_rate_usd + '" oninput="formatRateInput(this)" onblur="formatRateDisplay(this);syncCpRatesFromParent();syncAgiRatesFromParent();"></div>' +
-        '<div><label>' + t.lbl_include_install + '</label><select id="w_include_install" onchange="onIncludeInstallChange()"><option value="YES">' + t.inc_yes + '</option><option value="NO">' + t.inc_no + '</option></select></div>' +
-      '</div>' +
-      '<div class="form-row">' +
-        '<div style="flex:1;position:relative;"><label>' + t.lbl_payment_terms + '</label><input id="w_payment_terms" placeholder="' + t.ph_payment_terms + '" readonly style="cursor:pointer;background:#fafafa;" onclick="openPtEditor()"><input type="hidden" id="w_payment_terms_zh"><input type="hidden" id="w_payment_terms_en"><input type="hidden" id="w_payment_terms_vi"></div>' +
-        '<div style="flex:1;"><label>' + t.lbl_bu + '</label><select id="w_doc_remark">' + buOptionsHtml(t) + '</select></div>' +
-        '<div><label>' + t.lbl_salesperson + '</label><select id="w_salesperson">' + salespersonOptionsHtml(t, '', false) + '</select></div>' +
       '</div>' +
     '</div>' +
     
@@ -17169,30 +17349,14 @@ function renderModalBody() {
       '<div class="form-section-title">' + t.section2 + '</div>' +
       '<div class="form-row"><div style="flex:0 0 100%;font-weight:600;color:#555;font-size:10px;">' + t.sub_final_equip + '</div></div>' +
       '<div class="form-row">' +
-        '<div><label>' + t.lbl_equip_rmb + '</label><input id="w_equip_rmb" class="won-rmb" data-currency="RMB" data-currency-group="equip"></div>' +
-        '<div><label>' + t.lbl_equip_usd + '</label><input id="w_equip_usd" class="won-usd" data-currency="USD" data-currency-group="equip"></div>' +
-        '<div><label>' + t.lbl_equip_vnd + '</label><input id="w_equip_vnd" class="won-vnd" data-currency="VND" data-currency-group="equip"></div>' +
+        '<div class="req"><label>' + t.lbl_equip_rmb + '</label><input id="w_equip_rmb" class="won-rmb" data-currency="RMB" data-currency-group="equip"></div>' +
+        '<div class="req"><label>' + t.lbl_equip_usd + '</label><input id="w_equip_usd" class="won-usd" data-currency="USD" data-currency-group="equip"></div>' +
+        '<div class="req"><label>' + t.lbl_equip_vnd + '</label><input id="w_equip_vnd" class="won-vnd" data-currency="VND" data-currency-group="equip"></div>' +
         '<div><label>' + t.lbl_superv_rmb + '</label><input id="w_superv_rmb" class="won-rmb" data-currency="RMB" data-currency-group="superv"></div>' +
         '<div><label>' + t.lbl_superv_usd + '</label><input id="w_superv_usd" class="won-usd" data-currency="USD" data-currency-group="superv"></div>' +
         '<div><label>' + t.lbl_superv_vnd + '</label><input id="w_superv_vnd" class="won-vnd" data-currency="VND" data-currency-group="superv"></div>' +
       '</div>' +
-      '<div class="form-row"><div style="flex:0 0 100%;font-weight:600;color:#555;font-size:10px;">' + t.sub_freight + '</div></div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_fb_budget_rmb + '</label><input id="w_fb_budget_rmb" class="won-rmb" data-currency="RMB" data-currency-group="fb_budget"></div>' +
-        '<div><label>' + t.lbl_fb_budget_usd + '</label><input id="w_fb_budget_usd" class="won-usd" data-currency="USD" data-currency-group="fb_budget"></div>' +
-        '<div><label>' + t.lbl_fb_budget_vnd + '</label><input id="w_fb_budget_vnd" class="won-vnd" data-currency="VND" data-currency-group="fb_budget"></div>' +
-        '<div><label>' + t.lbl_fb_actual_rmb + '</label><input id="w_fb_actual_rmb" class="won-rmb" data-currency="RMB" data-currency-group="fb_actual"></div>' +
-        '<div><label>' + t.lbl_fb_actual_usd + '</label><input id="w_fb_actual_usd" class="won-usd" data-currency="USD" data-currency-group="fb_actual"></div>' +
-        '<div><label>' + t.lbl_fb_actual_vnd + '</label><input id="w_fb_actual_vnd" class="won-vnd" data-currency="VND" data-currency-group="fb_actual"></div>' +
-      '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_cc_budget_rmb + '</label><input id="w_cc_budget_rmb" class="won-rmb" data-currency="RMB" data-currency-group="cc_budget"></div>' +
-        '<div><label>' + t.lbl_cc_budget_usd + '</label><input id="w_cc_budget_usd" class="won-usd" data-currency="USD" data-currency-group="cc_budget"></div>' +
-        '<div><label>' + t.lbl_cc_budget_vnd + '</label><input id="w_cc_budget_vnd" class="won-vnd" data-currency="VND" data-currency-group="cc_budget"></div>' +
-        '<div><label>' + t.lbl_cc_actual_rmb + '</label><input id="w_cc_actual_rmb" class="won-rmb" data-currency="RMB" data-currency-group="cc_actual"></div>' +
-        '<div><label>' + t.lbl_cc_actual_usd + '</label><input id="w_cc_actual_usd" class="won-usd" data-currency="USD" data-currency-group="cc_actual"></div>' +
-        '<div><label>' + t.lbl_cc_actual_vnd + '</label><input id="w_cc_actual_vnd" class="won-vnd" data-currency="VND" data-currency-group="cc_actual"></div>' +
-      '</div>' +
+'' +
       '<div class="form-row"><div style="flex:0 0 100%;font-weight:600;color:#555;font-size:10px;">' + t.sub_equip_install + '</div></div>' +
       '<div class="form-row">' +
         '<div><label>' + t.lbl_total_equip_rmb + '</label><input id="w_total_equip_rmb" class="won-rmb calc-result" data-currency="RMB" data-currency-group="total_equip" readonly></div>' +
@@ -17262,76 +17426,9 @@ function renderModalBody() {
       '</div>' +
     '</div>' +
     
-    '<div class="form-section">' +
-      '<div class="form-section-title">' + t.section4 + '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_gs_comm_pct + '</label><input id="w_gs_comm_pct" type="text" inputmode="numeric" placeholder="0.0000" onblur="formatCommPct(this)" oninput="formatCommPctLive(this)"></div>' +
-        '<div><label>' + t.lbl_gs_comm_rmb + '</label><input id="w_gs_comm_rmb" class="won-rmb calc-result" data-currency="RMB" data-currency-group="gs_comm" readonly placeholder="0"></div>' +
-        '<div><label>' + t.lbl_gs_comm_usd + '</label><input id="w_gs_comm_usd" class="won-usd calc-result" data-currency="USD" data-currency-group="gs_comm" readonly placeholder="0"></div>' +
-        '<div><label>' + t.lbl_gs_comm_vnd + '</label><input id="w_gs_comm_vnd" class="won-vnd calc-result" data-currency="VND" data-currency-group="gs_comm" readonly placeholder="0"></div>' +
-        '<div><label>' + t.lbl_gs_pay_count + '</label><input id="w_gs_pay_count" type="text" inputmode="numeric" readonly placeholder="0" style="background:#f2f2f2;cursor:default;"></div>' +
-      '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_gs_paid_rmb + '</label><input id="w_gs_paid_rmb" class="won-rmb" data-currency="RMB" data-currency-group="gs_paid" readonly placeholder="0" style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_gs_paid_usd + '</label><input id="w_gs_paid_usd" class="won-usd" data-currency="USD" data-currency-group="gs_paid" readonly placeholder="0" style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_gs_paid_vnd + '</label><input id="w_gs_paid_vnd" class="won-vnd" data-currency="VND" data-currency-group="gs_paid" readonly placeholder="0" style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_gs_unpaid_rmb + '</label><input id="w_gs_unpaid_rmb" class="won-rmb" data-currency="RMB" data-currency-group="gs_unpaid" readonly placeholder="0" style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_gs_unpaid_usd + '</label><input id="w_gs_unpaid_usd" class="won-usd" data-currency="USD" data-currency-group="gs_unpaid" readonly placeholder="0" style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_gs_unpaid_vnd + '</label><input id="w_gs_unpaid_vnd" class="won-vnd" data-currency="VND" data-currency-group="gs_unpaid" readonly placeholder="0" style="background:#f2f2f2;cursor:default;"></div>' +
-      '</div>' +
-      '<div class="form-row detail-row">' +
-        '<div style="flex:1;min-width:0;">' +
-          '<label>' + t.lbl_gs_view_detail + '</label>' +
-          '<div class="detail-field-wrapper">' +
-            '<span class="detail-label">' + t.lbl_gs_detail + ':</span>' +
-            '<div class="detail-field-display" id="gs_detail_display" onclick="openDetailViewFromModal(\'gs_view_detail\', \'detail_gs_payment\')" style="flex:1;min-width:0;">' +
-              '<span class="' + (gsVal ? 'preview-text' : 'empty-text') + '">' + (gsVal || t.detail_no_content || '暂无内容') + '</span>' +
-            '</div>' +
-            '<div class="detail-btn-group">' +
-              '<button type="button" class="btn btn-outline btn-sm" id="gsViewBtn" onclick="openDetailViewFromModal(\'gs_view_detail\', \'detail_gs_payment\')">' + (t.detail_view_btn || '查看') + '</button>' +
-              '<button type="button" class="btn btn-primary btn-sm" id="gsEditBtn" onclick="editDetailFromModal(\'gs_view_detail\')">' + (t.detail_edit_btn || '编辑') + '</button>' +
-            '</div>' +
-          '</div>' +
-          '<input type="hidden" id="gs_view_detail" value="' + gsVal.replace(/"/g,'&quot;') + '">' +
-        '</div>' +
-        '<div style="flex:2;min-width:0;"><label>' + t.lbl_gs_remark + '</label>' + wonTriRemarkHtml('gs_remark') + '</div>' +
-      '</div>' +
-    '</div>' +
+'' +
     
-    '<div class="form-section">' +
-      '<div class="form-section-title">' + t.section5 + '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_agi_payable_rmb + '</label><input id="w_agi_payable_rmb" class="won-rmb calc-result" data-currency="RMB" data-currency-group="agi_payable" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_payable_usd + '</label><input id="w_agi_payable_usd" class="won-usd calc-result" data-currency="USD" data-currency-group="agi_payable" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_payable_vnd + '</label><input id="w_agi_payable_vnd" class="won-vnd calc-result" data-currency="VND" data-currency-group="agi_payable" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_pay_count + '</label><input id="w_agi_pay_count" type="text" inputmode="numeric" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-      '</div>' +
-      '<div class="form-row">' +
-        '<div><label>' + t.lbl_agi_paid_rmb + '</label><input id="w_agi_paid_rmb" class="won-rmb" data-currency="RMB" data-currency-group="agi_paid" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_paid_usd + '</label><input id="w_agi_paid_usd" class="won-usd" data-currency="USD" data-currency-group="agi_paid" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_paid_vnd + '</label><input id="w_agi_paid_vnd" class="won-vnd" data-currency="VND" data-currency-group="agi_paid" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_unpaid_rmb + '</label><input id="w_agi_unpaid_rmb" class="won-rmb" data-currency="RMB" data-currency-group="agi_unpaid" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_unpaid_usd + '</label><input id="w_agi_unpaid_usd" class="won-usd" data-currency="USD" data-currency-group="agi_unpaid" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-        '<div><label>' + t.lbl_agi_unpaid_vnd + '</label><input id="w_agi_unpaid_vnd" class="won-vnd" data-currency="VND" data-currency-group="agi_unpaid" readonly style="background:#f2f2f2;cursor:default;"></div>' +
-      '</div>' +
-      '<div class="form-row detail-row">' +
-        '<div style="flex:1;min-width:0;">' +
-          '<label>' + t.lbl_agi_view_detail + '</label>' +
-          '<div class="detail-field-wrapper">' +
-            '<span class="detail-label">' + t.lbl_agi_detail + ':</span>' +
-            '<div class="detail-field-display" id="agi_detail_display" onclick="openAgiPayModalFromModal()" style="flex:1;min-width:0;">' +
-              '<span class="' + (agiVal ? 'preview-text' : 'empty-text') + '">' + (agiVal || t.detail_no_content || '暂无内容') + '</span>' +
-            '</div>' +
-            '<div class="detail-btn-group">' +
-              '<button type="button" class="btn btn-outline btn-sm" id="agiViewBtn" onclick="openAgiPayReportFromModal()">' + (t.detail_view_btn || '查看') + '</button>' +
-              '<button type="button" class="btn btn-primary btn-sm" id="agiEditBtn" onclick="openAgiPayModalFromModal()">' + (t.detail_edit_btn || '编辑') + '</button>' +
-            '</div>' +
-          '</div>' +
-          '<input type="hidden" id="agi_view_detail" value="' + agiVal.replace(/"/g,'&quot;') + '">' +
-        '</div>' +
-        '<div style="flex:2;min-width:0;"><label>' + t.lbl_agi_remark + '</label>' + wonTriRemarkHtml('agi_remark') + '</div>' +
-      '</div>' +
-    '</div>' +
+'' +
     
     '<div class="form-section">' +
       '<div class="form-section-title">' + t.section6 + '</div>' +
@@ -17877,21 +17974,10 @@ function openWonModal(id) {
   window.__wonRmAuto = {};
   renderModalBody();
   
-  var ids=['w_contract_no','w_province','w_customer','w_contract_date','w_signing_parties','w_contract_currency','w_incoterm','w_rate_rmb_vnd','w_rate_usd_vnd','w_include_install','w_payment_terms','w_salesperson','w_equip_rmb','w_equip_usd','w_equip_vnd','w_superv_rmb','w_superv_usd','w_superv_vnd','w_fb_budget_rmb','w_fb_budget_usd','w_fb_budget_vnd','w_fb_actual_rmb','w_fb_actual_usd','w_fb_actual_vnd','w_cc_budget_rmb','w_cc_budget_usd','w_cc_budget_vnd','w_cc_actual_rmb','w_cc_actual_usd','w_cc_actual_vnd','w_total_equip_rmb','w_total_equip_usd','w_total_equip_vnd','w_inst_budget_rmb','w_inst_budget_usd','w_inst_budget_vnd','w_inst_actual_rmb','w_inst_actual_usd','w_inst_actual_vnd','w_total_ei_rmb','w_total_ei_usd','w_total_ei_vnd','w_vat_rmb','w_vat_usd','w_vat_vnd','w_warranty_rmb','w_warranty_usd','w_warranty_vnd','w_warranty_start','w_warranty_end','w_cust_pay_count','w_cust_paid_rmb','w_cust_paid_usd','w_cust_paid_vnd','w_cust_unpaid_rmb','w_cust_unpaid_usd','w_cust_unpaid_vnd','w_cust_remark','w_gs_comm_pct','w_gs_comm_rmb','w_gs_comm_usd','w_gs_comm_vnd','w_gs_pay_count','w_gs_paid_rmb','w_gs_paid_usd','w_gs_paid_vnd','w_gs_unpaid_rmb','w_gs_unpaid_usd','w_gs_unpaid_vnd','w_gs_remark','w_agi_payable_rmb','w_agi_payable_usd','w_agi_payable_vnd','w_agi_pay_count','w_agi_paid_rmb','w_agi_paid_usd','w_agi_paid_vnd','w_agi_unpaid_rmb','w_agi_unpaid_usd','w_agi_unpaid_vnd','w_agi_remark','w_doc_addendum_cnt','w_doc_view_addendum','w_doc_remark','w_doc_equip','w_doc_install'];
+  var ids=['w_contract_no','w_province','w_customer','w_contract_date','w_rate_rmb_vnd','w_rate_usd_vnd','w_include_install','w_payment_terms','w_salesperson','w_equip_rmb','w_equip_usd','w_equip_vnd','w_superv_rmb','w_superv_usd','w_superv_vnd','w_total_equip_rmb','w_total_equip_usd','w_total_equip_vnd','w_inst_budget_rmb','w_inst_budget_usd','w_inst_budget_vnd','w_inst_actual_rmb','w_inst_actual_usd','w_inst_actual_vnd','w_total_ei_rmb','w_total_ei_usd','w_total_ei_vnd','w_vat_rmb','w_vat_usd','w_vat_vnd','w_warranty_rmb','w_warranty_usd','w_warranty_vnd','w_warranty_start','w_warranty_end','w_cust_pay_count','w_cust_paid_rmb','w_cust_paid_usd','w_cust_paid_vnd','w_cust_unpaid_rmb','w_cust_unpaid_usd','w_cust_unpaid_vnd','w_cust_remark','w_doc_addendum_cnt','w_doc_view_addendum','w_doc_equip','w_doc_install'];
   if(id){ 
     var p=globalWonData.find(function(x){ return x.id==id; }); 
     if(p) ids.forEach(function(i){ var e=el(i); if(e){ var key=i.replace('w_',''); if(key==='contract_date'){ var cd=p[key]||''; if(/^\d{2}-\d{2}-\d{4}$/.test(cd)){ var parts=cd.split('-'); e.value=parts[2]+'-'+parts[1]+'-'+parts[0]; } else e.value=cd; } else { var rawVal=p[key]||''; e.value=rawVal; } }}); 
-    var buEl = el('w_doc_remark');
-    if (buEl && p && p.doc_remark) {
-      var buKeys=['pig_farm','broiler_farm','chicken_egg_farm','duck_farm','duck_egg_farm','others'];
-      if (buKeys.indexOf(String(p.doc_remark))===-1) {
-        var o=document.createElement('option');
-        o.value=p.doc_remark;
-        o.textContent=p.doc_remark;
-        buEl.appendChild(o);
-      }
-      buEl.value = String(p.doc_remark);
-    }
     // 历史数据回显：已保存的销售人员若已离职/改职位而不在当前下拉中，动态补选项以正确显示。
     // 注意 AGI-GS Internal 由 applySigningLock() 按签约双方统一管理，此处不补，避免泄漏到 AGI-Customer/GS-Customer。
     var spEd = el('w_salesperson');
@@ -17981,6 +18067,379 @@ function onIncludeInstallChange() {
 }
 
 function closeWonModal() { el('wonModal').classList.remove('show'); }
+
+// ========== 水泥漏缝地板规格 / 智能报告 二级弹窗 ==========
+function openSlatsSpecModal(){
+  var modal=el('slatsSpecModal'); if(!modal) return;
+  var tbody=el('slatsSpecTable')?el('slatsSpecTable').querySelector('tbody'):null;
+  if(tbody && tbody.children.length===0){ tbody.appendChild(slatsBuildRow(1)); }
+  rebuildSlatsGroups();
+  sweepI18n(modal);
+  modal.classList.add('show');
+}
+function closeSlatsSpecModal(){ el('slatsSpecModal').classList.remove('show'); }
+function openSlatsReportModal(){
+  var modal=el('slatsReportModal'); if(!modal) return;
+  sweepI18n(modal);
+  modal.classList.add('show');
+}
+function closeSlatsReportModal(){ el('slatsReportModal').classList.remove('show'); }
+
+var SLATS_PIG_HOUSE=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+var SLATS_MESH=[1,2];
+var SLATS_REBAR=['φ6','φ8','φ10','φ12'];
+function slatsArrForPrefix(p){
+  if(p==='slats_pig_house_') return SLATS_PIG_HOUSE;
+  if(p==='slats_mesh_') return SLATS_MESH;
+  if(p==='slats_rebar_') return SLATS_REBAR;
+  return [];
+}
+function slatsOptHtml(arr, prefix, selected){
+  var t=T();
+  return arr.map(function(v){
+    var k=prefix+v;
+    var label=t[k]!==undefined?t[k]:v;
+    return '<option value="'+v+'"'+(String(v)===String(selected)?' selected':'')+'>'+label+'</option>';
+  }).join('');
+}
+function slatsSelectCell(prefix, arr, selected){
+  var td=document.createElement('td');
+  var sel=document.createElement('select');
+  sel.className='slats-spec-input slats-spec-select';
+  sel.setAttribute('data-prefix', prefix);
+  sel.innerHTML=slatsOptHtml(arr, prefix, selected);
+  td.appendChild(sel);
+  return td;
+}
+function slatsInputCell(type, value){
+  var td=document.createElement('td');
+  var inp=document.createElement('input');
+  inp.type='text';
+  inp.className='slats-spec-input'+(type==='remark'?' slats-spec-remark':'');
+  inp.value=value||'';
+  if(type==='int'){ inp.setAttribute('data-slats-type','int'); inp.oninput=function(){ slatsSanitizeInt(this); }; }
+  else if(type==='thousands'){ inp.setAttribute('data-slats-type','thousands'); inp.oninput=function(){ slatsSanitizeThousands(this); }; inp.onblur=function(){ slatsFormatThousands(this); }; }
+  else if(type==='decimal'){ inp.setAttribute('data-slats-type','decimal'); inp.oninput=function(){ slatsSanitizeDecimal(this); }; }
+  else if(type==='decimal2'){ inp.setAttribute('data-slats-type','decimal2'); inp.oninput=function(){ slatsSanitizeDecimal2(this); }; inp.onblur=function(){ slatsFormatDecimal2(this); }; }
+  else if(type==='thousands2'){ inp.setAttribute('data-slats-type','thousands2'); inp.oninput=function(){ slatsSanitizeThousands2(this); }; inp.onblur=function(){ slatsFormatThousands2(this); }; }
+  td.appendChild(inp);
+  return td;
+}
+function slatsActionCell(){
+  var td=document.createElement('td');
+  td.innerHTML='<div class="slats-spec-actions">'+
+    '<button type="button" class="slats-spec-iconbtn slats-spec-btn-copy" onclick="copySlatsSpecRow(this)" data-i18n-attr="title:slats_table_btn_copy" title="复制">⧉</button>'+
+    '<button type="button" class="slats-spec-iconbtn slats-spec-btn-merge" onclick="mergeSlatsSpecRow(this)" data-i18n-attr="title:slats_table_btn_merge" title="合并">▦</button>'+
+    '<button type="button" class="slats-spec-iconbtn slats-spec-btn-delete" onclick="deleteSlatsSpecRow(this)" data-i18n-attr="title:slats_table_btn_delete" title="删除">🗑</button>'+
+  '</div>';
+  return td;
+}
+function slatsBuildRow(groupId, idx, values){
+  var tr=document.createElement('tr');
+  tr.setAttribute('data-slats-group', groupId);
+  var idxTd=document.createElement('td'); idxTd.className='slats-spec-idx'; idxTd.textContent=idx; tr.appendChild(idxTd);
+  tr.appendChild(slatsSelectCell('slats_pig_house_', SLATS_PIG_HOUSE, ''));
+  tr.appendChild(slatsInputCell('text',''));
+  tr.appendChild(slatsInputCell('int',''));
+  tr.appendChild(slatsInputCell('decimal2',''));   // 长/单元
+  tr.appendChild(slatsInputCell('decimal2',''));   // 宽/单元
+  tr.appendChild(slatsInputCell('decimal2',''));   // 高/单元
+  tr.appendChild(slatsInputCell('thousands',''));  // 栋数/整场
+  tr.appendChild(slatsInputCell('thousands',''));  // 长
+  tr.appendChild(slatsInputCell('thousands',''));  // 宽
+  tr.appendChild(slatsInputCell('thousands',''));  // 高
+  tr.appendChild(slatsInputCell('thousands',''));  // 数量/单元
+  tr.appendChild(slatsInputCell('thousands',''));  // 数量/整场
+  tr.appendChild(slatsInputCell('thousands',''));  // 平米/单元
+  tr.appendChild(slatsInputCell('thousands',''));  // 平米/整场
+  tr.appendChild(slatsSelectCell('slats_mesh_', SLATS_MESH, ''));
+  tr.appendChild(slatsInputCell('int',''));
+  tr.appendChild(slatsSelectCell('slats_rebar_', SLATS_REBAR, ''));
+  tr.appendChild(slatsInputCell('int',''));
+  tr.appendChild(slatsSelectCell('slats_rebar_', SLATS_REBAR, ''));
+  tr.appendChild(slatsInputCell('remark',''));
+  tr.appendChild(slatsActionCell());
+  for(var _oci=0;_oci<tr.children.length;_oci++){ tr.children[_oci].setAttribute('data-oci', _oci); }
+  if(values && values.length){
+    var inputs=tr.querySelectorAll('input,select');
+    // values[0] 是序号列（没有 input），input 从 values[1] 开始对应
+    for(var i=0;i<inputs.length && (i+1)<values.length;i++){ inputs[i].value=values[i+1]||''; }
+  }
+  return tr;
+}
+var SLATS_MERGED_COLS=[0,1,3,4,5,6,7]; // 序号、猪舍、单元/栋、长/单元、宽/单元、高/单元、栋数/整场
+function slatsFindGroupForRow(tr){
+  var groups=slatsGroupInfo();
+  for(var g=0;g<groups.length;g++){
+    for(var r=0;r<groups[g].rows.length;r++){ if(groups[g].rows[r]===tr) return groups[g]; }
+  }
+  return null;
+}
+function slatsGetRowValues(tr){
+  var vals=[];
+  var group=slatsFindGroupForRow(tr);
+  var header=group?group.rows[0]:tr;
+  var isHeader=(header===tr);
+  for(var ci=0;ci<22;ci++){
+    var cell;
+    if(isHeader){
+      cell=tr.children[ci];
+    } else if(SLATS_MERGED_COLS.indexOf(ci)>=0){
+      cell=header.children[ci];
+    } else {
+      // 非首行：合并单元格已移出 DOM，按 data-oci 找对应可见单元格
+      cell=null;
+      for(var k=0;k<tr.children.length;k++){
+        if(parseInt(tr.children[k].getAttribute('data-oci')||'-1',10)===ci){ cell=tr.children[k]; break; }
+      }
+    }
+    var inp=cell?cell.querySelector('input,select'):null;
+    vals.push(inp?inp.value:'');
+  }
+  return vals;
+}
+function slatsNextGroupId(){
+  var tbody=el('slatsSpecTable')?el('slatsSpecTable').querySelector('tbody'):null;
+  var max=0;
+  if(tbody){
+    for(var i=0;i<tbody.children.length;i++){
+      var g=parseInt(tbody.children[i].getAttribute('data-slats-group')||'0',10);
+      if(g>max) max=g;
+    }
+  }
+  return max+1;
+}
+function slatsGroupInfo(){
+  var tbody=el('slatsSpecTable')?el('slatsSpecTable').querySelector('tbody'):null;
+  if(!tbody) return [];
+  var rows=[];
+  for(var i=0;i<tbody.children.length;i++){ rows.push(tbody.children[i]); }
+  var groups=[];
+  var displayNo=0;
+  var lastId=null;
+  for(var j=0;j<rows.length;j++){
+    var row=rows[j];
+    var gid=row.getAttribute('data-slats-group')||'0';
+    if(gid!==lastId){
+      displayNo++;
+      lastId=gid;
+      groups.push({groupId:gid, rows:[row], displayNo:displayNo});
+    } else {
+      groups[groups.length-1].rows.push(row);
+    }
+  }
+  return groups;
+}
+function slatsUpdateFirstRowDelete(){
+  var tbody=el('slatsSpecTable')?el('slatsSpecTable').querySelector('tbody'):null;
+  if(!tbody) return;
+  var all=tbody.querySelectorAll('.slats-spec-btn-delete');
+  for(var i=0;i<all.length;i++){ all[i].disabled=false; }
+  var firstRow=tbody.firstElementChild;
+  if(firstRow){
+    var firstBtn=firstRow.querySelector('.slats-spec-btn-delete');
+    if(firstBtn) firstBtn.disabled=true;
+  }
+}
+function slatsInsertAtOriginal(row, td){
+  var ci=parseInt(td.getAttribute('data-oci')||'0',10);
+  var cells=row.children;
+  var pos=0;
+  for(var k=0;k<cells.length;k++){
+    var oc=parseInt(cells[k].getAttribute('data-oci')||'999',10);
+    if(oc<ci) pos++;
+  }
+  if(pos>=cells.length) row.appendChild(td);
+  else row.insertBefore(td, cells[pos]);
+}
+// 把新行插入到【源行所属连续分组】之后，避免复制时把原组拆成两段导致序号混乱
+function slatsInsertAfterGroup(newRow, srcRow){
+  var tbody=srcRow.parentNode;
+  var rows=Array.prototype.slice.call(tbody.children);
+  var srcIdx=rows.indexOf(srcRow);
+  var srcGid=String(srcRow.getAttribute('data-slats-group')||'0');
+  var insertAfter=srcIdx;
+  for(var i=srcIdx+1;i<rows.length;i++){
+    if(String(rows[i].getAttribute('data-slats-group')||'0')===srcGid){ insertAfter=i; }
+    else { break; }
+  }
+  if(insertAfter>=rows.length-1) tbody.appendChild(newRow);
+  else tbody.insertBefore(newRow, rows[insertAfter+1]);
+}
+function rebuildSlatsGroups(){
+  var table=el('slatsSpecTable'); if(!table) return;
+  var tbody=table.querySelector('tbody'); if(!tbody) return;
+  var groups=slatsGroupInfo();
+  for(var g=0;g<groups.length;g++){
+    var grp=groups[g];
+    var size=grp.rows.length;
+    for(var r=0;r<grp.rows.length;r++){
+      var row=grp.rows[r];
+      if(r===0){
+        // 还原之前移出的合并单元格
+        if(row.__slatsHidden && row.__slatsHidden.length){
+          for(var h=0;h<row.__slatsHidden.length;h++){
+            slatsInsertAtOriginal(row, row.__slatsHidden[h].td);
+          }
+          row.__slatsHidden=null;
+        }
+        var cells=row.children;
+        for(var m=0;m<SLATS_MERGED_COLS.length;m++){
+          var ci=SLATS_MERGED_COLS[m];
+          var td=cells[ci];
+          if(!td) continue;
+          td.style.display='';
+          td.rowSpan=size;
+        }
+      } else {
+        // 把合并单元格真正移出 DOM（用首行的 rowspan 跨行覆盖），存起来以备还原
+        if(!row.__slatsHidden || row.__slatsHidden.length===0){
+          row.__slatsHidden=[];
+          for(var m2=0;m2<SLATS_MERGED_COLS.length;m2++){
+            var ci2=SLATS_MERGED_COLS[m2];
+            var td2=null;
+            for(var c=0;c<row.children.length;c++){
+              if(parseInt(row.children[c].getAttribute('data-oci')||'-1',10)===ci2){ td2=row.children[c]; break; }
+            }
+            if(td2){
+              row.__slatsHidden.push({ci:ci2, td:td2});
+              row.removeChild(td2);
+            }
+          }
+        }
+      }
+    }
+  }
+  // 强制重新编号：每个分组第一行的序号 = 分组在表格中的顺序
+  var allRows=Array.prototype.slice.call(tbody.children);
+  var displayNo=0;
+  var lastGid=null;
+  for(var i=0;i<allRows.length;i++){
+    var row=allRows[i];
+    var gid=row.getAttribute('data-slats-group')||'0';
+    if(gid!==lastGid){ displayNo++; lastGid=gid; }
+    var idxTd=row.querySelector('td.slats-spec-idx');
+    if(idxTd){ idxTd.textContent=displayNo; }
+  }
+  refreshSlatsSelectOptions();
+  fitSlatsSpecTable();
+  slatsUpdateFirstRowDelete();
+}
+function addSlatsSpecRow(){
+  var tbody=el('slatsSpecTable')?el('slatsSpecTable').querySelector('tbody'):null;
+  if(!tbody) return;
+  tbody.appendChild(slatsBuildRow(slatsNextGroupId(), 1));
+  rebuildSlatsGroups();
+}
+function deleteSlatsSpecRow(btn){
+  var tr=btn && btn.closest?btn.closest('tr'):null;
+  var tbody=tr?tr.parentNode:null;
+  if(!tr || !tbody || tbody.firstElementChild===tr) return;
+  tr.remove();
+  rebuildSlatsGroups();
+}
+function copySlatsSpecRow(btn){
+  var tr=btn && btn.closest?btn.closest('tr'):null;
+  if(!tr) return;
+  var values=slatsGetRowValues(tr);
+  var newRow=slatsBuildRow(slatsNextGroupId(), 1, values);
+  slatsInsertAfterGroup(newRow, tr);
+  rebuildSlatsGroups();
+  sweepI18n(newRow);
+}
+function mergeSlatsSpecRow(btn){
+  var tr=btn && btn.closest?btn.closest('tr'):null;
+  if(!tr) return;
+  var values=slatsGetRowValues(tr);
+  var groupId=tr.getAttribute('data-slats-group')||'0';
+  var newRow=slatsBuildRow(groupId, 1, values);
+  slatsInsertAfterGroup(newRow, tr);
+  rebuildSlatsGroups();
+  sweepI18n(newRow);
+}
+function slatsSanitizeInt(inp){
+  inp.value=inp.value.replace(/[^0-9]/g,'');
+}
+function slatsSanitizeThousands(inp){
+  inp.value=inp.value.replace(/,/g,'').replace(/[^0-9]/g,'');
+}
+function slatsFormatThousands(inp){
+  var raw=inp.value.replace(/,/g,'').replace(/[^0-9]/g,'');
+  inp.value=raw===''?'':parseInt(raw,10).toLocaleString('en-US');
+}
+function slatsSanitizeDecimal(inp){
+  var raw=inp.value.replace(/[^0-9.]/g,'');
+  var d=raw.indexOf('.');
+  if(d>=0){ raw=raw.substring(0,d)+'.'+raw.substring(d+1).replace(/\./g,'').substring(0,2); }
+  inp.value=raw;
+}
+function slatsSanitizeDecimal2(inp){ slatsSanitizeDecimal(inp); }
+function slatsFormatDecimal2(inp){
+  var raw=inp.value.replace(/,/g,'').replace(/[^0-9.]/g,'');
+  if(raw===''){ inp.value=''; return; }
+  var dot=raw.indexOf('.');
+  var intPart=dot>=0?raw.substring(0,dot):raw;
+  var decPart=dot>=0?raw.substring(dot+1):'';
+  intPart=intPart===''?'0':intPart;
+  if(decPart.length>2) decPart=decPart.substring(0,2);
+  if(decPart.length===1) decPart+='0';
+  if(decPart==='') decPart='00';
+  inp.value=intPart+'.'+decPart;
+}
+function slatsSanitizeThousands2(inp){
+  var raw=inp.value.replace(/,/g,'').replace(/[^0-9.]/g,'');
+  var d=raw.indexOf('.');
+  if(d>=0){ raw=raw.substring(0,d)+'.'+raw.substring(d+1).replace(/\./g,'').substring(0,2); }
+  inp.value=raw;
+}
+function slatsFormatThousands2(inp){
+  var raw=inp.value.replace(/,/g,'').replace(/[^0-9.]/g,'');
+  if(raw===''){ inp.value=''; return; }
+  var dot=raw.indexOf('.');
+  var intPart=dot>=0?raw.substring(0,dot):raw;
+  var decPart=dot>=0?raw.substring(dot+1):'';
+  intPart=intPart===''?'0':intPart;
+  intPart=parseInt(intPart,10).toLocaleString('en-US');
+  if(decPart.length>2) decPart=decPart.substring(0,2);
+  inp.value=intPart+'.'+(decPart||'00');
+}
+function refreshSlatsSelectOptions(){
+  var table=el('slatsSpecTable'); if(!table) return;
+  var selects=table.querySelectorAll('select.slats-spec-select');
+  for(var i=0;i<selects.length;i++){
+    var sel=selects[i];
+    var prefix=sel.getAttribute('data-prefix');
+    var val=sel.value;
+    sel.innerHTML=slatsOptHtml(slatsArrForPrefix(prefix), prefix, val);
+    sel.value=val;
+  }
+}
+// 最大化时把表格缩放到容器能完整显示全部列（仅缩小，不放大）
+function fitSlatsSpecTable(){
+  var modal=document.querySelector('#slatsSpecModal .modal');
+  var wrap=document.querySelector('#slatsSpecModal .slats-spec-table-scroll');
+  var table=el('slatsSpecTable');
+  if(!modal||!wrap||!table) return;
+  if(!modal.classList.contains('mmax')){
+    table.style.zoom='';
+    wrap.style.overflowX='';
+    return;
+  }
+  var cw=wrap.clientWidth;
+  var tw=table.scrollWidth||0;
+  if(tw<=0) return;
+  var s=tw<=cw?1:(cw/tw);
+  table.style.zoom=(s*100).toFixed(3)+'%';
+  wrap.style.overflowX='hidden';
+}
+(function(){
+  var modal=document.querySelector('#slatsSpecModal .modal');
+  if(!modal) return;
+  if(window.MutationObserver){
+    new MutationObserver(function(){ fitSlatsSpecTable(); }).observe(modal,{attributes:true,attributeFilter:['class']});
+  }
+  window.addEventListener('resize',fitSlatsSpecTable);
+})();
 
 // ========== CRM 潜在项目：二级模态框（字段与表格列完全映射） ==========
 // 判断某用户角色是否属于"销售"（销售 / 销售经理 / 销售总监 / 其他可兼职销售的管理角色）
@@ -18594,119 +19053,87 @@ function showAlert(msg){
   if(!window._nativeAlert) window._nativeAlert = window.alert;
   window.alert = function(msg){ showAlert(msg); };
 })();
-function saveWon() { var t=T(); var N=function(id){ return stripToNumber(el(id).value)||0; }; 
+function collectWonFormData(){
+  var N=function(id){ return stripToNumber(el(id).value)||0; };
   var custViewDetail = el('cust_view_detail') ? el('cust_view_detail').value.trim() : '';
   var gsViewDetail = el('gs_view_detail') ? el('gs_view_detail').value.trim() : '';
   var agiViewDetail = el('agi_view_detail') ? el('agi_view_detail').value.trim() : '';
   var docViewAddendum = el('doc_view_addendum') ? el('doc_view_addendum').value.trim() : '';
-  
-  var rawComm = el('w_gs_comm_pct').value.replace(/,/g,'');
-  var commVal = parseCommPct(rawComm);
-  if (rawComm !== '') { var n = parseCommPct(rawComm); if (!isNaN(n)) el('w_gs_comm_pct').value = n.toFixed(4).replace(/\B(?=(\d{3})+(?!\d))/g, ','); } 
-  var data={ 
-    contract_no:el('w_contract_no').value.trim(), 
+  return {
+    contract_no:el('w_contract_no').value.trim(),
     province:el('w_province').value.trim(),
     customer:el('w_customer').value.trim(),
     contract_date:el('w_contract_date').value.trim(),
-    signing_parties:el('w_signing_parties').value.trim()||'AGI-GS', 
-    contract_currency:el('w_contract_currency').value.trim(), 
-    incoterm:el('w_incoterm').value.trim(), 
-    rate_rmb_vnd:N('w_rate_rmb_vnd'), 
-    rate_usd_vnd:N('w_rate_usd_vnd'), 
-    include_install:el('w_include_install').value.trim(), 
-    payment_terms:el('w_payment_terms').value.trim(), 
-    payment_terms_zh:el('w_payment_terms_zh').value.trim(), 
-    payment_terms_en:el('w_payment_terms_en').value.trim(), 
-    payment_terms_vi:el('w_payment_terms_vi').value.trim(), 
-    salesperson:el('w_salesperson').value.trim(), 
-    equip_rmb:N('w_equip_rmb'), 
-    equip_usd:N('w_equip_usd'), 
-    equip_vnd:N('w_equip_vnd'), 
-    superv_rmb:N('w_superv_rmb'), 
-    superv_usd:N('w_superv_usd'), 
-    superv_vnd:N('w_superv_vnd'), 
-    fb_budget_rmb:N('w_fb_budget_rmb'), 
-    fb_budget_usd:N('w_fb_budget_usd'), 
-    fb_budget_vnd:N('w_fb_budget_vnd'), 
-    fb_actual_rmb:N('w_fb_actual_rmb'), 
-    fb_actual_usd:N('w_fb_actual_usd'), 
-    fb_actual_vnd:N('w_fb_actual_vnd'), 
-    cc_budget_rmb:N('w_cc_budget_rmb'), 
-    cc_budget_usd:N('w_cc_budget_usd'), 
-    cc_budget_vnd:N('w_cc_budget_vnd'), 
-    cc_actual_rmb:N('w_cc_actual_rmb'), 
-    cc_actual_usd:N('w_cc_actual_usd'), 
-    cc_actual_vnd:N('w_cc_actual_vnd'), 
-    total_equip_rmb:N('w_total_equip_rmb'), 
-    total_equip_usd:N('w_total_equip_usd'), 
-    total_equip_vnd:N('w_total_equip_vnd'), 
-    inst_budget_rmb:N('w_inst_budget_rmb'), 
-    inst_budget_usd:N('w_inst_budget_usd'), 
-    inst_budget_vnd:N('w_inst_budget_vnd'), 
-    inst_actual_rmb:N('w_inst_actual_rmb'), 
-    inst_actual_usd:N('w_inst_actual_usd'), 
-    inst_actual_vnd:N('w_inst_actual_vnd'), 
-    total_ei_rmb:N('w_total_ei_rmb'), 
-    total_ei_usd:N('w_total_ei_usd'), 
-    total_ei_vnd:N('w_total_ei_vnd'), 
-    vat_rmb:N('w_vat_rmb'), 
-    vat_usd:N('w_vat_usd'), 
-    vat_vnd:N('w_vat_vnd'), 
-    warranty_rmb: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? 0 : N('w_warranty_rmb'), 
-    warranty_usd: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? 0 : N('w_warranty_usd'), 
-    warranty_vnd: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? 0 : N('w_warranty_vnd'), 
-    warranty_start: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? '' : el('w_warranty_start').value, 
-    warranty_end: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? '' : el('w_warranty_end').value, 
-    cust_pay_count:N('w_cust_pay_count'), 
-    cust_paid_rmb:N('w_cust_paid_rmb'), 
-    cust_paid_usd:N('w_cust_paid_usd'), 
-    cust_paid_vnd:N('w_cust_paid_vnd'), 
-    cust_unpaid_rmb:N('w_cust_unpaid_rmb'), 
-    cust_unpaid_usd:N('w_cust_unpaid_usd'), 
-    cust_unpaid_vnd:N('w_cust_unpaid_vnd'), 
-    cust_view_detail:custViewDetail, 
-    cust_remark:el('w_cust_remark').value.trim(), 
+    rate_rmb_vnd:N('w_rate_rmb_vnd'),
+    rate_usd_vnd:N('w_rate_usd_vnd'),
+    include_install:el('w_include_install').value.trim(),
+    payment_terms:el('w_payment_terms').value.trim(),
+    payment_terms_zh:el('w_payment_terms_zh').value.trim(),
+    payment_terms_en:el('w_payment_terms_en').value.trim(),
+    payment_terms_vi:el('w_payment_terms_vi').value.trim(),
+    salesperson:el('w_salesperson').value.trim(),
+    equip_rmb:N('w_equip_rmb'),
+    equip_usd:N('w_equip_usd'),
+    equip_vnd:N('w_equip_vnd'),
+    superv_rmb:N('w_superv_rmb'),
+    superv_usd:N('w_superv_usd'),
+    superv_vnd:N('w_superv_vnd'),
+    total_equip_rmb:N('w_total_equip_rmb'),
+    total_equip_usd:N('w_total_equip_usd'),
+    total_equip_vnd:N('w_total_equip_vnd'),
+    inst_budget_rmb:N('w_inst_budget_rmb'),
+    inst_budget_usd:N('w_inst_budget_usd'),
+    inst_budget_vnd:N('w_inst_budget_vnd'),
+    inst_actual_rmb:N('w_inst_actual_rmb'),
+    inst_actual_usd:N('w_inst_actual_usd'),
+    inst_actual_vnd:N('w_inst_actual_vnd'),
+    total_ei_rmb:N('w_total_ei_rmb'),
+    total_ei_usd:N('w_total_ei_usd'),
+    total_ei_vnd:N('w_total_ei_vnd'),
+    vat_rmb:N('w_vat_rmb'),
+    vat_usd:N('w_vat_usd'),
+    vat_vnd:N('w_vat_vnd'),
+    warranty_rmb: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? 0 : N('w_warranty_rmb'),
+    warranty_usd: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? 0 : N('w_warranty_usd'),
+    warranty_vnd: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? 0 : N('w_warranty_vnd'),
+    warranty_start: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? '' : el('w_warranty_start').value,
+    warranty_end: (el('w_has_warranty')&&el('w_has_warranty').value==='no') ? '' : el('w_warranty_end').value,
+    cust_pay_count:N('w_cust_pay_count'),
+    cust_paid_rmb:N('w_cust_paid_rmb'),
+    cust_paid_usd:N('w_cust_paid_usd'),
+    cust_paid_vnd:N('w_cust_paid_vnd'),
+    cust_unpaid_rmb:N('w_cust_unpaid_rmb'),
+    cust_unpaid_usd:N('w_cust_unpaid_usd'),
+    cust_unpaid_vnd:N('w_cust_unpaid_vnd'),
+    cust_view_detail:custViewDetail,
+    cust_remark:el('w_cust_remark').value.trim(),
     cust_remark_zh:(el('w_cust_remark_zh')||{value:''}).value.trim(),
     cust_remark_en:(el('w_cust_remark_en')||{value:''}).value.trim(),
     cust_remark_vi:(el('w_cust_remark_vi')||{value:''}).value.trim(),
-    gs_comm_pct:commVal, 
-    gs_comm_rmb:N('w_gs_comm_rmb'), 
-    gs_comm_usd:N('w_gs_comm_usd'), 
-    gs_comm_vnd:N('w_gs_comm_vnd'), 
-    gs_pay_count:N('w_gs_pay_count'), 
-    gs_paid_rmb:N('w_gs_paid_rmb'), 
-    gs_paid_usd:N('w_gs_paid_usd'), 
-    gs_paid_vnd:N('w_gs_paid_vnd'), 
-    gs_unpaid_rmb:N('w_gs_unpaid_rmb'), 
-    gs_unpaid_usd:N('w_gs_unpaid_usd'), 
-    gs_unpaid_vnd:N('w_gs_unpaid_vnd'), 
-    gs_view_detail:gsViewDetail, 
-    gs_remark:el('w_gs_remark').value.trim(), 
-    gs_remark_zh:(el('w_gs_remark_zh')||{value:''}).value.trim(),
-    gs_remark_en:(el('w_gs_remark_en')||{value:''}).value.trim(),
-    gs_remark_vi:(el('w_gs_remark_vi')||{value:''}).value.trim(),
-    agi_payable_rmb:N('w_agi_payable_rmb'), 
-    agi_payable_usd:N('w_agi_payable_usd'), 
-    agi_payable_vnd:N('w_agi_payable_vnd'), 
-    agi_pay_count:N('w_agi_pay_count'), 
-    agi_paid_rmb:N('w_agi_paid_rmb'), 
-    agi_paid_usd:N('w_agi_paid_usd'), 
-    agi_paid_vnd:N('w_agi_paid_vnd'), 
-    agi_unpaid_rmb:N('w_agi_unpaid_rmb'), 
-    agi_unpaid_usd:N('w_agi_unpaid_usd'), 
-    agi_unpaid_vnd:N('w_agi_unpaid_vnd'), 
-    agi_view_detail:agiViewDetail, 
-    agi_remark:el('w_agi_remark').value.trim(), 
-    agi_remark_zh:(el('w_agi_remark_zh')||{value:''}).value.trim(),
-    agi_remark_en:(el('w_agi_remark_en')||{value:''}).value.trim(),
-    agi_remark_vi:(el('w_agi_remark_vi')||{value:''}).value.trim(),
     doc_addendum_cnt:N('w_doc_addendum_cnt'),
     doc_view_addendum:docViewAddendum,
-    doc_remark:el('w_doc_remark').value.trim(),
     doc_equip:(el('w_doc_equip')||{value:''}).value.trim(),
     doc_install:(el('w_doc_install')||{value:''}).value.trim()
   };
-  if(!data.contract_no&&!data.customer){ showSaveOk(t.fillAll); return; }
+}
+function ensureWonSaved(cb){
+  var t=T();
+  var data = collectWonFormData();
+  // 上传前自动保存不校验必填项，允许空记录先创建以挂载合同文件
+  fetch('/api/won-projects',{ method:'POST', credentials:'include', headers:(typeof authHeaders==='function'?authHeaders({'Content-Type':'application/json'}):{'Content-Type':'application/json'}), body:JSON.stringify(data)})
+    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ return {ok:r.ok, body:j}; }); })
+    .then(function(res){
+      if(res.ok && res.body && res.body.id){ if(cb) cb(String(res.body.id)); }
+      else { if(cb) cb(null, (res.body && res.body.error) ? res.body.error : 'Error'); }
+    })
+    .catch(function(){ if(cb) cb(null, '保存失败：无法连接服务器，数据未写入'); });
+}
+function saveWon() { var t=T();
+  var data = collectWonFormData();
+  var required=['contract_no','customer','province','contract_date','rate_rmb_vnd','rate_usd_vnd','include_install','payment_terms','salesperson','equip_rmb','equip_usd','equip_vnd'];
+  var missing=required.some(function(k){ return !String(data[k]||'').trim(); });
+  var hasDoc=!!(String(data.doc_equip||'').trim()||String(data.doc_install||'').trim());
+  if(missing||!hasDoc){ showSaveOk(t.fillAll); return; }
   var id=el('wonModal').dataset.id;
   // 注：原 catch 分支会在网络失败时把数据写进 SEED_WON 本地数组并提示"保存成功"，
   // 造成"存进去了其实没进数据库"的假象。SEED_WON 已删除，改为如实提示保存失败。
@@ -18718,15 +19145,16 @@ function saveWon() { var t=T(); var N=function(id){ return stripToNumber(el(id).
     })
     .catch(function(){ showSaveOk('保存失败：无法连接服务器，数据未写入'); }); }
 
-function showDelConfirm(msg, onConfirm){
+function showDelConfirm(title, msg, onConfirm){
   var t=T();
   var ov=document.getElementById('delConfirmOverlay');
   if(!ov){ if(confirm(msg)){ onConfirm&&onConfirm(); } return; }
-  var title=document.getElementById('delConfirmTitle'); if(title) title.textContent=t.confirmDelTitle||'确认删除';
+  var titleEl=document.getElementById('delConfirmTitle'); if(titleEl) titleEl.textContent=title||t.confirmDelTitle||'确认删除';
   var desc=document.getElementById('delConfirmDesc'); if(desc) desc.textContent=msg||'';
   var okBtn=document.getElementById('delConfirmOk'); if(okBtn) okBtn.textContent=t.btnConfirm||'确定';
   var cancelBtn=document.getElementById('delConfirmCancel'); if(cancelBtn) cancelBtn.textContent=t.btnCancel||'取消';
   ov.style.display='flex';
+  ov.style.alignItems='center';
   okBtn.onclick=function(){ ov.style.display='none'; if(onConfirm) onConfirm(); };
   cancelBtn.onclick=function(){ ov.style.display='none'; };
   ov.onclick=function(e){ if(e.target===ov){ ov.style.display='none'; } };
@@ -19954,7 +20382,6 @@ function applyCpLang() {
   setPlaceholder('cpRemark', t2.cp_remark_ph || '付款条件、风险提示、特殊约定等……');
   setText('cpCancelBtn', t2.cp_cancel || '取消');
   setText('cpSaveBtn', t2.cp_save || '💾 保存');
-  setText('cpResizeHint', t2.cp_resize_hint || '⋮⋮ 可拖拽拉升');
   setText('cpFootHint', t2.cp_foot_hint || '语言跟随主界面，切换语言后重新打开即可刷新');
 
   var cpCalFmt = document.querySelector('#cpCalPopup .cp-cal-fmt');
@@ -20683,7 +21110,6 @@ function applyAgiLang() {
   setPlaceholder('agiRemark', t.cp_remark_ph || '付款条件、风险提示、特殊约定等……');
   setText('agiCancelBtn', t.cp_cancel || '取消');
   setText('agiSaveBtn', t.cp_save || '💾 保存');
-  setText('agiResizeHint', t.cp_resize_hint || '⋮⋮ 可拖拽拉升');
   setText('agiFootHint', t.cp_foot_hint || '语言跟随主界面，切换语言后重新打开即可刷新');
 
   document.querySelectorAll('#agiPayBody select.agi-bg-has').forEach(function(sel) {
@@ -27695,23 +28121,6 @@ window.CommissionModal={open:open,close:close,applyLang:applyLang,addPayRow:addP
   </div>
 </div>
 
-<!-- ===== 复制项目 · 密码验证弹窗 ===== -->
-<div class="copy-pwd-overlay" id="copyPwdOverlay" style="display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:1100;justify-content:center;align-items:flex-start;padding:10px 12px 12px 12px;">
-  <div class="copy-pwd-box" style="background:white;border-radius:14px;padding:28px 26px 22px;width:360px;max-width:92vw;box-shadow:0 10px 40px rgba(0,0,0,.28);text-align:center;">
-    <div style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:13px;background:#8e44ad;margin-bottom:12px;">
-      <span style="font-size:26px;color:white;">🔒</span>
-    </div>
-    <div id="copyPwdTitle" style="font-size:17px;font-weight:700;color:#8e44ad;margin-bottom:8px;">复制项目</div>
-    <div id="copyPwdHint" style="font-size:12px;color:#888;margin-bottom:16px;">请输入复制密码</div>
-    <input type="password" id="copyPwdInput" placeholder="Password" style="width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;box-sizing:border-box;" onkeydown="if(event.key==='Enter') confirmCopyProject();">
-    <div id="copyPwdError" style="display:none;color:#e74c3c;font-size:11.5px;margin-top:8px;">密码错误</div>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:18px;">
-      <button type="button" id="copyPwdCancel" onclick="closeCopyPwd()" style="padding:7px 22px;border:1px solid #ddd;background:#f0f0f0;color:#555;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">取消</button>
-      <button type="button" id="copyPwdOk" onclick="confirmCopyProject()" style="padding:7px 22px;border:none;background:#8e44ad;color:white;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;box-shadow:0 3px 10px rgba(142,68,173,.35);">确认</button>
-    </div>
-  </div>
-</div>
-
 <style>
 .rpt-overlay.show{display:flex;}
 .rpt-overlay{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(30,30,50,.5);z-index:1100;justify-content:center;align-items:flex-start;padding:10px 10px 24px 10px;overflow-y:auto;}
@@ -27899,45 +28308,14 @@ function closeProjectReport() {
   document.getElementById('rptOverlay').classList.remove('show');
 }
 
-// ========== 复制项目（密码保护） ==========
-var _copyTargetId = null;
+// ========== 复制项目 ==========
 function openCopyProject(id) {
-  _copyTargetId = id;
-  var _Lcp = (window.CUR_LANG || CUR_LANG || 'zh');
-  var t = (typeof I18N!=='undefined' && I18N[_Lcp]) ? I18N[_Lcp] : {};
-  document.getElementById('copyPwdTitle').textContent = t.btn_copy || '复制项目';
-  document.getElementById('copyPwdHint').textContent = t.copy_pwd_hint || '请输入复制密码';
-  document.getElementById('copyPwdInput').placeholder = t.copy_pwd_placeholder || 'Password';
-  document.getElementById('copyPwdError').textContent = t.copy_pwd_error || '密码错误';
-  var _cpc = document.getElementById('copyPwdCancel'); if (_cpc) _cpc.textContent = t.btnCancel || t.ecCancel || '取消';
-  var _cpo = document.getElementById('copyPwdOk'); if (_cpo) _cpo.textContent = t.btnConfirm || t.ecConfirm || '确认';
-  document.getElementById('copyPwdError').style.display = 'none';
-  var _cb = document.getElementById('copyPwdCancel'); if (_cb) _cb.textContent = t.btnCancel || '取消';
-  var _co = document.getElementById('copyPwdOk'); if (_co) _co.textContent = t.btnConfirm || '确认';
-  document.getElementById('copyPwdInput').value = '';
-  document.getElementById('copyPwdOverlay').style.display = 'flex';
-  setTimeout(function(){document.getElementById('copyPwdInput').focus();},100);
-}
-
-function closeCopyPwd() {
-  document.getElementById('copyPwdOverlay').style.display = 'none';
-  _copyTargetId = null;
-}
-
-function confirmCopyProject() {
   // ★ 权限拦截：复制签约项目（WON-C1）——与编辑/删除/导出一致，隐藏则拦截、发起审批则走单次审批
   if (typeof permGuard === 'function' && !permGuard('WON-C1')) return;
-  var pwd = document.getElementById('copyPwdInput').value;
   var t = (typeof I18N!=='undefined' && I18N[CUR_LANG]) ? I18N[CUR_LANG] : {};
-  if (pwd !== 'copyforgs!') {
-    document.getElementById('copyPwdError').style.display = 'block';
-    document.getElementById('copyPwdInput').value = '';
-    document.getElementById('copyPwdInput').focus();
-    return;
-  }
   // 深拷贝（除上传的 PDF 附件外，其他所有输入数据全部复制）
-  var src = globalWonData.find(function(x){return x.id===_copyTargetId;});
-  if (!src) { closeCopyPwd(); return; }
+  var src = globalWonData.find(function(x){return x.id===id;});
+  if (!src) { showSaveOk(t.copy_failed || '复制失败'); return; }
   var copy = JSON.parse(JSON.stringify(src));
   copy.id = Math.max.apply(null, globalWonData.map(function(d){return d.id;})) + 1;
   copy.contract_no = (copy.contract_no||'') + '-COPY';
@@ -27958,14 +28336,12 @@ function confirmCopyProject() {
       showSaveOk(t.copy_failed || '复制失败');
     }
   }).catch(function(){ showSaveOk(t.copy_failed || '复制失败'); });
-  closeCopyPwd();
 }
 
 // ESC 关闭弹窗
 document.addEventListener('keydown', function(e){
   if (e.key==='Escape') {
     closeProjectReport();
-    closeCopyPwd();
     closeOverviewModal();
   }
 });
@@ -29987,12 +30363,12 @@ function _doExportOverviewPDF(){
       '.gsr-overlay', '.cpr-overlay', '.cm-mask', '.cust-pay-overlay', '.rpt-overlay',
       '.addm-overlay', '.addm-sum-overlay', '.addm-alert-overlay', '.dash-chart-lightbox',
       '.auth-modal-overlay', '.appr-confirm-overlay', '.appr-drawer-mask',
-      '.drawer-mask', '.modal-mask',
+      '.drawer-mask', '.modal-mask', '.vault-overlay', '.vault-pin-modal',
       '#commissionUnlockOverlay', '#commAmtLockOverlay', '#benDoneOverlay', '#benReactOverlay',
       '#commAmtReqOverlay', '#commissionAddModalOverlay', '#commissionApprModalOverlay',
       '#beneficiaryModalOverlay', '#authModalOverlay', '#crmMoveToLostModal',
       '#addmSummaryOverlay', '#addendumModal', '#addmAlertOverlay',
-      '#delConfirmOverlay', '#crmCloseConfirmOverlay', '#crmOrangeConfirmOverlay', '#copyPwdOverlay', '#rptOverlay'
+      '#delConfirmOverlay', '#crmCloseConfirmOverlay', '#crmOrangeConfirmOverlay', '#rptOverlay', '#vaultOverlay', '#vaultPinModal'
     ];
 
     function isVisible(el) {
@@ -30121,6 +30497,10 @@ function _doExportOverviewPDF(){
     function injectMaxBtn(box) {
       if (!box || box.getAttribute('data-mmax-btn')) return;
       box.setAttribute('data-mmax-btn', '1');
+
+      var isModal = box.classList.contains('modal');
+
+      // 创建最大化按钮
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'mmax-btn';
@@ -30131,35 +30511,61 @@ function _doExportOverviewPDF(){
         e.stopPropagation();
         window.toggleMaximize(box);
       });
-      // 优先把最大化按钮放到标题栏内，与关闭按钮真正并排；
-      // 标题栏可能是 h2/h3 或 .modal-header/.cp-head/.cm-head 等。
+
+      // 查找或创建关闭按钮
+      var closeSel = '.close, .comm-close, .cp-close, .cm-close, .cpr-close, .gsr-close, .addm-close, .dv-close, .pt-close';
+      var closeBtn = box.querySelector(closeSel);
+      if (!closeBtn && isModal) {
+        closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'close';
+        closeBtn.setAttribute('title', '关闭');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var overlay = box.closest('.modal-overlay, .modal-mask, .cm-mask, .pt-editor-overlay, .detail-view-overlay, .export-confirm-overlay, .addm-overlay');
+          if (overlay) overlay.classList.remove('show');
+          else {
+            box.classList.remove('show');
+            box.style.display = 'none';
+          }
+        });
+      }
+
+      // 标题栏：h2 / .modal-header 等
       var head = box.querySelector('h2, h3, .modal-header, .cp-head, .cm-head, .cpr-head, .gsr-head, .addm-head, .drawer-header, .appr-drawer-head, .rpt-head, .dash-chart-lightbox-head');
-      var closeInHead = head && head.querySelector('.close, .comm-close, .cp-close, .cm-close, .cpr-close, .gsr-close, .addm-close, .dv-close, .pt-close');
-      if (head) {
-        if (closeInHead) {
-          // 如果标题栏已有 .modal-actions 容器，把最大化按钮放进去，
-          // 与关闭按钮真正在同一 flex 行内并排、垂直居中。
-          var actions = head.querySelector('.modal-actions');
-          if (actions) {
-            actions.insertBefore(btn, closeInHead);
+
+      if (closeBtn) {
+        // 如果关闭按钮在 .modal-actions 容器里（如权限弹窗），保持原位置，仅并排插入最大化按钮
+        var actions = closeBtn.closest('.modal-actions');
+        if (actions) {
+          actions.insertBefore(btn, closeBtn);
+          return;
+        }
+        // 把关闭/最大化放进同一个 flex 容器，确保同一水平线垂直居中
+        actions = document.createElement('div');
+        actions.className = 'modal-actions';
+        // 先把关闭按钮移成 box 的直接子元素
+        if (closeBtn.parentElement !== box) {
+          if (head && head.parentElement === box) {
+            box.insertBefore(closeBtn, head.nextSibling);
           } else {
-            head.insertBefore(btn, closeInHead);
+            box.appendChild(closeBtn);
           }
+        }
+        actions.appendChild(btn);
+        actions.appendChild(closeBtn);
+        if (head && head.parentElement === box) {
+          box.insertBefore(actions, head.nextSibling);
         } else {
-          // 关闭按钮在标题栏外时，把它挪进标题栏末尾，确保两个按钮并排
-          var closeInBox = box.querySelector('.close, .comm-close, .cp-close, .cm-close, .cpr-close, .gsr-close, .addm-close, .dv-close, .pt-close');
-          if (closeInBox) {
-            head.appendChild(closeInBox);
-            head.insertBefore(btn, closeInBox);
-          } else {
-            head.appendChild(btn);
-          }
+          box.appendChild(actions);
         }
         return;
       }
-      // 旧弹窗：插到关闭按钮左侧，保持视觉一致
-      var closeEl = box.querySelector(':scope > .close, :scope > .comm-close');
-      if (closeEl) box.insertBefore(btn, closeEl);
+
+      // 没有关闭按钮时，最大化按钮放到标题栏末尾或 box 末尾
+      if (head) head.appendChild(btn);
       else box.appendChild(btn);
     }
 
@@ -30172,6 +30578,99 @@ function _doExportOverviewPDF(){
           if (node.nodeType !== 1) return;
           if (node.matches && node.matches(BOX_SEL)) injectMaxBtn(node);
           if (node.querySelectorAll) node.querySelectorAll(BOX_SEL).forEach(injectMaxBtn);
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  })();
+
+  /* ===== 兜底：为所有未在 injectMaxBtn 中覆盖的模态框补齐 □ 最大化 与 × 关闭按钮 ===== */
+  (function() {
+    var patches = [
+      {id:'vaultPinModal', box:'.vault-pin-box'},
+      {id:'vaultOverlay', box:null},
+      {id:'apprConfirmOverlay', box:'#apprConfirmDialog'},
+      {id:'commAmtLockOverlay', box:'.comm-lock-box'},
+      {id:'benDoneOverlay', box:'.comm-lock-box'},
+      {id:'benReactOverlay', box:'.comm-lock-box'},
+      {id:'addmSummaryOverlay', box:'.addm-sum-modal'},
+      {id:'addmAlertOverlay', box:'.addm-alert-box'},
+      {id:'delConfirmOverlay', box:'.del-confirm-box'},
+      {id:'crmCloseConfirmOverlay', box:'.crm-close-confirm-box'},
+      {id:'crmOrangeConfirmOverlay', box:'.crm-orange-confirm-box'},
+      {id:'crmMoveToLostModal', box:'.crm-mtl-box'}
+    ];
+
+    var closeSelectors = '.close,.comm-close,.cp-close,.cm-close,.cpr-close,.gsr-close,.addm-close,.dv-close,.pt-close,.addm-sum-close,.vault-close,.rpt-close,.mmax-close';
+    var headSelectors = 'h2,h3,.modal-header,.cp-head,.cm-head,.cpr-head,.gsr-head,.addm-head,.addm-sum-head,.drawer-header,.appr-drawer-head,.rpt-head,.dash-chart-lightbox-head,.vault-head,.vault-pin-title,.crm-mtl-title,.aa-title,.dc-title,.crm-orange-confirm-title';
+
+    function closeModalBox(box) {
+      box.classList.remove('mmax');
+      var saved = box.getAttribute('data-mmax-style');
+      if (saved) box.setAttribute('style', saved); else box.removeAttribute('style');
+      box.removeAttribute('data-mmax-style');
+      var overlay = box.closest('[id$="Overlay"], [id$="Modal"]') || box;
+      if (overlay) {
+        overlay.classList.remove('show');
+        overlay.style.display = 'none';
+        if (overlay.id === 'crmMoveToLostModal') overlay.classList.remove('on');
+      }
+    }
+
+    function ensureControls(p) {
+      var ov = document.getElementById(p.id);
+      if (!ov) return;
+      var box = p.box ? ov.querySelector(p.box) : ov;
+      if (!box) box = ov;
+      if (box.getAttribute('data-modal-ctrl')) return;
+      box.setAttribute('data-modal-ctrl', '1');
+
+      var cs = window.getComputedStyle(box);
+      if (cs.position === 'static') box.style.position = 'relative';
+
+      var existingClose = box.querySelector(closeSelectors);
+      var head = box.querySelector(headSelectors);
+
+      function place(el) {
+        if (existingClose && existingClose.parentElement && head && existingClose.parentElement === head) {
+          head.insertBefore(el, existingClose);
+        } else if (head) {
+          head.appendChild(el);
+        } else {
+          box.appendChild(el);
+        }
+      }
+
+      // 最大化按钮
+      var maxBtn = document.createElement('button');
+      maxBtn.type = 'button';
+      maxBtn.className = 'mmax-btn';
+      maxBtn.setAttribute('title', '最大化 / 还原');
+      maxBtn.textContent = '□';
+      maxBtn.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); window.toggleMaximize(box); });
+      place(maxBtn);
+
+      // 关闭按钮：没有现成关闭按钮时才创建
+      if (!existingClose) {
+        var closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'mmax-close';
+        closeBtn.setAttribute('title', '关闭');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); closeModalBox(box); });
+        if (head) head.appendChild(closeBtn); else box.appendChild(closeBtn);
+      }
+    }
+
+    patches.forEach(ensureControls);
+    // 动态新增也兜底
+    new MutationObserver(function(muts) {
+      muts.forEach(function(m) {
+        if (m.type !== 'childList') return;
+        m.addedNodes.forEach(function(node) {
+          if (node.nodeType !== 1) return;
+          patches.forEach(function(p) {
+            if (node.id === p.id || (node.querySelector && node.querySelector('#' + p.id))) ensureControls(p);
+          });
         });
       });
     }).observe(document.body, { childList: true, subtree: true });
@@ -32273,29 +32772,11 @@ window.applyLangRefreshers = function () {
       : (typeof openCustPayReport === 'function' ? openCustPayReport : null);
     if (_cprRe) { try { _cprRe(); } catch (e) {} }
   }
-  // Copy Project 密码弹窗
-  var cpw = g('copyPwdOverlay');
-  if (cpw && cpw.getBoundingClientRect().height > 0) {
-    // 用权威字典 I18N[CUR_LANG]，避免中间字典缺键导致文案停留旧语言
-    var tt = (window.I18N && window.I18N[window.CUR_LANG]) ? window.I18N[window.CUR_LANG] : t;
-    var cpt = g('copyPwdTitle'); if (cpt) cpt.innerText = tt.btn_copy || tt.copy_pwd_title || cpt.innerText;
-    var cph = g('copyPwdHint'); if (cph) cph.innerText = tt.copy_pwd_hint || cph.innerText;
-    var cpe = g('copyPwdError'); if (cpe) cpe.innerText = tt.copy_pwd_error || cpe.innerText;
-    var cpi = g('copyPwdInput'); if (cpi && tt.copy_pwd_placeholder) cpi.placeholder = tt.copy_pwd_placeholder;
-    var cpc2 = g('copyPwdCancel'); if (cpc2 && tt.btnCancel) cpc2.innerText = tt.btnCancel;
-    var cpo2 = g('copyPwdOk'); if (cpo2 && tt.btnConfirm) cpo2.innerText = tt.btnConfirm;
-  }
   // ⑥ 明细查看弹窗（开着时刷新 编辑/关闭 按钮）
   var dvBox = g('detailViewModal');
   if (dvBox && dvBox.classList.contains('show')) {
     var dvE = g('dvBtnEdit'); if (dvE) dvE.textContent = '✏️ ' + (t.detail_edit || '编辑');
     var dvC = g('dvBtnClose'); if (dvC) dvC.textContent = t.detail_close || '关闭';
-  }
-  // 复制项目弹窗
-  var cp = g('copyPwdTitle');
-  if (on(cp)) {
-    var b1 = g('copyPwdCancel'); if (b1) b1.innerText = t.btnCancel || b1.innerText;
-    var b2 = g('copyPwdOk'); if (b2) b2.innerText = t.btnConfirm || b2.innerText;
   }
   // 橙色确认弹窗：生效方式红字随语言刷新
   var po = g('crmOrangeConfirmPersist');

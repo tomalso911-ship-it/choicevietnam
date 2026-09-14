@@ -362,6 +362,7 @@ def init_db():
         doc_addendum_cnt INTEGER DEFAULT 0,
         doc_view_addendum TEXT DEFAULT '',
         doc_remark TEXT DEFAULT '',
+        concrete_floor_spec TEXT DEFAULT '',
 
         attachments TEXT DEFAULT '[]',
         supp_summary TEXT DEFAULT '[]'
@@ -508,6 +509,11 @@ def init_db():
     # ★ V40：won_projects 省份列（本地 SQLite 无 100 列限制，直接加列；云端走映射表）
     try:
         c.execute("ALTER TABLE won_projects ADD COLUMN province TEXT DEFAULT ''")
+    except sqlite3.OperationalError:
+        pass
+    # ★ 水泥漏缝地板规格 JSON
+    try:
+        c.execute("ALTER TABLE won_projects ADD COLUMN concrete_floor_spec TEXT DEFAULT ''")
     except sqlite3.OperationalError:
         pass
     # ★ V40：WON 省份自动填充（与云端 wonlost.js 的 WON_PROV_FILL 列表一致）：
@@ -1342,7 +1348,6 @@ def safe_name(s):
 ALLOWED_EXT = {".pdf", ".jpg", ".jpeg", ".png", ".gif", ".webp", ".xls", ".xlsx", ".doc", ".docx", ".txt"}
 
 # ===================== API：登录 / 密码 =====================
-@app.route("/api/login", methods=["POST"])
 def _verify_cloud_password(stored, password):
     """校验云端 Worker 同款密码：pbkdf2$迭代$盐hex$哈希hex（PBKDF2-SHA256/256位）。
     历史明文（无前缀）直接比对。"""
@@ -1410,6 +1415,7 @@ def _cloud_mirror_login(conn, username, password):
         return None, ''
 
 
+@app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json(force=True, silent=True) or {}
     # 统一转小写：手机键盘首字母自动大写会输入 "Tom"，而库存的是 "tom"，
@@ -2473,7 +2479,7 @@ def create_project():
         "agi_payable_rmb","agi_payable_usd","agi_payable_vnd",
         "agi_pay_count","agi_paid_rmb","agi_paid_usd","agi_paid_vnd",
         "agi_unpaid_rmb","agi_unpaid_usd","agi_unpaid_vnd","agi_remark",
-        "doc_equip","doc_install","doc_both","doc_addendum_cnt","doc_remark",
+        "doc_equip","doc_install","doc_both","doc_addendum_cnt","doc_remark","concrete_floor_spec",
         # ★ 三语备注列
         "cust_remark_zh","cust_remark_en","cust_remark_vi",
         "gs_remark_zh","gs_remark_en","gs_remark_vi",
@@ -2485,7 +2491,7 @@ def create_project():
         if f in data:
             cols.append(f)
             v = data[f]
-            if f.startswith(("equip_","superv_","fb_","cc_","inst_","total_","cust_","gs_","agi_","vat_","doc_")) and f not in ("cust_remark","gs_remark","gs_comm_pct","agi_remark","doc_remark","doc_equip","doc_install","doc_both","cust_remark_zh","cust_remark_en","cust_remark_vi","gs_remark_zh","gs_remark_en","gs_remark_vi","agi_remark_zh","agi_remark_en","agi_remark_vi"):
+            if f.startswith(("equip_","superv_","fb_","cc_","inst_","total_","cust_","gs_","agi_","vat_","doc_")) and f not in ("cust_remark","gs_remark","gs_comm_pct","agi_remark","doc_remark","doc_equip","doc_install","doc_both","concrete_floor_spec","cust_remark_zh","cust_remark_en","cust_remark_vi","gs_remark_zh","gs_remark_en","gs_remark_vi","agi_remark_zh","agi_remark_en","agi_remark_vi"):
                 try:
                     v = int(v or 0)
                 except:
@@ -2564,7 +2570,7 @@ def update_project(pid):
         "agi_payable_rmb","agi_payable_usd","agi_payable_vnd",
         "agi_pay_count","agi_paid_rmb","agi_paid_usd","agi_paid_vnd",
         "agi_unpaid_rmb","agi_unpaid_usd","agi_unpaid_vnd","agi_remark",
-        "doc_equip","doc_install","doc_both","doc_addendum_cnt","doc_remark",
+        "doc_equip","doc_install","doc_both","doc_addendum_cnt","doc_remark","concrete_floor_spec",
         # ★ 三语备注列
         "cust_remark_zh","cust_remark_en","cust_remark_vi",
         "gs_remark_zh","gs_remark_en","gs_remark_vi",
@@ -2576,7 +2582,7 @@ def update_project(pid):
         if f in data:
             sets.append(f"{f}=?")
             v = data[f]
-            if f.startswith(("equip_","superv_","fb_","cc_","inst_","total_","cust_","gs_","agi_","vat_","doc_")) and f not in ("cust_remark","gs_remark","gs_comm_pct","agi_remark","doc_remark","doc_equip","doc_install","doc_both","cust_remark_zh","cust_remark_en","cust_remark_vi","gs_remark_zh","gs_remark_en","gs_remark_vi","agi_remark_zh","agi_remark_en","agi_remark_vi"):
+            if f.startswith(("equip_","superv_","fb_","cc_","inst_","total_","cust_","gs_","agi_","vat_","doc_")) and f not in ("cust_remark","gs_remark","gs_comm_pct","agi_remark","doc_remark","doc_equip","doc_install","doc_both","concrete_floor_spec","cust_remark_zh","cust_remark_en","cust_remark_vi","gs_remark_zh","gs_remark_en","gs_remark_vi","agi_remark_zh","agi_remark_en","agi_remark_vi"):
                 try:
                     v = int(v or 0)
                 except:
@@ -3476,6 +3482,27 @@ def upload_won_doc(pid):
     if slot:
         _cleanup_replaced_pdf(row[slot], fname)
     return jsonify({"ok":True, "filename": fname, "url": f"/uploads/{fname}"})
+
+@app.route("/api/won-projects/<int:pid>/documents", methods=["DELETE"])
+def delete_won_doc(pid):
+    data = request.get_json(force=True, silent=True) or {}
+    slot = (request.args.get("slot") or request.form.get("slot") or data.get("slot") or "").strip()
+    if slot not in ("doc_equip", "doc_install", "doc_both"):
+        return jsonify({"error": "invalid slot"}), 400
+    conn = get_db()
+    row = conn.execute(f"SELECT id, {slot} FROM won_projects WHERE id=?", (pid,)).fetchone()
+    if not row:
+        conn.close()
+        return jsonify({"error": "not found"}), 404
+    old_val = row[slot]
+    conn.execute(
+        f"UPDATE won_projects SET {slot}=?, updated_at=datetime('now','localtime') WHERE id=?",
+        ("", pid),
+    )
+    conn.commit()
+    conn.close()
+    _rm_upload_file(old_val)
+    return jsonify({"ok": True})
 
 # ===================== API：补充协议摘要 =====================
 @app.route("/api/won-projects/<int:pid>/supp-summary", methods=["PUT"])
@@ -4734,6 +4761,157 @@ def api_translate():
         return jsonify({"ok": True, "text": _text})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 502
+
+# ===================== 服务端备注三语补翻（复刻云端 M13）=====================
+# 触发：前端列表加载后 fire 调用 /api/translate-remarks?table=...&limit=N
+# 作用：扫描表内缺失的 remark_zh/en/vi，用 Google 翻译补齐并写回 SQLite。
+# 表结构差异：
+#   crm_projects / lost_projects：remark_zh/en/vi 独立列（缺列时自动 ALTER）
+#   won_projects：三语 JSON 打包在 cust/gs/agi_remark 列
+# ==========================================================================
+_TRANSLATE_CACHE = {}  # "text|target" -> translation
+
+
+def _google_translate_single(text, target):
+    key = text + "|" + target
+    if key in _TRANSLATE_CACHE:
+        return _TRANSLATE_CACHE[key]
+    u = ("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl="
+         + urllib.parse.quote(target) + "&dt=t&q=" + urllib.parse.quote(text))
+    _req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(_req, timeout=8) as _resp:
+        _data = json.loads(_resp.read().decode("utf-8"))
+    _text = "".join(seg[0] for seg in (_data[0] or []) if seg and seg[0])
+    if _text:
+        _TRANSLATE_CACHE[key] = _text
+    return _text
+
+
+def _parse_tri(v):
+    if v and isinstance(v, dict):
+        return {"zh": v.get("zh") or "", "en": v.get("en") or "", "vi": v.get("vi") or ""}
+    s = "" if v is None else str(v)
+    try:
+        o = json.loads(s)
+        if o and isinstance(o, dict) and not isinstance(o, list):
+            return {"zh": o.get("zh") or "", "en": o.get("en") or "", "vi": o.get("vi") or ""}
+    except Exception:
+        pass
+    return {"zh": s, "en": "", "vi": ""}
+
+
+@app.route("/api/translate-remarks", methods=["GET"])
+def api_translate_remarks():
+    table = (request.args.get("table") or "").strip()
+    limit = min(int(request.args.get("limit") or "40"), 80)
+
+    TABLES = {
+        "crm_projects":  {"cols": ["remark"], "json": False},
+        "lost_projects": {"cols": ["remark"], "json": False},
+        "won_projects":  {"cols": ["cust_remark", "gs_remark", "agi_remark"], "json": True},
+    }
+    conf = TABLES.get(table)
+    if not conf:
+        return jsonify({"ok": False, "error": "bad table"}), 400
+
+    conn = get_db()
+    try:
+        c = conn.cursor()
+        # 独立列表缺列时幂等补齐
+        if not conf["json"]:
+            for s in ("zh", "en", "vi"):
+                try:
+                    c.execute(f"ALTER TABLE {table} ADD COLUMN remark_{s} TEXT DEFAULT ''")
+                except sqlite3.OperationalError:
+                    pass
+
+        rows = [dict(r) for r in c.execute(f"SELECT * FROM {table}").fetchall()]
+
+        jobs = []
+        for row in rows:
+            for col in conf["cols"]:
+                tri = _parse_tri(row.get(col))
+                has = {
+                    "zh": bool(tri["zh"].strip()),
+                    "en": bool(tri["en"].strip()),
+                    "vi": bool(tri["vi"].strip()),
+                }
+                if not has["zh"] and not has["en"] and not has["vi"]:
+                    continue
+                missing = [l for l in ("en", "vi", "zh") if not has[l]]
+                if not missing:
+                    continue
+                src_lang = "zh" if has["zh"] else ("en" if has["en"] else "vi")
+                src_text = tri[src_lang]
+                for lang in missing:
+                    jobs.append({
+                        "row": row,
+                        "col": col,
+                        "tri": tri,
+                        "lang": lang,
+                        "src_text": src_text,
+                    })
+
+        if not jobs:
+            return jsonify({"ok": True, "filled": 0, "remaining": 0})
+
+        # 只翻译未缓存的任务，并受 limit 限制
+        todo = [j for j in jobs if (j["src_text"] + "|" + j["lang"]) not in _TRANSLATE_CACHE][:limit]
+        for j in todo:
+            try:
+                j["trans"] = _google_translate_single(j["src_text"], j["lang"])
+            except Exception:
+                j["trans"] = ""
+
+        for j in todo:
+            if j.get("trans"):
+                j["tri"][j["lang"]] = j["trans"]
+
+        filled = 0
+        applied = set()
+        updates_by_col = {col: [] for col in conf["cols"]}
+        for j in todo:
+            if not j.get("trans"):
+                continue
+            rk = str(j["row"]["id"]) + "|" + j["col"]
+            if rk in applied:
+                continue
+            applied.add(rk)
+            if conf["json"]:
+                updates_by_col[j["col"]].append((
+                    json.dumps({"zh": j["tri"]["zh"], "en": j["tri"]["en"], "vi": j["tri"]["vi"]}, ensure_ascii=False),
+                    j["row"]["id"],
+                ))
+            else:
+                updates_by_col[j["col"]].append((
+                    j["tri"]["zh"], j["tri"]["en"], j["tri"]["vi"],
+                    j["row"]["id"],
+                ))
+
+        for col, vals in updates_by_col.items():
+            if not vals:
+                continue
+            if conf["json"]:
+                c.executemany(f"UPDATE {table} SET {col}=? WHERE id=?", vals)
+            else:
+                c.executemany(f"UPDATE {table} SET remark_zh=?, remark_en=?, remark_vi=? WHERE id=?", vals)
+            filled += len(vals)
+
+        conn.commit()
+
+        remaining = 0
+        for j in jobs:
+            key = j["src_text"] + "|" + j["lang"]
+            if not (j.get("trans") or key in _TRANSLATE_CACHE):
+                remaining += 1
+
+        return jsonify({"ok": True, "filled": filled, "remaining": remaining})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"ok": False, "error": str(e)}), 502
+    finally:
+        conn.close()
+
 
 # ===================== 金属价格走势 + 历史汇率（免费数据源：雅虎财经，无需 API Key）=====================
 # 4 个品种：中国铁(铁矿石) / 不锈钢(热轧卷板) / 锌锭 / 塑料(石化原料)，均为国际真实基准价（USD/吨）。

@@ -1,0 +1,88 @@
+============================================================
+  方案名称：水泥漏缝地板规格弹窗保存改造
+  创建时间：2026-09-14
+  问题：原弹窗底部按钮为“关闭”，仅关闭弹窗，不校验也不保存
+        水泥漏缝地板规格数据。
+  作用：把底部按钮改为“保存”，增加必填校验；校验失败时以三语
+        提示居中弹窗提示用户；校验通过时把表格数据持久化到
+        won_projects.concrete_floor_spec。
+  恢复方式：
+    从快照目录复制 index.html 回项目根目录即可回退。
+============================================================
+
+【前端改动】
+1. 弹窗底部按钮
+   位置：#slatsSpecModal .modal 内 #slatsSpecBtnSave
+   旧：onclick="closeSlatsSpecModal()" data-i18n="btnCancel"
+   新：onclick="saveSlatsSpec()" data-i18n="btnSave"
+
+2. 隐藏域
+   在 WON 主表单“水泥漏缝地板规格”编辑按钮旁新增：
+   <input type="hidden" id="w_concrete_floor_spec" value="">
+   用于在 WON 主表单未保存时暂存规格数据。
+
+3. 新增/修改 JS 函数（index.html）
+   - slatsSpecLoad()：从 w_concrete_floor_spec 读取 JSON，重建表格；
+                     无数据时默认插入一行。
+   - openSlatsSpecModal()：改为先调用 slatsSpecLoad()，再 rebuild。
+   - slatsSpecSerialize()：把表格按分组序列化为 JSON 数组。
+   - slatsSpecValidate()：检查所有必填列是否已填。
+   - saveSlatsSpec()：
+     · 校验失败 → showSaveOk(t.slats_fill_required)，并聚焦首个空框
+     · 校验通过 → 写回隐藏域
+     · 若 wonModal.dataset.id 存在 → PUT /api/won-projects/{id} 立即写库
+     · 若新建项目 → 数据暂存隐藏域，随主表单保存时一起写入
+
+4. 必填列
+   猪舍(1)、单元/栋(3)、长/单元(4)、宽/单元(5)、高/单元(6)、
+   栋数/整场(7)、长(8)、宽(9)、高(10)、数量/单元(11)、
+   钢网层数(15)、条/长度方向(16)、钢筋尺寸/长度方向(17)、
+   条/宽度方向(18)、钢筋尺寸/宽度方向(19)
+   非必填：房舍编号(2)、备注(20)、以及四个计算列(12-14 等)。
+
+5. 三语提示
+   slats_fill_required：
+     zh: "请完成全部必填框！"
+     en: "Please complete all required fields!"
+     vi: "Vui lòng điền đầy đủ các trường bắt buộc!"
+
+6. 主表单收集
+   collectWonFormData() 新增 concrete_floor_spec 字段，来自
+   w_concrete_floor_spec.value。
+
+7. 打开编辑时回填
+   openWonModal(id) 中把 p.concrete_floor_spec 回填到隐藏域。
+
+8. 全局提示框居中
+   .addm-alert-overlay 的 align-items 由 flex-start 改为 center，
+   top 由 56px 改为 0，实现屏幕中央显示。
+
+【后端改动】
+  无。app.py 的 /api/won-projects POST/PUT 已包含 concrete_floor_spec
+  字段，且排除在数值转换之外，可直接存储 JSON 字符串。
+
+【数据格式示例】
+  [
+    {
+      "pig_house":"1",
+      "house_code":"",
+      "unit_per_building":"2",
+      "len_per_unit":"3.00",
+      "wid_per_unit":"4.00",
+      "hgt_per_unit":"2.00",
+      "building_count":"5",
+      "floor_len":"1000",
+      "floor_wid":"200",
+      "floor_hgt":"50",
+      "qty_unit":"10",
+      "qty_whole":"100",
+      "sqm_unit":"2.00",
+      "sqm_whole":"20.00",
+      "mesh_layers":"1",
+      "bar_len":"5",
+      "rebar_size_len":"φ6",
+      "bar_wid":"5",
+      "rebar_size_wid":"φ6",
+      "remark":""
+    }
+  ]

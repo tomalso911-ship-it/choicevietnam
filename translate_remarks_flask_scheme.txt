@@ -1,0 +1,46 @@
+============================================================
+  方案名称：Flask 后端 /api/translate-remarks 端点
+  创建时间：2026-09-14
+  问题：前端列表加载后会调用 /api/translate-remarks?table=...&limit=N，
+        但 Flask 后端（app.py）原本只实现了 /api/translate，没有
+        /api/translate-remarks，导致浏览器控制台报 404。
+  作用：补齐该端点，使本地 SQLite 版本也能像 Cloudflare Worker
+        版本一样，把缺失的备注三语（zh/en/vi）自动翻译并写回数据库。
+  恢复方式：
+    若需回退，从快照目录复制 app.py 回项目根目录，
+    或删除 app.py 中 api_translate_remarks() 函数及上方
+    _TRANSLATE_CACHE / _google_translate_single / _parse_tri。
+============================================================
+
+【涉及的表与列】
+- crm_projects：remark_zh / remark_en / remark_vi（remark 列的原始中文
+  在 init_db 时已迁移到 remark_zh）
+- lost_projects：同上
+- won_projects：cust_remark / gs_remark / agi_remark 列内保存 JSON
+  {"zh":"...","en":"...","vi":"..."}
+
+【核心逻辑】
+1. 校验 table 参数，仅允许 crm_projects / lost_projects / won_projects。
+2. 对 crm_projects / lost_projects 幂次执行 ALTER TABLE 补全三语列。
+3. 读取全表，解析每行备注的三语对象：
+   - JSON 字符串/对象直接解析 zh/en/vi
+   - 普通字符串视为中文历史数据
+4. 收集“已有源语言、缺目标语言”的任务。
+5. 用 Google Translate（translate.googleapis.com，UA 伪装）补齐缺失语言；
+   结果写入进程级内存缓存 _TRANSLATE_CACHE，避免重复翻译。
+6. 受 limit 参数限制每轮最多处理 N 条（默认 40，上限 80）。
+7. 按行+列去重后批量 UPDATE 写回数据库。
+8. 返回 {ok:true, filled:N, remaining:M}。
+
+【改动位置】
+  app.py 中 api_translate() 函数之后、金属价格走势模块之前。
+
+【新增函数】
+  _TRANSLATE_CACHE          # 模块级内存缓存
+  _google_translate_single  # 带缓存的 Google 单次翻译
+  _parse_tri                # 把任意值解析成 {zh,en,vi}
+  api_translate_remarks     # Flask 路由 /api/translate-remarks
+
+【验证方式】
+  浏览器访问：http://localhost:5050/api/translate-remarks?table=crm_projects&limit=5
+  应返回 200 与类似 {"ok":true,"filled":0,"remaining":0} 的 JSON。

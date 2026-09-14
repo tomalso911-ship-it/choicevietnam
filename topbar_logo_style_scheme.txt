@@ -1,0 +1,19 @@
+============================================================
+  方案名称：顶部导航栏 CHOICE + SLATS VIET NAM Logo 样式
+  创建时间：2026-09-14
+  作用：让顶部导航栏 logo 中 "SLATS VIET NAM" 与 "CHOICE"
+        字号、字重保持一致，并把颜色改为黑色。
+  恢复方式：
+    把下面两段 CSS 贴回 index.html 中对应位置。
+    第一段在常规样式区（搜索 .tb-logo-name 即可定位）；
+    第二段在 @media 响应式区（同样搜索 .tb-logo-name）。
+============================================================
+
+【常规样式】
+.tb-logo-mark { font-size:20px; font-weight:800; color:#D32F2F; letter-spacing:.5px; pointer-events:none; }
+.tb-logo-name { font-size:20px; font-weight:800; color:#000000; pointer-events:none; }
+
+
+【响应式样式（小屏幕）】
+    .tb-logo-mark { font-size: 15px; }
+    .tb-logo-name { font-size: 15px; }

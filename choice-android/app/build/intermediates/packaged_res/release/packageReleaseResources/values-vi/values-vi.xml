@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hệ thống quản lý CHOICE của Việt Nam</string>
+    <string name="exit_confirm">Nhấn lại nút quay lại để thoát</string>
+    <string name="load_failed">Không thể kết nối. Kéo xuống để thử lại.</string>
+    <string name="loading">Đang tải…</string>
+    <string name="no_network">Không có kết nối mạng. Vui lòng kiểm tra mạng và thử lại.</string>
+    <string name="retry">Thử lại</string>
+</resources>

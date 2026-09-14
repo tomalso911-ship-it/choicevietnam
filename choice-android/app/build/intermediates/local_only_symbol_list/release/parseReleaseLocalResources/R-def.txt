@@ -1,0 +1,23 @@
+R_DEF: Internal format may change without notice
+local
+color accent
+color app_bg
+color ic_launcher_background
+color primary
+id errorLayout
+id errorText
+id progressBar
+id retryButton
+id rootLayout
+id swipeRefresh
+id webView
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string exit_confirm
+string load_failed
+string loading
+string no_network
+string retry
+style Theme.Choice

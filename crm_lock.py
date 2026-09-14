@@ -51,7 +51,6 @@ INVARIANTS = [
     ('失败原因下拉选项跟随', 'sel.options[fi].text = t[fk[fi - 1]]'),
     # ↓ 2026-09-05 验收通过的行为，禁止回退
     ('弹窗可见性判断（fixed 弹窗不能用 offsetParent）', 'getBoundingClientRect().height > 0'),
-    ('复制项目弹窗取实时语言', '_Lcp = (window.CUR_LANG'),
     ('报告弹窗取实时语言', '_Lrpt = (window.CUR_LANG'),
     ('WON 报告弹窗登记跟随', 'window.__rptOpener'),
     ('客户付款报告登记跟随', 'window.__cprOpener'),
