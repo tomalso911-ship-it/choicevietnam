@@ -1165,6 +1165,9 @@ function _ovLoadChartLib(cb){
     /* 只恢复带 .print-target 标记的打印目标（由 printModalById 在调用 window.print() 前打标） */
     body > .print-target{display:block !important;}
     .print-target{position:static !important;background:none !important;padding:0 !important;margin:0 !important;overflow:visible !important;height:auto !important;}
+    /* ★ 打印保留背景色/斑马线/图表配色：浏览器默认 print-color-adjust:economy 会丢弃所有背景，
+       必须强制 exact 才能把红表头、斑马线、黄色高亮、饼图配色一起打出来 */
+    .print-target,.print-target *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important;}
 
     /* —— 客户付款智能报告 / AGI付款报告（cpr-overlay）—— */
     .print-target .cpr-box{position:static !important;top:auto !important;bottom:auto !important;left:auto !important;right:auto !important;margin:0 !important;box-shadow:none !important;max-width:100% !important;width:100% !important;height:auto !important;overflow:visible !important;resize:none !important;}
@@ -4498,10 +4501,19 @@ function _ovLoadChartLib(cb){
             <div id="slatsRebarDataTable" class="slats-report-data-table-wrap"></div>
           </div>
         </div>
+        <div class="slats-report-section">
+          <h3 data-i18n="slats_report_material_distribution">水泥/黄砂/石子</h3>
+          <div id="slatsMaterialTable"></div>
+        </div>
+        <div class="slats-report-section">
+          <h3 data-i18n="slats_report_summary">总概括</h3>
+          <div id="slatsReportSummary" class="slats-report-summary"></div>
+        </div>
       </div>
     </div>
     <div style="margin-top:14px;display:flex;gap:10px;">
       <button class="btn btn-primary" onclick="closeSlatsReportModal()" id="slatsReportBtnClose" data-i18n="btnCancel">关闭</button>
+      <button class="btn btn-primary" onclick="printModalById('slatsReportModal')" data-i18n="slats_report_print_pdf">打印PDF</button>
     </div>
   </div>
 </div>
@@ -4578,7 +4590,24 @@ function _ovLoadChartLib(cb){
 .slats-report-chart-wrap { flex: 1 1 420px; height: 320px; position: relative; min-width: 300px; }
 .slats-report-data-table-wrap { flex: 0 1 340px; align-self: center; margin-top: 0; }
 .slats-report-data-table-wrap .slats-report-table { font-size: 12px; width: 100%; max-width: 340px; margin: 0 auto; }
+.slats-report-summary { background: #fffdf5; border: 1px solid #f0e2b6; border-left: 4px solid #E53935; border-radius: 10px; padding: 12px 16px; font-size: 13px; line-height: 2; color: #444; }
+.slats-report-summary p { margin: 0; }
 .slats-report-empty { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
+/* ===== 智能报告打印（复用全局 .print-target display 方案，取消滚动限制保证全文输出） ===== */
+@media print{
+  .print-target .modal{max-height:none !important;width:100% !important;max-width:none !important;box-shadow:none !important;border-radius:0 !important;}
+  .print-target #slatsReportBody{max-height:none !important;overflow:visible !important;padding:0 !important;}
+  .print-target .close{display:none !important;}
+  .print-target .slats-report-section{page-break-inside:avoid;}
+  /* 表头 sticky 在打印下会出现位置错乱，打印时改为普通表头 */
+  .print-target .slats-report-table thead th{position:static !important;}
+  /* 图表与表格改为上下堆叠，canvas 强制缩放到容器宽度，避免饼图图例压到数据表上 */
+  .print-target .slats-report-row{display:block !important;}
+  .print-target .slats-report-chart-wrap{width:100% !important;height:auto !important;min-width:0 !important;margin:0 auto 10px !important;}
+  .print-target .slats-report-chart-wrap canvas{width:100% !important;height:auto !important;max-width:100% !important;}
+  .print-target .slats-report-data-table-wrap{width:100% !important;max-width:none !important;flex:none !important;margin:0 auto !important;}
+  .print-target .slats-report-data-table-wrap .slats-report-table{max-width:none !important;}
+}
 </style>
 
 <!-- ==================== CRM 项目模态框 ==================== -->
@@ -5394,7 +5423,7 @@ var I18N = {
     login_err_need:"请输入账号和密码", login_err_fail:"登录失败", login_err_net:"无法连接服务器，请先启动后端。",
     login_fp_btn:"🔒 指纹快速登录", login_footer:"CHOICE SLATS VIET NAM",
     wonTitle:"签约项目", won_province:"省份", won_doc_equip:"设备合同", won_doc_install:"安装合同", won_doc_delete:"删除", won_doc_del_title:"确认删除", won_doc_del_confirm:"确定删除该合同文件？", won_doc_req_note:"设备合同 / 安装合同：至少上传一项", slats_spec_label:"水泥漏缝地板规格", slats_edit_btn:"编辑", slats_view_report_btn:"查看智能报告",
-    slats_report_overview:"水泥板使用情况概述表", slats_report_house_distribution:"猪舍分布分析", slats_report_spec_distribution:"水泥板规格分布分析", slats_report_rebar_distribution:"钢筋规格分布分析", slats_report_total:"总计", slats_report_no_data:"暂无水泥漏缝地板规格数据", slats_report_house_desc:"共 {0} 种猪舍类型，累计 {1} 栋", slats_report_spec_desc:"共 {0} 种规格", slats_report_rebar_desc:"共 {0} 种钢筋规格", slats_report_data_label:"类别", slats_report_data_value:"数值", slats_report_data_pct:"占比", slats_report_no_spec:"未指定规格", slats_report_rebar_col_size:"钢筋尺寸", slats_report_rebar_col_len:"需求长度(m)", slats_report_rebar_col_weight:"需求总量(Tons)", slats_report_rebar_col_pct:"总量占比",
+    slats_report_overview:"水泥板使用情况概述表", slats_report_house_distribution:"猪舍分布分析", slats_report_spec_distribution:"水泥板规格分布分析", slats_report_rebar_distribution:"钢筋规格分布分析", slats_report_total:"总计", slats_report_no_data:"暂无水泥漏缝地板规格数据", slats_report_house_desc:"共 {0} 种猪舍类型，累计 {1} 栋", slats_report_spec_desc:"共 {0} 种规格", slats_report_rebar_desc:"共 {0} 种钢筋规格", slats_report_data_label:"类别", slats_report_data_value:"数值", slats_report_data_pct:"占比", slats_report_no_spec:"未指定规格", slats_report_rebar_col_size:"钢筋尺寸", slats_report_rebar_col_len:"需求长度(m)", slats_report_rebar_col_weight:"需求总量(Tons)", slats_report_rebar_col_pct:"总量占比", slats_report_material_distribution:"水泥/黄砂/石子", slats_report_mat_spec:"类别", slats_report_mat_qty:"数量/整场", slats_report_mat_cement:"水泥/吨", slats_report_mat_sand:"黄砂/吨", slats_report_mat_gravel:"石子/吨", slats_report_print_pdf:"打印PDF", slats_report_summary:"总概括", slats_report_summary_line1:"全场共{0}种房舍类型、{1}栋、{2}个单元；铺设水泥漏缝地板{3}块（{4}种规格），总面积{5}m²，混凝土总体积{6}m³。", slats_report_summary_line2:"材料需求：水泥{0}吨、黄砂{1}吨、石子{2}吨；钢筋合计{3}吨、总长{4}m；每平米含钢量{5}kg/m²，平均板厚{6}cm。",
     slats_table_no:"序号", slats_table_pig_house:"猪舍", slats_table_house_code:"房舍编号", slats_table_house_info:"房舍信息",
     slats_table_unit_per_building:"单元\n/栋",
     slats_table_len_unit:"长\n/单元", slats_table_wid_unit:"宽\n/单元", slats_table_hgt_unit:"高\n/单元", slats_table_building_count:"栋数\n/整场",
@@ -6147,7 +6176,7 @@ crm_yes:"是", crm_no_yes:"否", lostRestore:"转回至潜在项目", lostRestor
     login_err_need:"Please enter username and password", login_err_fail:"Login failed", login_err_net:"Cannot connect to server. Please start the backend first.",
     login_fp_btn:"🔒 Fingerprint Login", login_footer:"CHOICE SLATS VIET NAM",
     wonTitle:"Won Projects", won_province:"Province", won_doc_equip:"Equipment Contract", won_doc_install:"Installation Contract", won_doc_delete:"Delete", won_doc_del_title:"Confirm Delete", won_doc_del_confirm:"Delete this contract file?", won_doc_req_note:"Equipment / Installation Contract: upload at least one", slats_spec_label:"Concrete Slats Specifications", slats_edit_btn:"Edit", slats_view_report_btn:"View Smart Report",
-    slats_report_overview:"Cement Slats Usage Overview", slats_report_house_distribution:"House Distribution Analysis", slats_report_spec_distribution:"Cement Slats Specification Distribution", slats_report_rebar_distribution:"Rebar Specification Distribution", slats_report_total:"Total", slats_report_no_data:"No concrete slats specification data", slats_report_house_desc:"{0} house types, {1} buildings in total", slats_report_spec_desc:"{0} specifications in total", slats_report_rebar_desc:"{0} rebar specifications in total", slats_report_data_label:"Category", slats_report_data_value:"Value", slats_report_data_pct:"Proportion", slats_report_no_spec:"Unspecified", slats_report_rebar_col_size:"Rebar Size", slats_report_rebar_col_len:"Required Length(m)", slats_report_rebar_col_weight:"Required Total(Tons)", slats_report_rebar_col_pct:"Weight Proportion",
+    slats_report_overview:"Cement Slats Usage Overview", slats_report_house_distribution:"House Distribution Analysis", slats_report_spec_distribution:"Cement Slats Specification Distribution", slats_report_rebar_distribution:"Rebar Specification Distribution", slats_report_total:"Total", slats_report_no_data:"No concrete slats specification data", slats_report_house_desc:"{0} house types, {1} buildings in total", slats_report_spec_desc:"{0} specifications in total", slats_report_rebar_desc:"{0} rebar specifications in total", slats_report_data_label:"Category", slats_report_data_value:"Value", slats_report_data_pct:"Proportion", slats_report_no_spec:"Unspecified", slats_report_rebar_col_size:"Rebar Size", slats_report_rebar_col_len:"Required Length(m)", slats_report_rebar_col_weight:"Required Total(Tons)", slats_report_rebar_col_pct:"Weight Proportion", slats_report_material_distribution:"Cement/Sand/Gravel", slats_report_mat_spec:"Category", slats_report_mat_qty:"Qty/Farm", slats_report_mat_cement:"Cement/T", slats_report_mat_sand:"Sand/T", slats_report_mat_gravel:"Gravel/T", slats_report_print_pdf:"Print PDF", slats_report_summary:"Overall Summary", slats_report_summary_line1:"The farm has {0} house types, {1} buildings, {2} units; {3} slats ({4} specs) totaling {5} m² with {6} m³ of concrete.", slats_report_summary_line2:"Materials: {0} t cement, {1} t sand, {2} t gravel; rebar {3} t / {4} m; steel content {5} kg/m², average slab thickness {6} cm.",
     slats_table_no:"No.", slats_table_pig_house:"Pig\nHouse", slats_table_house_code:"House\nCode", slats_table_house_info:"House\nInfo",
     slats_table_unit_per_building:"Unit\n/Bldg",
     slats_table_len_unit:"L\n/Unit", slats_table_wid_unit:"W\n/Unit", slats_table_hgt_unit:"H\n/Unit", slats_table_building_count:"Bldgs\n/Whole",
@@ -6903,7 +6932,7 @@ crm_yes:"Yes", crm_no_yes:"No", lostRestore:"Restore to Prospect", lostRestoreTi
     login_err_need:"Vui lòng nhập tài khoản và mật khẩu", login_err_fail:"Đăng nhập thất bại", login_err_net:"Không thể kết nối máy chủ. Vui lòng khởi động backend trước.",
     login_fp_btn:"🔒 Đăng nhập vân tay", login_footer:"Hệ thống CHOICE SLATS VIET NAM",
     wonTitle:"Dự Án Thắng", won_province:"Tỉnh", won_doc_equip:"Hợp đồng thiết bị", won_doc_install:"Hợp đồng lắp đặt", won_doc_delete:"Xóa", won_doc_del_title:"Xác nhận xóa", won_doc_del_confirm:"Xóa hợp đồng này?", won_doc_req_note:"Hợp đồng thiết bị / lắp đặt：tải lên ít nhất một", slats_spec_label:"Thông số kỹ thuật sàn xi măng khe hở", slats_edit_btn:"Sửa", slats_view_report_btn:"Xem báo cáo thông minh",
-    slats_report_overview:"Bảng tổng quan sử dụng sàn xi măng", slats_report_house_distribution:"Phân tích phân bổ chuồng heo", slats_report_spec_distribution:"Phân tích phân bổ kích thước sàn xi măng", slats_report_rebar_distribution:"Phân tích phân bổ cỡ thép", slats_report_total:"Tổng cộng", slats_report_no_data:"Chưa có dữ liệu thông số sàn xi măng", slats_report_house_desc:"Có {0} loại chuồng heo, tổng {1} tòa", slats_report_spec_desc:"Có {0} loại kích thước", slats_report_rebar_desc:"Có {0} loại cỡ thép", slats_report_data_label:"Danh mục", slats_report_data_value:"Giá trị", slats_report_data_pct:"Tỷ lệ", slats_report_no_spec:"Chưa xác định", slats_report_rebar_col_size:"Cỡ thép", slats_report_rebar_col_len:"Chiều dài cần(m)", slats_report_rebar_col_weight:"Tổng lượng cần(Tons)", slats_report_rebar_col_pct:"Tỷ lệ trọng lượng",
+    slats_report_overview:"Bảng tổng quan sử dụng sàn xi măng", slats_report_house_distribution:"Phân tích phân bổ chuồng heo", slats_report_spec_distribution:"Phân tích phân bổ kích thước sàn xi măng", slats_report_rebar_distribution:"Phân tích phân bổ cỡ thép", slats_report_total:"Tổng cộng", slats_report_no_data:"Chưa có dữ liệu thông số sàn xi măng", slats_report_house_desc:"Có {0} loại chuồng heo, tổng {1} tòa", slats_report_spec_desc:"Có {0} loại kích thước", slats_report_rebar_desc:"Có {0} loại cỡ thép", slats_report_data_label:"Danh mục", slats_report_data_value:"Giá trị", slats_report_data_pct:"Tỷ lệ", slats_report_no_spec:"Chưa xác định", slats_report_rebar_col_size:"Cỡ thép", slats_report_rebar_col_len:"Chiều dài cần(m)", slats_report_rebar_col_weight:"Tổng lượng cần(Tons)", slats_report_rebar_col_pct:"Tỷ lệ trọng lượng", slats_report_material_distribution:"Xi măng/Cát/Đá", slats_report_mat_spec:"Danh mục", slats_report_mat_qty:"SL/Toàn bộ", slats_report_mat_cement:"Xi măng/T", slats_report_mat_sand:"Cát/T", slats_report_mat_gravel:"Đá/T", slats_report_print_pdf:"In PDF", slats_report_summary:"Tổng quan", slats_report_summary_line1:"Toàn trại có {0} loại chuồng, {1} tòa, {2} đơn vị; sử dụng {3} tấm sàn ({4} loại), tổng diện tích {5} m², tổng thể tích bê tông {6} m³.", slats_report_summary_line2:"Vật liệu: {0} tấn xi măng, {1} tấn cát, {2} tấn đá; sắt thép {3} tấn / {4} m; hàm lượng thép {5} kg/m², độ dày tấm trung bình {6} cm.",
     slats_table_no:"STT", slats_table_pig_house:"Chuồng\nheo", slats_table_house_code:"Mã\nchuồng", slats_table_house_info:"Thông tin\nchuồng",
     slats_table_unit_per_building:"Đơn vị\n/tòa",
     slats_table_len_unit:"Dài\n/Đơn vị", slats_table_wid_unit:"Rộng\n/Đơn vị", slats_table_hgt_unit:"Cao\n/Đơn vị", slats_table_building_count:"Số tòa\n/toàn bộ",
@@ -17443,9 +17472,10 @@ function openSlatsReportModal(){
       var c=document.getElementById(id);
       if(c && c.chart){ c.chart.destroy(); c.chart=null; }
     });
-    ['slatsHouseDataTable','slatsSpecDataTable','slatsRebarDataTable'].forEach(function(id){
+    ['slatsHouseDataTable','slatsSpecDataTable','slatsRebarDataTable','slatsMaterialTable'].forEach(function(id){
       var d=document.getElementById(id); if(d) d.innerHTML='';
     });
+    var sm=document.getElementById('slatsReportSummary'); if(sm) sm.innerHTML='';
     sweepI18n(modal);
     modal.classList.add('show');
     return;
@@ -17495,6 +17525,7 @@ function openSlatsReportModal(){
   var houseDist={};
   var specDist={};
   var rebarLen={'6':0,'8':0,'10':0,'12':0}; // 各规格钢筋总长度（米）
+  var matMap={}; // 水泥板规格 -> {长,宽,高,数量/整场}（智能统计实际出现的规格）
   var totalBuildings=0, totalQty=0, totalSqm=0;
   rows.forEach(function(r){
     var phKey=String(r.pig_house||'');
@@ -17509,6 +17540,8 @@ function openSlatsReportModal(){
     if(specKey==='××') specKey=(t.slats_report_no_spec||'未指定规格');
     if(!specDist[specKey]) specDist[specKey]=0;
     specDist[specKey]+=qty;
+    if(!matMap[specKey]) matMap[specKey]={ key:specKey, L:slatsParseNum(r.floor_len), W:slatsParseNum(r.floor_wid), H:slatsParseNum(r.floor_hgt), qty:0 };
+    matMap[specKey].qty+=qty;
     // 钢筋：L1 = (长-100)/1000 × 条/长度方向 × 钢网层数 × 数量/整场
     //       L2 = (宽-80)/1000 × 条/宽度方向 × 钢网层数 × 数量/整场（单位：米）
     var mesh=slatsParseNum(r.mesh_layers);
@@ -17521,6 +17554,13 @@ function openSlatsReportModal(){
       rebarLen[kWid]+=((slatsParseNum(r.floor_wid)-80)/1000)*slatsParseNum(r.bar_wid)*mesh*slatsParseNum(r.qty_whole);
     }
     totalBuildings+=bc; totalQty+=qty; totalSqm+=sqm;
+  });
+
+  // 栋数/单元数按组去重统计（每组只算一次，避免组内多规格行重复累加）
+  var totalBldgGroups=0, totalUnits=0;
+  groups.forEach(function(g){
+    totalBldgGroups+=slatsParseNum(g.building_count);
+    totalUnits+=slatsParseNum(g.unit_per_building)*slatsParseNum(g.building_count);
   });
 
   // 渲染概述表（带合并单元格）
@@ -17587,7 +17627,9 @@ function openSlatsReportModal(){
         '<td>'+_e(r.remark||'')+'</td></tr>';
     });
   });
-  ovHtml+='<tr class="slats-report-total"><td colspan="11">'+_e(t.slats_report_total||'总计')+'</td>'+
+  ovHtml+='<tr class="slats-report-total"><td colspan="7">'+_e(t.slats_report_total||'总计')+'</td>'+
+    '<td>'+slatsFmtNum(totalBldgGroups,0)+'</td>'+
+    '<td colspan="3"></td>'+
     '<td></td>'+
     '<td>'+slatsFmtNum(totalQty,0)+'</td>'+
     '<td></td>'+
@@ -17597,7 +17639,7 @@ function openSlatsReportModal(){
 
   // 文字说明
   var houseDesc=t.slats_report_house_desc||'共 {0} 种猪舍类型，累计 {1} 栋';
-  el('slatsReportHouseDesc').textContent=houseDesc.replace('{0}', Object.keys(houseDist).length).replace('{1}', slatsFmtNum(totalBuildings,0));
+  el('slatsReportHouseDesc').textContent=houseDesc.replace('{0}', Object.keys(houseDist).length).replace('{1}', slatsFmtNum(totalBldgGroups,0));
   var specDesc=t.slats_report_spec_desc||'共 {0} 种规格';
   el('slatsReportSpecDesc').textContent=specDesc.replace('{0}', Object.keys(specDist).length);
   var rebarDesc=t.slats_report_rebar_desc||'共 {0} 种钢筋规格';
@@ -17612,10 +17654,46 @@ function openSlatsReportModal(){
   var rebarWeightMap={};
   rebarStat.forEach(function(o){ if(o.tons>0) rebarWeightMap['φ'+o.size]=o.tons; });
 
+  // 水泥/黄砂/石子：单块板体积(m³) / 0.063 折算成 1500×600×70 标准板，
+  // 每标准板耗 水泥24.4kg / 黄砂22.6kg / 石子68kg，×数量/整场 ÷1000 得吨
+  var matRows=Object.keys(matMap).map(function(k){
+    var o=matMap[k];
+    var vol=(o.L*o.W*o.H)/1000000000; // 单块板体积(m³)
+    var std=vol/0.063;                // 折算 1500×600×70 标准板数
+    return { key:o.key, L:o.L, W:o.W, H:o.H, qty:o.qty, vol:vol,
+      cement:std*24.4*o.qty/1000, sand:std*22.6*o.qty/1000, gravel:std*68*o.qty/1000 };
+  });
+  matRows.sort(function(a,b){ return (a.L-b.L)||(a.W-b.W)||(a.H-b.H); });
+
+  // 总概括：规模 + 板材 + 材料 + 钢筋 + 单方指标（两句话，三语模板）
+  var houseTypeSet={};
+  var totalVol=0, matCem=0, matSand=0, matGrav=0;
+  rows.forEach(function(r){
+    houseTypeSet[String(r.pig_house||'')]=true;
+  });
+  matRows.forEach(function(o){
+    totalVol+=o.vol*o.qty; matCem+=o.cement; matSand+=o.sand; matGrav+=o.gravel;
+  });
+  var rebarLenTotal=SLATS_REBAR_SIZES.reduce(function(s,k){ return s+rebarLen[k]; },0);
+  var steelPerSqm=totalSqm>0?(totalTons*1000/totalSqm):0;
+  var thickCm=totalSqm>0?(totalVol/totalSqm*100):0;
+  var _sfmt=function(s){ for(var i=1;i<arguments.length;i++){ s=s.replace('{'+(i-1)+'}', String(arguments[i])); } return s; };
+  var _sumEl=document.getElementById('slatsReportSummary');
+  if(_sumEl){
+    var line1=_sfmt(t.slats_report_summary_line1||'全场共{0}种房舍类型、{1}栋、{2}个单元；铺设水泥漏缝地板{3}块（{4}种规格），总面积{5}m²，混凝土总体积{6}m³。',
+      Object.keys(houseTypeSet).length, slatsFmtNum(totalBldgGroups,0), slatsFmtNum(totalUnits,0),
+      slatsFmtNum(totalQty,0), Object.keys(specDist).length, slatsFmtNum(totalSqm,0), slatsFmtNum(totalVol,2));
+    var line2=_sfmt(t.slats_report_summary_line2||'材料需求：水泥{0}吨、黄砂{1}吨、石子{2}吨；钢筋合计{3}吨、总长{4}m；每平米含钢量{5}kg/m²，平均板厚{6}cm。',
+      slatsFmtNum(matCem,1), slatsFmtNum(matSand,1), slatsFmtNum(matGrav,1),
+      slatsFmtNum(totalTons,2), slatsFmtNum(rebarLenTotal,0), slatsFmtNum(steelPerSqm,1), slatsFmtNum(thickCm,1));
+    _sumEl.innerHTML='<p>'+line1+'</p><p>'+line2+'</p>';
+  }
+
   // 渲染数据表格
   _slatsRenderDistTable('slatsHouseDataTable', houseDist, totalSqm, 'm²', t);
   _slatsRenderDistTable('slatsSpecDataTable', specDist, totalQty, '', t);
   _slatsRenderRebarTable('slatsRebarDataTable', rebarStat, totalTons, t);
+  _slatsRenderMaterialTable('slatsMaterialTable', matRows, t);
 
   // 渲染图表
   _slatsLoadChartLib(function(){
@@ -17737,6 +17815,34 @@ function _slatsRenderRebarTable(containerId, statArr, totalTons, t){
   html+='</tbody><tfoot><tr class="slats-report-total">'+
     '<td>'+totalLbl+'</td><td>'+slatsFmtNum(totalLen,1)+'</td>'+
     '<td>'+slatsFmtNum(totalTons,3)+'</td><td>100%</td></tr></tfoot></table>';
+  container.innerHTML=html;
+}
+function _slatsRenderMaterialTable(containerId, rowArr, t){
+  var container=document.getElementById(containerId);
+  if(!container) return;
+  var colSpec=t.slats_report_mat_spec||'类别';
+  var colQty=t.slats_report_mat_qty||'数量/整场';
+  var colCem=t.slats_report_mat_cement||'水泥/吨';
+  var colSand=t.slats_report_mat_sand||'黄砂/吨';
+  var colGrav=t.slats_report_mat_gravel||'石子/吨';
+  var totalLbl=t.slats_report_total||'总计';
+  var tq=0, tc=0, ts=0, tg=0;
+  var html='<table class="slats-report-table"><thead><tr>'+
+    '<th data-i18n="slats_report_mat_spec">'+colSpec+'</th>'+
+    '<th data-i18n="slats_report_mat_qty">'+colQty+'</th>'+
+    '<th data-i18n="slats_report_mat_cement">'+colCem+'</th>'+
+    '<th data-i18n="slats_report_mat_sand">'+colSand+'</th>'+
+    '<th data-i18n="slats_report_mat_gravel">'+colGrav+'</th>'+
+    '</tr></thead><tbody>';
+  rowArr.forEach(function(o){
+    tq+=o.qty; tc+=o.cement; ts+=o.sand; tg+=o.gravel;
+    var label=(o.L&&o.W&&o.H)?(slatsFmtNum(o.L,0)+'×'+slatsFmtNum(o.W,0)+'×'+slatsFmtNum(o.H,0)):o.key;
+    html+='<tr><td>'+label+'</td><td>'+slatsFmtNum(o.qty,0)+'</td><td>'+slatsFmtNum(o.cement,2)+'</td>'+
+      '<td>'+slatsFmtNum(o.sand,2)+'</td><td>'+slatsFmtNum(o.gravel,2)+'</td></tr>';
+  });
+  html+='</tbody><tfoot><tr class="slats-report-total">'+
+    '<td>'+totalLbl+'</td><td>'+slatsFmtNum(tq,0)+'</td><td>'+slatsFmtNum(tc,2)+'</td>'+
+    '<td>'+slatsFmtNum(ts,2)+'</td><td>'+slatsFmtNum(tg,2)+'</td></tr></tfoot></table>';
   container.innerHTML=html;
 }
 function _slatsRenderPieChart(canvasId, dataMap, total, t, unit){
