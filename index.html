@@ -1603,7 +1603,7 @@ function _ovLoadChartLib(cb){
   }
   /* ===== 顶部导航栏 (Top Bar) ===== */
   #topbar {
-    position: fixed; top:0; left:0; right:0; height:56px; z-index: 1000;
+    position: fixed; top:0; left:0; right:0; height:64px; z-index: 1000;
     display: flex; align-items: center; padding: 0 18px; gap: 20px;
     background: rgb(183, 221, 121);
     box-shadow: 0 2px 10px rgba(0,100,0,.25);
@@ -1612,7 +1612,7 @@ function _ovLoadChartLib(cb){
   #topbar.hidden { display: none; }
   .tb-logo { display:flex; align-items:center; gap:8px; white-space:nowrap; cursor:pointer; user-select:none; -webkit-user-select:none; touch-action:none; }
   .tb-logo * { user-select:none; -webkit-user-select:none; }
-  .tb-logo svg { width:30px; height:30px; border-radius:4px; display:block; flex:none; pointer-events:none; }
+  .tb-logo svg { width:60px; height:60px; border-radius:4px; display:block; flex:none; pointer-events:none; }
   .tb-logo-mark { font-size:20px; font-weight:800; color:#D32F2F; letter-spacing:.5px; pointer-events:none; }
   .tb-logo-slats { font-size:20px; font-weight:800; color:#D32F2F; letter-spacing:.5px; pointer-events:none; }
   .tb-logo-name { font-size:20px; font-weight:800; color:#000000; pointer-events:none; }
@@ -2138,12 +2138,12 @@ function _ovLoadChartLib(cb){
   @media (orientation: landscape) and (max-height: 560px) {
     /* 横向时刘海/挖孔在左右短边，用安全区 padding 避免被遮住 */
     #topbar {
-      height: 46px; gap: 8px;
+      height: 48px; gap: 8px;
       padding-left: max(8px, env(safe-area-inset-left));
       padding-right: max(8px, env(safe-area-inset-right));
     }
     .tb-logo { gap: 5px; }
-    .tb-logo svg { width: 22px; height: 22px; }
+    .tb-logo svg { width: 44px; height: 44px; }
     .tb-logo-mark { font-size: 15px; }
     .tb-logo-slats { font-size: 15px; }
     .tb-logo-name { font-size: 15px; }
@@ -2170,7 +2170,7 @@ function _ovLoadChartLib(cb){
     #view-lost .won-scroll-wrap { height: calc(100vh - 160px); }
   }
   /* ===== 主应用区 (Multi-view) ===== */
-  .app-body { margin-top:60px; min-height:calc(100vh - 100px); background:#eef1f4; }
+  .app-body { margin-top:68px; min-height:calc(100vh - 100px); background:#eef1f4; }
   .app-body.hidden { display:none; }
   .view { display:none; }
   .view.active { display:block; }
@@ -2789,9 +2789,6 @@ function _ovLoadChartLib(cb){
         <path d="M67 230 C58 231 54 239 55 250 L62 390 C63 400 70 406 82 407" fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/>
         <path d="M82 412 L708 412 C723 412 731 405 733 392" fill="none" stroke="#c2c3c1" stroke-width="4" opacity=".8"/>
       </svg>
-    <span class="tb-logo-mark">CHOICE</span>
-    <span class="tb-logo-slats"> SLATS</span>
-    <span class="tb-logo-name"> VIET NAM</span>
   </div>
   <div class="tb-menu" id="tbMenu">
     <button class="tb-item active" data-view="dashboard" onclick="switchView('dashboard')">Dashboard</button>
@@ -4355,20 +4352,26 @@ function _ovLoadChartLib(cb){
         <div class="slats-report-section">
           <h3 data-i18n="slats_report_house_distribution">猪舍分布分析</h3>
           <p class="slats-report-desc" id="slatsReportHouseDesc"></p>
-          <div class="slats-report-chart-wrap"><canvas id="slatsHouseChart"></canvas></div>
-          <div id="slatsHouseDataTable" class="slats-report-data-table-wrap"></div>
+          <div class="slats-report-row">
+            <div class="slats-report-chart-wrap"><canvas id="slatsHouseChart"></canvas></div>
+            <div id="slatsHouseDataTable" class="slats-report-data-table-wrap"></div>
+          </div>
         </div>
         <div class="slats-report-section">
           <h3 data-i18n="slats_report_spec_distribution">水泥板规格分布分析</h3>
           <p class="slats-report-desc" id="slatsReportSpecDesc"></p>
-          <div class="slats-report-chart-wrap"><canvas id="slatsSpecChart"></canvas></div>
-          <div id="slatsSpecDataTable" class="slats-report-data-table-wrap"></div>
+          <div class="slats-report-row">
+            <div class="slats-report-chart-wrap"><canvas id="slatsSpecChart"></canvas></div>
+            <div id="slatsSpecDataTable" class="slats-report-data-table-wrap"></div>
+          </div>
         </div>
         <div class="slats-report-section">
           <h3 data-i18n="slats_report_rebar_distribution">钢筋规格分布分析</h3>
           <p class="slats-report-desc" id="slatsReportRebarDesc"></p>
-          <div class="slats-report-chart-wrap"><canvas id="slatsRebarChart"></canvas></div>
-          <div id="slatsRebarDataTable" class="slats-report-data-table-wrap"></div>
+          <div class="slats-report-row">
+            <div class="slats-report-chart-wrap"><canvas id="slatsRebarChart"></canvas></div>
+            <div id="slatsRebarDataTable" class="slats-report-data-table-wrap"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -4446,9 +4449,10 @@ function _ovLoadChartLib(cb){
 .slats-report-table tbody tr:last-child td:first-child { border-radius: 0 0 0 10px; }
 .slats-report-table tbody tr:last-child td:last-child { border-radius: 0 0 10px 0; }
 .slats-report-desc { color: #555; font-size: 13px; margin: 0 0 12px; line-height: 1.5; }
-.slats-report-chart-wrap { height: 300px; position: relative; }
-.slats-report-data-table-wrap { margin-top: 12px; }
-.slats-report-data-table-wrap .slats-report-table { font-size: 12px; max-width: 560px; margin: 0 auto; }
+.slats-report-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.slats-report-chart-wrap { flex: 1 1 420px; height: 320px; position: relative; min-width: 300px; }
+.slats-report-data-table-wrap { flex: 0 1 340px; align-self: center; margin-top: 0; }
+.slats-report-data-table-wrap .slats-report-table { font-size: 12px; width: 100%; max-width: 340px; margin: 0 auto; }
 .slats-report-empty { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
 </style>
 
@@ -17071,6 +17075,9 @@ function openWonModal(id) {
     // V56：按当前数据锁定/启用三语框
     setTimeout(function(){ RM_WON_BASES.forEach(function(base){ triLangInit('won_' + base, {zh:'w_' + base + '_zh', en:'w_' + base + '_en', vi:'w_' + base + '_vi'}); }); }, 0);
     var cfsEl = el('w_concrete_floor_spec'); if(cfsEl) cfsEl.value = (p && p.concrete_floor_spec) ? p.concrete_floor_spec : '';
+    // 备份当前项目的水泥漏缝地板规格，防止切语言时隐藏域被意外清空
+    window.__slatsSpecByPid = window.__slatsSpecByPid || {};
+    window.__slatsSpecByPid[id||''] = (p && p.concrete_floor_spec) ? p.concrete_floor_spec : '';
     /* 根据已保存数据设置质保金"有/无"状态，并锁定/解锁输入框 */
     var hasW = 'no';
     if (p.warranty_rmb>0 || p.warranty_usd>0 || p.warranty_vnd>0 || p.warranty_start || p.warranty_end) hasW='yes';
@@ -17197,27 +17204,28 @@ function slatsSpecSerialize(){
   var out=[];
   groups.forEach(function(g){
     g.rows.forEach(function(row){
+      var vals=slatsGetRowValues(row);
       out.push({
-        pig_house: slatsGetInputValue(row, 1),
-        house_code: slatsGetInputValue(row, 2),
-        unit_per_building: slatsGetInputValue(row, 3),
-        len_per_unit: slatsGetInputValue(row, 4),
-        wid_per_unit: slatsGetInputValue(row, 5),
-        hgt_per_unit: slatsGetInputValue(row, 6),
-        building_count: slatsGetInputValue(row, 7),
-        floor_len: slatsGetInputValue(row, 8),
-        floor_wid: slatsGetInputValue(row, 9),
-        floor_hgt: slatsGetInputValue(row, 10),
-        qty_unit: slatsGetInputValue(row, 11),
-        qty_whole: slatsGetInputValue(row, 12),
-        sqm_unit: slatsGetInputValue(row, 13),
-        sqm_whole: slatsGetInputValue(row, 14),
-        mesh_layers: slatsGetInputValue(row, 15),
-        bar_len: slatsGetInputValue(row, 16),
-        rebar_size_len: slatsGetInputValue(row, 17),
-        bar_wid: slatsGetInputValue(row, 18),
-        rebar_size_wid: slatsGetInputValue(row, 19),
-        remark: slatsGetInputValue(row, 20)
+        pig_house: vals[1],
+        house_code: vals[2],
+        unit_per_building: vals[3],
+        len_per_unit: vals[4],
+        wid_per_unit: vals[5],
+        hgt_per_unit: vals[6],
+        building_count: vals[7],
+        floor_len: vals[8],
+        floor_wid: vals[9],
+        floor_hgt: vals[10],
+        qty_unit: vals[11],
+        qty_whole: vals[12],
+        sqm_unit: vals[13],
+        sqm_whole: vals[14],
+        mesh_layers: vals[15],
+        bar_len: vals[16],
+        rebar_size_len: vals[17],
+        bar_wid: vals[18],
+        rebar_size_wid: vals[19],
+        remark: vals[20]
       });
     });
   });
@@ -17231,9 +17239,10 @@ function slatsSpecValidate(){
   var requiredIdx=[1,3,4,5,6,7,8,9,10,11,15,16,17,18,19];
   groups.forEach(function(g){
     g.rows.forEach(function(row){
+      var vals=slatsGetRowValues(row);
       requiredIdx.forEach(function(ci){
         if(!ok && firstBad) return;
-        var v=slatsGetInputValue(row, ci);
+        var v=vals[ci];
         if(String(v||'').trim()===''){
           ok=false;
           var cell=slatsGetCellByCol(row, ci);
@@ -17256,8 +17265,11 @@ function saveSlatsSpec(){
   var json=JSON.stringify(data);
   var cfsEl=el('w_concrete_floor_spec');
   if(cfsEl) cfsEl.value=json;
-  // 若已存在项目ID，立即写库
+  // 同步备份到内存，防止切语言时隐藏域被意外清空
+  window.__slatsSpecByPid = window.__slatsSpecByPid || {};
   var mid=el('wonModal')?el('wonModal').dataset.id:'';
+  window.__slatsSpecByPid[mid||''] = json;
+  // 若已存在项目ID，立即写库
   if(mid){
     fetch('/api/won-projects/'+mid,{method:'PUT', credentials:'include', headers:(typeof authHeaders==='function'?authHeaders({'Content-Type':'application/json'}):{'Content-Type':'application/json'}), body:JSON.stringify({concrete_floor_spec:json})})
       .then(function(r){ return r.json().catch(function(){return {};}); })
@@ -17288,9 +17300,11 @@ function openSlatsReportModal(){
   var t=T();
   var _e=function(x){ return String(x==null?'':x).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); };
 
-  // 读取当前 WON 项目的水泥漏缝地板规格数据
+  // 读取当前 WON 项目的水泥漏缝地板规格数据（隐藏域优先，丢失时从内存备份读取）
   var cfsEl=el('w_concrete_floor_spec');
-  var raw=(cfsEl?cfsEl.value:'')||'';
+  var _pid=(el('wonModal')?el('wonModal').dataset.id:'')||'';
+  var _backup=(window.__slatsSpecByPid && window.__slatsSpecByPid[_pid])||'';
+  var raw=(cfsEl?cfsEl.value:'')||_backup||'';
   var rows=[];
   try{ rows=JSON.parse(raw); if(!Array.isArray(rows)) rows=[]; }catch(e){ rows=[]; }
   rows=rows.filter(function(r){ return r && String(r.pig_house||'').trim()!==''; });
@@ -17463,16 +17477,19 @@ function openSlatsReportModal(){
   var rebarDesc=t.slats_report_rebar_desc||'共 {0} 种钢筋规格';
   el('slatsReportRebarDesc').textContent=rebarDesc.replace('{0}', Object.keys(rebarDist).length);
 
+  // 钢筋分布的“总计”用各规格累加和，保证和饼图比例一致（同一单元可能同时含两种钢筋）
+  var rebarTotal=Object.keys(rebarDist).reduce(function(s,k){ return s+rebarDist[k]; },0);
+
   // 渲染数据表格
   _slatsRenderDistTable('slatsHouseDataTable', houseDist, totalSqm, 'm²', t);
   _slatsRenderDistTable('slatsSpecDataTable', specDist, totalQty, '', t);
-  _slatsRenderDistTable('slatsRebarDataTable', rebarDist, totalQty, '', t);
+  _slatsRenderDistTable('slatsRebarDataTable', rebarDist, rebarTotal, '', t);
 
   // 渲染图表
   _slatsLoadChartLib(function(){
     _slatsRenderPieChart('slatsHouseChart', houseDist, totalSqm, t, 'm²');
     _slatsRenderPieChart('slatsSpecChart', specDist, totalQty, t, '');
-    _slatsRenderPieChart('slatsRebarChart', rebarDist, totalQty, t, '');
+    _slatsRenderPieChart('slatsRebarChart', rebarDist, rebarTotal, t, '');
   });
 
   sweepI18n(modal);
@@ -17517,12 +17534,19 @@ var _slatsPieLabelsPlugin = {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(pct + '%', ix, iy);
-      // 饼外绝对值 + 箭头牵引线
-      var outerR = arc.outerRadius * 1.28;
+      // 饼外绝对值 + 箭头牵引线（限制在画布内，避免小扇区标签被裁掉）
+      var outerR = arc.outerRadius * 1.25;
       var ox = cx + Math.cos(midAngle) * outerR;
       var oy = cy + Math.sin(midAngle) * outerR;
       var edgeX = cx + Math.cos(midAngle) * (arc.outerRadius + 2);
       var edgeY = cy + Math.sin(midAngle) * (arc.outerRadius + 2);
+      var text = _slatsFmtNum(value) + (options.unit||'');
+      var tw = ctx.measureText(text).width;
+      var margin = 8;
+      if(ox < margin + tw/2) ox = margin + tw/2;
+      if(ox > chart.width - margin - tw/2) ox = chart.width - margin - tw/2;
+      if(oy < margin + 6) oy = margin + 6;
+      if(oy > chart.height - margin - 6) oy = chart.height - margin - 6;
       ctx.strokeStyle = '#666';
       ctx.beginPath();
       ctx.moveTo(edgeX, edgeY);
@@ -17531,7 +17555,7 @@ var _slatsPieLabelsPlugin = {
       ctx.fillStyle = '#333';
       ctx.textAlign = ox > cx ? 'left' : 'right';
       ctx.textBaseline = 'middle';
-      ctx.fillText(_slatsFmtNum(value) + (options.unit||''), ox + (ox > cx ? 4 : -4), oy);
+      ctx.fillText(text, ox + (ox > cx ? 4 : -4), oy);
     });
     ctx.restore();
   }
@@ -17573,9 +17597,9 @@ function _slatsRenderPieChart(canvasId, dataMap, total, t, unit){
       data: { labels: labels, datasets: [{ data: values, backgroundColor: bg, borderWidth: 1, borderColor: '#fff' }] },
       options: {
         responsive: true, maintainAspectRatio: false,
-        layout: { padding: 24 },
+        layout: { padding: 40 },
         plugins: {
-          legend: { position: 'bottom', labels: { boxWidth: 14, font: { size: 12 } } },
+          legend: { position: 'right', labels: { boxWidth: 14, font: { size: 12 }, padding: 14 } },
           tooltip: {
             callbacks: {
               label: function(context){
