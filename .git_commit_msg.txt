@@ -1,1 +1,1 @@
-chore: add .gitignore for build artifacts (android/build, node-backend/dist, *.db-wal/*.db-shm) and untrack them
+chore: untrack choice-android/app/build and remaining build/db artifacts (real bloat source)
